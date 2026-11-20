@@ -230,7 +230,7 @@ Vantage/
       <a href="https://github.com/JayDev-27"><img src="https://github.com/JayDev-27.png?size=120" width="72" alt="satiricalguru" style="border-radius:50%" /><br /><sub><b>satiricalguru</b></sub></a><br /><sub>Creator &amp; maintainer</sub>
     </td>
     <td align="center" width="140">
-      <a href="https://github.com/Mxhi-04"><img src="https://github.com/Mxhi-04.png?size=120" width="72" alt="Mxhi-04" style="border-radius:50%" /><br /><sub><b>Mahi Patni</b></sub></a><br /><sub><a href="https://github.com/Mxhi-04">@Mxhi-04</a></sub>
+      <a href="https://github.com/Mxhi-04"><img src="https://avatars.githubusercontent.com/u/249584456?v=4&s=120" width="72" alt="Mxhi-04" style="border-radius:50%" /><br /><sub><b>Mahi Patni</b></sub></a><br /><sub><a href="https://github.com/Mxhi-04">@Mxhi-04</a></sub>
     </td>
   </tr>
 </table>
