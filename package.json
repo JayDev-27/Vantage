@@ -4,7 +4,7 @@
   "description": "A free, native live wallpaper app for macOS",
   "main": "./out/main/index.js",
   "author": "Vantage Team",
-  "homepage": "https://github.com/satiricalguru/Vantage",
+  "homepage": "https://github.com/JayDev-27/Vantage",
   "engines": {
     "node": ">=20.19.0"
   },
@@ -135,7 +135,7 @@
     "compression": "maximum",
     "publish": {
       "provider": "github",
-      "owner": "satiricalguru",
+      "owner": "JayDev-27",
       "repo": "Vantage",
       "releaseType": "draft"
     },

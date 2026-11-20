@@ -5,7 +5,7 @@ import { initMotion } from './motion.js'
 const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v))
 const range = (p, a, b) => clamp((p - a) / (b - a))
 
-const REPO = 'satiricalguru/Vantage'
+const REPO = 'JayDev-27/Vantage'
 const RELEASES = `https://github.com/${REPO}/releases/latest`
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches

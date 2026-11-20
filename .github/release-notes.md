@@ -20,4 +20,4 @@
 
 ### Notes
 - The macOS build is ad-hoc signed, not notarized. If macOS blocks it, use a notarized build when one is available rather than removing the quarantine flag.
-- The Windows installer isn't code-signed yet, so SmartScreen may ask you to confirm. Windows support is new — please [report issues](https://github.com/satiricalguru/Vantage/issues).
+- The Windows installer isn't code-signed yet, so SmartScreen may ask you to confirm. Windows support is new — please [report issues](https://github.com/JayDev-27/Vantage/issues).

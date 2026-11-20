@@ -69,7 +69,7 @@ export function buildAppMenu(openGallery: () => void, openPreferences: () => voi
     { role: 'windowMenu' },
     {
       role: 'help',
-      submenu: [{ label: 'Vantage on GitHub', click: () => shell.openExternal('https://github.com/satiricalguru/Vantage') }]
+      submenu: [{ label: 'Vantage on GitHub', click: () => shell.openExternal('https://github.com/JayDev-27/Vantage') }]
     }
   ]
   Menu.setApplicationMenu(Menu.buildFromTemplate(template))

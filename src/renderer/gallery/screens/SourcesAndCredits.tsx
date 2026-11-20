@@ -74,7 +74,7 @@ export const SourcesAndCredits: React.FC = () => {
 
         <div className="flex items-center justify-between rounded-2xl border border-line bg-void/60 px-4 py-3.5 text-[12px] text-ink-dim">
           <span>Vantage is free and open source under the MIT License.</span>
-          <button onClick={() => open('https://github.com/satiricalguru/Vantage')} className="flex items-center gap-1.5 text-ink hover:text-glow">
+          <button onClick={() => open('https://github.com/JayDev-27/Vantage')} className="flex items-center gap-1.5 text-ink hover:text-glow">
             <Github className="h-4 w-4" /> Source code
           </button>
         </div>

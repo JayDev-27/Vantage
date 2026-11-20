@@ -15,16 +15,16 @@
 </p>
 
 <p>
-  <a href="https://github.com/satiricalguru/Vantage/releases/latest"><img src="https://img.shields.io/github/v/release/satiricalguru/Vantage?style=flat-square&label=release&color=111214" alt="Latest release" /></a>
-  <a href="https://github.com/satiricalguru/Vantage/releases"><img src="https://img.shields.io/github/downloads/satiricalguru/Vantage/total?style=flat-square&color=111214" alt="Total downloads" /></a>
+  <a href="https://github.com/JayDev-27/Vantage/releases/latest"><img src="https://img.shields.io/github/v/release/JayDev-27/Vantage?style=flat-square&label=release&color=111214" alt="Latest release" /></a>
+  <a href="https://github.com/JayDev-27/Vantage/releases"><img src="https://img.shields.io/github/downloads/JayDev-27/Vantage/total?style=flat-square&color=111214" alt="Total downloads" /></a>
   <img src="https://img.shields.io/badge/platform-macOS%20%7C%20Windows%20(beta)-111214?style=flat-square" alt="Platforms: macOS and Windows (beta)" />
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/satiricalguru/Vantage?style=flat-square&color=111214" alt="MIT license" /></a>
-  <a href="https://github.com/satiricalguru/Vantage/stargazers"><img src="https://img.shields.io/github/stars/satiricalguru/Vantage?style=flat-square&color=111214" alt="GitHub stars" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/JayDev-27/Vantage?style=flat-square&color=111214" alt="MIT license" /></a>
+  <a href="https://github.com/JayDev-27/Vantage/stargazers"><img src="https://img.shields.io/github/stars/JayDev-27/Vantage?style=flat-square&color=111214" alt="GitHub stars" /></a>
 </p>
 
 <p>
   <a href="https://vantagewall.vercel.app"><b>Website</b></a> ·
-  <a href="https://github.com/satiricalguru/Vantage/releases/latest"><b>Download</b></a> ·
+  <a href="https://github.com/JayDev-27/Vantage/releases/latest"><b>Download</b></a> ·
   <a href="#-features">Features</a> ·
   <a href="#-generative-wallpapers">Generative</a> ·
   <a href="#%EF%B8%8F-build-from-source">Build</a> ·
@@ -108,8 +108,8 @@ Plus three classic canvas scenes: **Quantum Field**, **Aurora Flow** and **Nebul
 
 | Platform | Get it | Notes |
 |:--|:--|:--|
-| 🍏 **macOS** (Apple Silicon &amp; Intel) | [Latest release](https://github.com/satiricalguru/Vantage/releases/latest) | Open the `.dmg` and drag Vantage to Applications |
-| 🪟 **Windows 10/11** (beta) | [Latest release](https://github.com/satiricalguru/Vantage/releases/latest) | Run `Vantage-Setup-…-x64.exe` (or `-arm64.exe`). The installer isn't code-signed yet, so SmartScreen may ask you to confirm |
+| 🍏 **macOS** (Apple Silicon &amp; Intel) | [Latest release](https://github.com/JayDev-27/Vantage/releases/latest) | Open the `.dmg` and drag Vantage to Applications |
+| 🪟 **Windows 10/11** (beta) | [Latest release](https://github.com/JayDev-27/Vantage/releases/latest) | Run `Vantage-Setup-…-x64.exe` (or `-arm64.exe`). The installer isn't code-signed yet, so SmartScreen may ask you to confirm |
 
 > [!NOTE]
 > If macOS says it can't verify the app, don't remove the quarantine flag. Use a release that's Developer ID–signed and notarized, and check its published checksum.
@@ -142,7 +142,7 @@ The landing page lives in [`website/`](website/README.md): a Three.js / WebGL sc
 **Requirements:** Node.js 20.19+ and npm. Building the macOS Screen Saver companion needs Xcode command-line tools.
 
 ```bash
-git clone https://github.com/satiricalguru/Vantage.git
+git clone https://github.com/JayDev-27/Vantage.git
 cd Vantage
 npm install
 npm run dev
@@ -227,7 +227,7 @@ Vantage/
 <table>
   <tr>
     <td align="center" width="140">
-      <a href="https://github.com/satiricalguru"><img src="https://github.com/satiricalguru.png?size=120" width="72" alt="satiricalguru" style="border-radius:50%" /><br /><sub><b>satiricalguru</b></sub></a><br /><sub>Creator &amp; maintainer</sub>
+      <a href="https://github.com/JayDev-27"><img src="https://github.com/JayDev-27.png?size=120" width="72" alt="satiricalguru" style="border-radius:50%" /><br /><sub><b>satiricalguru</b></sub></a><br /><sub>Creator &amp; maintainer</sub>
     </td>
     <td align="center" width="140">
       <a href="https://github.com/Mxhi-04"><img src="https://github.com/Mxhi-04.png?size=120" width="72" alt="Mxhi-04" style="border-radius:50%" /><br /><sub><b>Mahi Patni</b></sub></a><br /><sub><a href="https://github.com/Mxhi-04">@Mxhi-04</a></sub>
@@ -235,7 +235,7 @@ Vantage/
   </tr>
 </table>
 
-Contributions are welcome — open an [issue](https://github.com/satiricalguru/Vantage/issues) or a pull request. Run `npm run typecheck` before submitting.
+Contributions are welcome — open an [issue](https://github.com/JayDev-27/Vantage/issues) or a pull request. Run `npm run typecheck` before submitting.
 
 ## 🙏 Acknowledgements
 
