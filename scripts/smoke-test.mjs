@@ -93,6 +93,45 @@ try {
     check('catalog loads', count > 1000, `${count} wallpapers`)
     const tiles = await g.eval(`new Promise(r => setTimeout(() => r(document.querySelectorAll('[role=button][aria-label]').length), 2500))`)
     check('gallery renders wallpaper tiles', tiles > 0, `${tiles} tiles`)
+    const frame = await g.eval(`(async () => {
+      const id = 'wallpaperx-v8'
+      await galleryApi.saveFirstFrame(id)
+      const [stills, videos] = await Promise.all([
+        galleryApi.getWallpapers('static', 'Rainy Anime City'),
+        galleryApi.getWallpapers('videos', 'Rainy Anime City')
+      ])
+      const still = stills.find(item => item.id === 'static-frame-' + id)
+      const video = videos.find(item => item.id === id)
+      if (!still || !video) return null
+      async function size(src) {
+        const img = new Image()
+        img.src = src
+        await img.decode()
+        return [img.naturalWidth, img.naturalHeight]
+      }
+      return {
+        still: await size(still.sourceUrl),
+        thumbnail: await size(video.previewUrl),
+        shared: still.previewUrl === video.previewUrl
+      }
+    })()`)
+    check('first frame saved with a shared lightweight thumbnail',
+      frame?.shared && Math.min(...frame.still) >= 1440 && Math.max(...frame.thumbnail) <= 640,
+      JSON.stringify(frame) ?? '')
+    const removal = await g.eval(`(async () => {
+      const videoId = 'wallpaperx-v8'
+      const stillId = 'static-frame-' + videoId
+      const getStill = async () => (await galleryApi.getWallpapers('static', 'Rainy Anime City'))
+        .find(item => item.id === stillId)
+      const removed = await galleryApi.deleteWallpaper(stillId)
+      const missing = !(await getStill())
+      const video = (await galleryApi.getWallpapers('videos', 'Rainy Anime City'))
+        .find(item => item.id === videoId)
+      await galleryApi.saveFirstFrame(videoId)
+      return { removed: removed && missing, video: Boolean(video), restored: Boolean(await getStill()) }
+    })()`)
+    check('generated still can be deleted and explicitly restored',
+      removal?.removed && removal.video && removal.restored, JSON.stringify(removal) ?? '')
     const displays = (await g.eval(`galleryApi.getDisplays()`)) || []
     check('displays detected', displays.length > 0, displays.map((d) => `${d.label} ${d.bounds.width}x${d.bounds.height}`).join(', '))
     await g.shot(path.join(outDir, 'gallery.png'))

@@ -9,10 +9,10 @@ const PAGE = 48
 const isMac = navigator.userAgent.includes('Mac')
 
 const CATEGORY_TITLES: Record<string, { title: string; blurb: string }> = {
-  all: { title: 'Discover', blurb: 'Every living wallpaper in your library.' },
+  all: { title: 'Discover', blurb: '2K and higher live wallpapers.' },
   favorites: { title: 'Favorites', blurb: 'The ones you keep coming back to.' },
   imported: { title: 'My Imports', blurb: 'Your own videos and images.' },
-  anime: { title: 'Anime', blurb: 'Animated scenes from your favorite series.' },
+  anime: { title: 'Anime', blurb: 'Scenes and characters from anime, plus original anime-style art.' },
   games: { title: 'Gaming', blurb: 'Splash art and worlds from games.' },
   heroes: { title: 'Heroes & Comics', blurb: 'Capes, masks and multiverses.' },
   nature: { title: 'Nature', blurb: 'Forests, oceans, skies and seasons.' },
@@ -20,8 +20,8 @@ const CATEGORY_TITLES: Record<string, { title: string; blurb: string }> = {
   cars: { title: 'Cars & Streets', blurb: 'Night drives, neon and rain.' },
   'ai-art': { title: 'Digital Art', blurb: 'Lo-fi, fantasy and illustrated loops.' },
   generative: { title: 'Generative', blurb: 'Procedural scenes rendered live on your GPU. Zero downloads, never repeats.' },
-  static: { title: 'Still Images', blurb: 'High-resolution stills, plus anything in your Static folder.' },
-  portrait: { title: 'Vertical', blurb: '9:16 live wallpapers made for rotated monitors.' }
+  static: { title: 'Still Images', blurb: '2K and higher frames from live wallpapers and images from your Static folder.' },
+  portrait: { title: 'Vertical', blurb: '2K and higher portrait videos.' }
 }
 
 const FORMATS: { id: FormatFilter; label: string }[] = [
@@ -31,17 +31,23 @@ const FORMATS: { id: FormatFilter; label: string }[] = [
   { id: '4k', label: '4K' },
   { id: 'vertical', label: 'Vertical' }
 ]
+
 const SORTS: { id: SortMode; label: string }[] = [
   { id: 'featured', label: 'Featured' },
   { id: 'az', label: 'A → Z' },
   { id: 'resolution', label: 'Resolution' }
 ]
 
-const WallpaperTile: React.FC<{ item: WallpaperItem; index: number; tall?: boolean }> = ({ item, index, tall = false }) => {
+const WallpaperTile = React.memo(function WallpaperTile({ item, index, tall = false }: { item: WallpaperItem; index: number; tall?: boolean }) {
   const [hover, setHover] = useState(false)
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const { activeCategory, toggleFavorite, deleteWallpaper, setSelectedWallpaper, applyWallpaper, selectedDisplayId, displays } = useGalleryStore()
-  const isLive = displays.some((d) => d.assignedWallpaperId === item.id)
+  const showDelete = useGalleryStore((state) => state.activeCategory === 'imported')
+  const toggleFavorite = useGalleryStore((state) => state.toggleFavorite)
+  const deleteWallpaper = useGalleryStore((state) => state.deleteWallpaper)
+  const setSelectedWallpaper = useGalleryStore((state) => state.setSelectedWallpaper)
+  const applyWallpaper = useGalleryStore((state) => state.applyWallpaper)
+  const selectedDisplayId = useGalleryStore((state) => state.selectedDisplayId)
+  const isLive = useGalleryStore((state) => state.displays.some((display) => display.assignedWallpaperId === item.id))
   const isUserItem = item.source === 'user' || item.id.startsWith('user-')
 
   useEffect(() => () => { if (timer.current) clearTimeout(timer.current) }, [])
@@ -83,7 +89,7 @@ const WallpaperTile: React.FC<{ item: WallpaperItem; index: number; tall?: boole
       </div>
 
       <div className="absolute right-2 top-2 flex items-center gap-1 opacity-0 transition group-hover:opacity-100 group-focus-within:opacity-100">
-        {activeCategory === 'imported' && isUserItem && (
+        {showDelete && isUserItem && (
           <button
             onClick={(e) => {
               e.stopPropagation()
@@ -132,7 +138,7 @@ const WallpaperTile: React.FC<{ item: WallpaperItem; index: number; tall?: boole
       </div>
     </div>
   )
-}
+})
 
 const NowPlaying: React.FC = () => {
   const { displays, selectedDisplayId, wallpapers, shuffle, setSelectedWallpaper } = useGalleryStore()
@@ -175,8 +181,15 @@ const EmptyState: React.FC<{ category: string; query: string }> = ({ category, q
         : category === 'imported'
           ? { title: 'Bring your own', body: 'Import an MP4, MOV, WebM or image — or drop files into the watched folder. Wallpapers you download from MoeWalls appear here automatically.' }
           : category === 'static'
-            ? { title: 'No still images yet', body: 'Drop JPG, PNG or WebP files into Pictures/Vantage Wallpapers/Static.' }
-            : { title: 'Nothing here yet', body: 'Try another category or format.' }
+            ? {
+              title: 'No still images yet',
+              body: window.galleryApi?.saveFirstFrame
+                ? 'Open a video wallpaper and choose Save first frame, or import a 2K or higher image.'
+                : 'Import a 2K or higher image.'
+            }
+            : category === 'portrait'
+              ? { title: 'No vertical live wallpapers yet', body: 'Import a portrait video at 1440 × 2560, 2160 × 3840 or a similar 2K+ resolution.' }
+              : { title: 'Nothing here yet', body: 'Try another category or format.' }
   return (
     <div className="flex h-full min-h-[320px] flex-col items-center justify-center gap-3 text-center animate-fade-in">
       <div className="grid h-14 w-14 place-items-center rounded-2xl bg-white/[0.04] ring-1 ring-line">
@@ -188,7 +201,7 @@ const EmptyState: React.FC<{ category: string; query: string }> = ({ category, q
       </div>
       <div className="mt-1 flex gap-2">
         {query && <button className="btn-ghost" onClick={() => setSearchQuery('')}>Clear search</button>}
-        {(category === 'imported' || category === 'static') && (
+        {(category === 'imported' || category === 'static' || category === 'portrait') && (
           <>
             <button className="btn-primary" onClick={() => importFile()}>Import file</button>
             <button className="btn-ghost" onClick={() => openWallpaperFolder()}>Open folder</button>
@@ -218,7 +231,7 @@ export const Gallery: React.FC = () => {
     scroller.current?.scrollTo({ top: 0 })
   }, [activeCategory, searchQuery, formatFilter, sortMode])
 
-  // Render tiles in pages as the user scrolls instead of mounting 13,000+ cards at once.
+  // Mount more tiles as the user scrolls.
   useEffect(() => {
     const el = sentinel.current
     if (!el) return
@@ -313,7 +326,7 @@ export const Gallery: React.FC = () => {
           </div>
           {activeCategory !== 'generative' && activeCategory !== 'static' && activeCategory !== 'portrait' && (
             <div className="flex flex-wrap gap-1.5" role="group" aria-label="Format">
-              {FORMATS.map((f) => (
+              {FORMATS.filter((f) => f.id !== 'vertical' || (counts.portrait ?? 0) > 0).map((f) => (
                 <button key={f.id} onClick={() => setFormatFilter(f.id)} aria-pressed={formatFilter === f.id} className={`chip ${formatFilter === f.id ? 'chip-on' : ''}`}>
                   {f.id === 'video' && <Play className="h-3 w-3 fill-current" />}
                   {f.id === 'generative' && <GenerativeIcon className="h-3.5 w-3.5" />}

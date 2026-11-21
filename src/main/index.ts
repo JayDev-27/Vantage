@@ -4,20 +4,22 @@ import fs from 'node:fs'
 import crypto from 'node:crypto'
 import { fileURLToPath } from 'node:url'
 import { Readable } from 'node:stream'
-import { initDatabase, getAllWallpapers, getCategoryCounts, getWallpaperById, setDisplayAssignment, getDisplayAssignment, setPerformanceMode, toggleFavoriteInDb, deleteWallpaperFromDb, addWallpaperToDb, pruneUserFolderEntries, closeDatabase, getWallpaperFileReferences } from './db'
-import { getAttachFailures, syncWallpaperWindows, applyWallpaperToDisplay, setPerformanceModeForDisplay, setupDisplayListeners, getGlobalPlaybackState, setGalleryWindowGetter, broadcastCacheProgress, isWallpaperRenderer, getDisplayIdForWebContents } from './wallpaperWindow'
+import { initDatabase, getAllWallpapers, getCategoryCounts, getWallpaperById, getVideosBySourceUrl, setDisplayAssignment, getDisplayAssignment, setPerformanceMode, toggleFavoriteInDb, deleteWallpaperFromDb, deleteFirstFrameStillFromDb, addWallpaperToDb, pruneUserFolderEntries, closeDatabase, getWallpaperFileReferences } from './db'
+import { getAttachFailures, syncWallpaperWindows, applyWallpaperToDisplay, setPerformanceModeForDisplay, setupDisplayListeners, getGlobalPlaybackState, setGalleryWindowGetter, broadcastCacheProgress, isWallpaperRenderer, getDisplayIdForWebContents, notifyDisplayStateChanged } from './wallpaperWindow'
 import { createTray, refreshTrayMenu } from './tray'
 import { initPowerManager } from './powerManager'
 import { ensureCached, getCacheStatus, clearCache, evictToLimit, setCacheLimitBytes, getCacheDir, isAllowedRemoteMediaUrl, onCacheProgress, getCacheLimitBytes, CACHE_FLOOR_BYTES, CACHE_CEILING_BYTES } from './videoCache'
 import { syncStaticWallpapers, getStaticSourceDirs } from './staticLibrary'
 import store from './store'
 import { setDockVisible, isDockVisible, buildAppMenu, onDockVisibilityChange, revealWindow } from './dock'
-import { INITIAL_WALLPAPERS } from './contentSources'
-import { ALLOWED_SETTINGS_KEYS, DEFAULT_WALLPAPER_ID } from '../shared/types'
+import { CATALOG_WALLPAPERS } from './contentSources'
+import { ALLOWED_SETTINGS_KEYS, DEFAULT_WALLPAPER_ID, isHighResolution } from '../shared/types'
+import type { WallpaperItem } from '../shared/types'
 import { toMediaUrl, fromMediaUrl } from './mediaUrl'
 import { installVantageScreenSaver, setupVantageScreenSaver, syncSelectedScreenSaverVideo } from './screenSaver'
 
-import { generateVideoThumbnail, pruneOrphanThumbnails } from './thumbnailGenerator'
+import { pruneOrphanThumbnails } from './thumbnailGenerator'
+import { backfillFirstFrames, cancelFirstFrameCapture, getFirstFrameDirectory, removeSavedFrameFiles, saveVideoFirstFrame, stopFirstFrameCapture } from './firstFrameLibrary'
 import { getMediaDimensions } from './mediaInfo'
 import { freeUpMemory } from './memoryManager'
 import { hardenWindowNavigation } from './windowSecurity'
@@ -61,6 +63,12 @@ function getVantageWallpapersFolder(): string {
 // Stored watcher handles — closed before re-watching to prevent leaks
 let folderWatcher: fs.FSWatcher | null = null
 const staticWatchers: fs.FSWatcher[] = []
+const managedMediaDimensions = new Map<string, {
+  size: number
+  mtimeMs: number
+  ctimeMs: number
+  resolution: WallpaperItem['resolution']
+}>()
 
 function watchVantageWallpapersFolder(): void {
   // Close previous watcher if called again (re-watch guard)
@@ -119,17 +127,14 @@ async function scanVantageWallpapersFolder(): Promise<number> {
       id: string
       filePath: string
       isVideo: boolean
+      stat: fs.Stats
     }
     const tasks: ScanTask[] = []
     for (const file of files) {
       if (file.startsWith('.')) continue
       const ext = path.extname(file).toLowerCase()
-      if (['.mp4', '.mov', '.webm', '.png', '.jpg', '.jpeg', '.webp'].includes(ext)) {
-        // Skip scanning files that belong to the built-in catalog (e.g. V8.mp4, V233.mp4, V295.mp4)
-        const isCatalogFile = INITIAL_WALLPAPERS.some(
-          (item) => item.sourceUrl && item.sourceUrl.toLowerCase() === `extracted/${file.toLowerCase()}`
-        )
-        if (isCatalogFile) continue
+      if (VALID_IMPORT_EXTENSIONS.has(ext)) {
+        if (CATALOG_SOURCE_URLS.has(`extracted/${file.toLowerCase()}`)) continue
 
         const filePath = path.join(targetDir, file)
         let stat: fs.Stats
@@ -141,47 +146,54 @@ async function scanVantageWallpapersFolder(): Promise<number> {
         if (!stat.isFile()) continue
         const isVideo = ['.mp4', '.mov', '.webm'].includes(ext)
         const id = userFolderId(file, filePath)
-        presentIds.push(id)
-        tasks.push({ file, id, filePath, isVideo })
+        tasks.push({ file, id, filePath, isVideo, stat })
       }
     }
 
-    // Thumbnail generation (qlmanage) and dimension probing (mdls) spawn helper
-    // processes; cap concurrency so a large folder does not spawn 50 at once.
+    const scannedPaths = new Set(tasks.map(({ filePath }) => filePath))
+    for (const filePath of managedMediaDimensions.keys()) {
+      if (!scannedPaths.has(filePath)) managedMediaDimensions.delete(filePath)
+    }
+
+    // Bound dimension probing when the managed folder has many files.
     const CONCURRENCY = 3
     let cursor = 0
     const workers = Array.from({ length: Math.min(CONCURRENCY, tasks.length) }, async () => {
       while (cursor < tasks.length) {
-        const { file, id, filePath, isVideo } = tasks[cursor++]
-
-        let previewPath = filePath
-        if (isVideo) {
-          const thumbPath = await generateVideoThumbnail(filePath)
-          if (thumbPath) {
-            previewPath = thumbPath
-          }
-        }
+        const { file, id, filePath, isVideo, stat } = tasks[cursor++]
+        const { size, mtimeMs, ctimeMs } = stat
+        const cached = managedMediaDimensions.get(filePath)
+        const unchanged = cached && cached.size === size && cached.mtimeMs === mtimeMs && cached.ctimeMs === ctimeMs
+        const resolution = unchanged ? cached.resolution : await getMediaDimensions(filePath)
+        if (isQuitting) return
+        managedMediaDimensions.set(filePath, { size, mtimeMs, ctimeMs, resolution })
+        if (!isHighResolution(resolution)) continue
+        presentIds.push(id)
+        const existing = getWallpaperById(id)
+        if (unchanged && existing) continue
 
         const newItem = {
           id,
           title: file.replace(/\.[^/.]+$/, ''),
           category: isVideo ? ('imported' as const) : ('static' as const),
           type: isVideo ? ('video' as const) : ('image' as const),
-          previewUrl: toMediaUrl(previewPath),
+          previewUrl: isVideo ? '' : toMediaUrl(filePath),
           sourceUrl: toMediaUrl(filePath),
-          resolution: await getMediaDimensions(filePath),
+          resolution,
           source: isVideo ? ('user' as const) : ('static' as const),
           license: 'Local Folder Import',
           attribution: 'Local File'
         }
         addWallpaperToDb(newItem)
-        addedCount++
+        if (isVideo) queueFirstFrame(id)
+        if (!existing) addedCount++
       }
     })
     await Promise.all(workers)
+    if (isQuitting) return addedCount
 
-    // Purge DB entries for files that no longer exist in the folder
-    pruneUserFolderEntries(presentIds)
+    // Prune missing and below-2K entries from the library.
+    refreshPrunedAssignments(() => pruneUserFolderEntries(presentIds))
 
     // Garbage-collect generated thumbnails no longer referenced by any DB row
     pruneOrphanThumbnails(getWallpaperFileReferences())
@@ -193,6 +205,7 @@ async function scanVantageWallpapersFolder(): Promise<number> {
 
 let scanTimer: ReturnType<typeof setTimeout> | null = null
 let staticTimer: ReturnType<typeof setTimeout> | null = null
+let frameRefreshTimer: ReturnType<typeof setTimeout> | null = null
 
 // Serialize folder scans so overlapping watcher/startup/manual scans can never
 // interleave (two concurrent scans previously raced on the prune step and tore
@@ -218,7 +231,7 @@ function enqueueScan(): Promise<number> {
 function enqueueStaticSync(): Promise<number> {
   const run = staticSyncQueue.then(() => {
     if (isQuitting) return 0
-    return syncStaticWallpapers()
+    return syncStaticWallpapers(refreshPrunedAssignments)
   }).catch((err) => {
     console.error('[StaticLibrary] Sync failed:', err)
     return 0
@@ -236,6 +249,38 @@ function notifyCatalogChanged(): void {
   }
 }
 
+function notifyFirstFrameSaved(): void {
+  if (isQuitting || frameRefreshTimer) return
+  frameRefreshTimer = setTimeout(() => {
+    frameRefreshTimer = null
+    notifyCatalogChanged()
+  }, 250)
+}
+
+function queueFirstFrame(videoId: string, cachedPath?: string): void {
+  void saveVideoFirstFrame(videoId, { cachedPath })
+    .then((saved) => { if (saved) notifyFirstFrameSaved() })
+    .catch(() => { /* the original thumbnail remains available */ })
+}
+
+function refreshPrunedAssignments(prune: () => void): void {
+  const displays = screen.getAllDisplays()
+  const previousIds = displays.map((display) => getDisplayAssignment(String(display.id)).wallpaperId)
+  prune()
+  let changed = false
+  for (const [index, display] of displays.entries()) {
+    const { wallpaperId } = getDisplayAssignment(String(display.id))
+    if (wallpaperId && wallpaperId !== previousIds[index]) {
+      applyWallpaperToDisplay(display.id, wallpaperId)
+      changed = true
+    }
+  }
+  if (changed) {
+    notifyDisplayStateChanged()
+    if (process.platform === 'darwin') syncSelectedScreenSaverVideo()
+  }
+}
+
 function forwardRendererLogs(win: BrowserWindow): void {
   win.webContents.on('console-message', (event) => {
     const line = event.lineNumber ?? ''
@@ -247,6 +292,9 @@ function forwardRendererLogs(win: BrowserWindow): void {
 
 const VALID_PERFORMANCE_MODES = new Set(['quality', 'balanced', 'battery-saver'])
 const VALID_IMPORT_EXTENSIONS = new Set(['.mp4', '.mov', '.webm', '.png', '.jpg', '.jpeg', '.webp'])
+const CATALOG_SOURCE_URLS = new Set(CATALOG_WALLPAPERS
+  .map(({ sourceUrl }) => sourceUrl.toLowerCase())
+  .filter((sourceUrl) => sourceUrl.startsWith('extracted/')))
 
 function userFolderId(fileName: string, filePath: string): string {
   const legacyId = `user-folder-${fileName.replace(/[^a-zA-Z0-9_-]/g, '_')}`
@@ -401,6 +449,12 @@ function createGalleryWindow(): BrowserWindow {
 }
 
 function registerIpcHandlers(): void {
+  ipcMain.handle('wallpaper:save-first-frame', async (event, id: unknown) => {
+    requireTrustedIpcSender(event)
+    if (typeof id !== 'string' || !id) throw new Error('Choose a video wallpaper.')
+    if (await saveVideoFirstFrame(id, { restoreSuppressed: true })) notifyFirstFrameSaved()
+  })
+
   ipcMain.handle('wallpaper:list', async (event, payload) => {
     requireTrustedIpcSender(event)
     const { category, query } = payload && typeof payload === 'object' ? payload : {}
@@ -444,7 +498,7 @@ function registerIpcHandlers(): void {
     return true
   })
 
-  ipcMain.handle('wallpaper:delete', (event, payload) => {
+  ipcMain.handle('wallpaper:delete', async (event, payload) => {
     requireTrustedIpcSender(event)
     const { wallpaperId } = payload && typeof payload === 'object' ? payload : {}
     if (typeof wallpaperId !== 'string') {
@@ -452,6 +506,16 @@ function registerIpcHandlers(): void {
     }
     const item = getWallpaperById(wallpaperId)
     if (!item) throw new Error('Wallpaper does not exist')
+
+    if (item.id.startsWith('static-frame-') && item.type === 'image' && item.source === 'static') {
+      refreshPrunedAssignments(() => {
+        if (!deleteFirstFrameStillFromDb(item.id)) throw new Error('Could not remove the saved still.')
+        cancelFirstFrameCapture(item.id.slice('static-frame-'.length))
+      })
+      await removeSavedFrameFiles(item)
+      notifyCatalogChanged()
+      return true
+    }
 
     // Never allow built-in catalog wallpapers to be physically deleted.
     const BUILTIN_SOURCES = new Set(['ai', 'custom', 'local', 'motionbgs', 'vantage'])
@@ -629,6 +693,10 @@ function registerIpcHandlers(): void {
     const sourceStat = fs.statSync(sourcePath)
     if (!sourceStat.isFile()) throw new Error('Selected wallpaper is not a file')
     const isVideo = /\.(mp4|mov|webm)$/i.test(filename)
+    const resolution = await getMediaDimensions(sourcePath)
+    if (!isHighResolution(resolution)) {
+      throw new Error('Choose a 2K or higher wallpaper with at least 1,440 pixels on its shorter edge.')
+    }
 
     // Copy the import into the managed folder so the wallpaper is stable even if
     // the original file is moved, deleted, or the path is outside the allow-list.
@@ -653,29 +721,22 @@ function registerIpcHandlers(): void {
     }
 
     const finalName = path.basename(targetPath)
-    let previewPath = targetPath
-    if (isVideo) {
-      const generatedThumb = await generateVideoThumbnail(targetPath)
-      if (generatedThumb) {
-        previewPath = generatedThumb
-      }
-    }
-
     const id = userFolderId(finalName, targetPath)
     const newItem = {
       id,
       title: finalName.replace(/\.[^/.]+$/, ''),
       category: isVideo ? ('imported' as const) : ('static' as const),
       type: isVideo ? ('video' as const) : ('image' as const),
-      previewUrl: toMediaUrl(previewPath),
+      previewUrl: isVideo ? '' : toMediaUrl(targetPath),
       sourceUrl: toMediaUrl(targetPath),
-      resolution: await getMediaDimensions(targetPath),
+      resolution,
       source: isVideo ? ('user' as const) : ('static' as const),
       license: 'User Imported File',
       attribution: 'Local File'
     }
 
     addWallpaperToDb(newItem)
+    if (isVideo) queueFirstFrame(id)
     notifyCatalogChanged()
     return newItem
   })
@@ -701,6 +762,9 @@ function registerIpcHandlers(): void {
       return Promise.reject(new Error('Refusing to cache an untrusted media URL'))
     }
     return ensureCached(url).then((cachedPath) => {
+      if (!isQuitting) {
+        for (const video of getVideosBySourceUrl(url)) queueFirstFrame(video.id, cachedPath)
+      }
       syncSelectedScreenSaverVideo()
       return toMediaUrl(cachedPath)
     })
@@ -799,6 +863,8 @@ function registerIpcHandlers(): void {
 // App lifecycle
 app.on('before-quit', () => {
   isQuitting = true
+  stopFirstFrameCapture()
+  if (frameRefreshTimer) clearTimeout(frameRefreshTimer)
 
   // RES-03: Cancel pending debounced scans before they can re-open the DB
   // after closeDatabase() below (a late scan called initDatabase() again,
@@ -825,7 +891,8 @@ app.whenReady().then(async () => {
   const userDataMediaDirs = [
     path.join(userData, 'thumbnails'),
     path.join(userData, 'screen-saver'),
-    path.join(userData, 'highres-frames')
+    path.join(userData, 'highres-frames'),
+    getFirstFrameDirectory()
   ]
   const allowedMediaBasePaths: string[] = [
     getVantageWallpapersFolder(),
@@ -1015,6 +1082,8 @@ app.whenReady().then(async () => {
   })
 
   createGalleryWindow()
+  void backfillFirstFrames(getAllWallpapers('videos'), notifyFirstFrameSaved)
+    .catch((err) => console.warn('[FirstFrames] Could not find existing videos:', err))
 })
 
 app.on('activate', () => {

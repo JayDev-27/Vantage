@@ -5,7 +5,7 @@ import fs from 'node:fs'
 import crypto from 'node:crypto'
 import { fileURLToPath } from 'node:url'
 import { INITIAL_WALLPAPERS } from './contentSources'
-import { WallpaperItem, DEFAULT_WALLPAPER_ID } from '../shared/types'
+import { WallpaperItem, DEFAULT_WALLPAPER_ID, MIN_WALLPAPER_SHORT_EDGE } from '../shared/types'
 import { toMediaUrl, fromMediaUrl } from './mediaUrl'
 
 /** Shape of a row returned by SELECT * FROM wallpapers */
@@ -21,6 +21,7 @@ interface WallpaperRow {
   resolution_h: number
   duration: number | null
   previewUrl: string
+  first_frame_preview?: string | null
   sourceUrl: string
   generatorId: string | null
   colorPalette: string | null
@@ -89,6 +90,19 @@ export function initDatabase(): Database.Database {
       key   TEXT PRIMARY KEY,
       value TEXT
     );
+
+    CREATE TABLE IF NOT EXISTS wallpaper_first_frames (
+      video_id         TEXT PRIMARY KEY REFERENCES wallpapers(id) ON DELETE CASCADE,
+      still_id         TEXT NOT NULL UNIQUE REFERENCES wallpapers(id) ON DELETE CASCADE,
+      video_source_url TEXT NOT NULL,
+      fingerprint      TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS suppressed_first_frames (
+      video_id TEXT PRIMARY KEY
+    );
+
+    CREATE INDEX IF NOT EXISTS wallpapers_video_source_url ON wallpapers(sourceUrl) WHERE type = 'video';
   `)
 
   // Upsert catalog wallpapers to ensure updated working URLs & preview paths are synced
@@ -158,10 +172,26 @@ export function initDatabase(): Database.Database {
       })
       idx++
     }
+
+    // Catalog cleanup above handles bundled entries. Existing imports and stills
+    // also need to meet the minimum, while their source files stay on disk.
+    const belowMinimum = `
+      type != 'generative'
+      AND (COALESCE(resolution_w, 0) < @minimum OR COALESCE(resolution_h, 0) < @minimum)
+    `
+    const minimum = MIN_WALLPAPER_SHORT_EDGE
+    db!.prepare(`
+      UPDATE display_assignments
+      SET wallpaper_id = @defaultId
+      WHERE wallpaper_id IN (SELECT id FROM wallpapers WHERE ${belowMinimum})
+    `).run({ minimum, defaultId: DEFAULT_WALLPAPER_ID })
+    db!.prepare(`DELETE FROM wallpapers WHERE ${belowMinimum}`).run({ minimum })
   })
 
-  // The catalog has ~14k entries: only rewrite it when it actually changed (new app version).
-  const catalogFingerprint = crypto.createHash('sha1').update(JSON.stringify(INITIAL_WALLPAPERS)).digest('hex')
+  // Only rewrite the catalog when the contents or the resolution policy changes.
+  const catalogFingerprint = crypto.createHash('sha1')
+    .update(JSON.stringify([MIN_WALLPAPER_SHORT_EDGE, INITIAL_WALLPAPERS]))
+    .digest('hex')
   const storedFingerprint = (db.prepare("SELECT value FROM meta WHERE key = 'catalog_fingerprint'").get() as { value: string } | undefined)?.value
   if (storedFingerprint !== catalogFingerprint) {
     syncCatalog(INITIAL_WALLPAPERS)
@@ -269,7 +299,22 @@ export function getWallpaperFileReferences(): string[] {
   return Array.from(names)
 }
 
-/** Item counts per sidebar category (plus the virtual "all", "favorites" and "static" buckets). */
+const VERTICAL_VIDEO_FILTER = `source != 'static' AND type = 'video'
+  AND resolution_w >= ${MIN_WALLPAPER_SHORT_EDGE} AND resolution_h > resolution_w`
+
+// The mapping is keyed by video ID. Its source URL guards against showing a
+// saved frame when a catalog refresh replaces the video under the same ID.
+const SELECT_WALLPAPERS_WITH_PREVIEWS = `
+  SELECT wallpapers.*, (
+    SELECT still.previewUrl
+    FROM wallpaper_first_frames AS frame
+    JOIN wallpapers AS still ON still.id = frame.still_id
+    WHERE frame.video_id = wallpapers.id AND frame.video_source_url = wallpapers.sourceUrl
+  ) AS first_frame_preview
+  FROM wallpapers
+`
+
+/** Item counts per sidebar category, including virtual collections. */
 export function getCategoryCounts(): Record<string, number> {
   const database = initDatabase()
   const counts: Record<string, number> = {}
@@ -284,26 +329,25 @@ export function getCategoryCounts(): Record<string, number> {
   counts.all = all
   counts.favorites = (database.prepare("SELECT COUNT(*) AS n FROM wallpapers WHERE is_favorite = 1 AND source != 'static'").get() as { n: number }).n
   counts.static = (database.prepare("SELECT COUNT(*) AS n FROM wallpapers WHERE source = 'static'").get() as { n: number }).n
-  counts.portrait = (database.prepare("SELECT COUNT(*) AS n FROM wallpapers WHERE source != 'static' AND resolution_h > resolution_w").get() as { n: number }).n
+  counts.portrait = (database.prepare(`SELECT COUNT(*) AS n FROM wallpapers WHERE ${VERTICAL_VIDEO_FILTER}`).get() as { n: number }).n
   return counts
 }
 
 export function getAllWallpapers(category?: string, query?: string): WallpaperItem[] {
   const database = initDatabase()
-  let sql = 'SELECT * FROM wallpapers'
+  let sql = SELECT_WALLPAPERS_WITH_PREVIEWS
   const params: (string | number)[] = []
   const conditions: string[] = []
 
   if (category === 'static') {
     conditions.push("source = 'static'")
+  } else if (category === 'portrait') {
+    conditions.push(VERTICAL_VIDEO_FILTER)
   } else {
     // Static wallpapers are only exposed via the dedicated Static Wallpapers tab
     conditions.push("source != 'static'")
 
-    if (category === 'portrait') {
-      // Virtual "Vertical" collection: anything taller than it is wide, for rotated monitors.
-      conditions.push('resolution_h > resolution_w')
-    } else if (category && category !== 'all' && category !== 'favorites' && category !== 'videos') {
+    if (category && category !== 'all' && category !== 'favorites' && category !== 'videos') {
       conditions.push('category = ?')
       params.push(category)
     } else if (category === 'favorites') {
@@ -328,7 +372,11 @@ export function getAllWallpapers(category?: string, query?: string): WallpaperIt
 
   const rows = database.prepare(sql).all(...params) as WallpaperRow[]
 
-  return rows.map((r) => ({
+  return rows.map(wallpaperItemFromRow)
+}
+
+function wallpaperItemFromRow(r: WallpaperRow): WallpaperItem {
+  return {
     id: r.id,
     title: r.title,
     category: r.category,
@@ -338,35 +386,89 @@ export function getAllWallpapers(category?: string, query?: string): WallpaperIt
     attribution: r.attribution ?? undefined,
     resolution: { width: r.resolution_w, height: r.resolution_h },
     duration: r.duration ?? undefined,
-    previewUrl: resolveMediaUrl(r.previewUrl),
+    previewUrl: resolveMediaUrl(r.first_frame_preview || r.previewUrl),
     sourceUrl: resolveMediaUrl(r.sourceUrl),
     generatorId: r.generatorId ?? undefined,
     colorPalette: parseColorPalette(r.colorPalette),
     is_favorite: Boolean(r.is_favorite)
-  }))
+  }
 }
 
 export function getWallpaperById(id: string): WallpaperItem | null {
   const database = initDatabase()
-  const row = database.prepare('SELECT * FROM wallpapers WHERE id = ?').get(id) as WallpaperRow | undefined
-  if (!row) return null
+  const row = database.prepare(`${SELECT_WALLPAPERS_WITH_PREVIEWS} WHERE id = ?`).get(id) as WallpaperRow | undefined
+  return row ? wallpaperItemFromRow(row) : null
+}
 
-  return {
-    id: row.id,
-    title: row.title,
-    category: row.category,
-    type: row.type,
-    source: row.source,
-    license: row.license,
-    attribution: row.attribution ?? undefined,
-    resolution: { width: row.resolution_w, height: row.resolution_h },
-    duration: row.duration ?? undefined,
-    previewUrl: resolveMediaUrl(row.previewUrl),
-    sourceUrl: resolveMediaUrl(row.sourceUrl),
-    generatorId: row.generatorId ?? undefined,
-    colorPalette: parseColorPalette(row.colorPalette),
-    is_favorite: Boolean(row.is_favorite)
-  }
+export function getVideosBySourceUrl(remoteUrl: string): WallpaperItem[] {
+  const rows = initDatabase()
+    .prepare("SELECT * FROM wallpapers WHERE type = 'video' AND sourceUrl = ?")
+    .all(remoteUrl) as WallpaperRow[]
+  return rows.map(wallpaperItemFromRow)
+}
+
+export function getSavedFirstFrame(videoId: string): { fingerprint: string; still: WallpaperItem } | null {
+  const row = initDatabase().prepare(`
+    SELECT still.*, frame.fingerprint
+    FROM wallpaper_first_frames AS frame
+    JOIN wallpapers AS still ON still.id = frame.still_id
+    JOIN wallpapers AS video ON video.id = frame.video_id AND video.sourceUrl = frame.video_source_url
+    WHERE frame.video_id = ?
+  `).get(videoId) as (WallpaperRow & { fingerprint: string }) | undefined
+  return row ? { fingerprint: row.fingerprint, still: wallpaperItemFromRow(row) } : null
+}
+
+export function isFirstFrameSuppressed(videoId: string): boolean {
+  return Boolean(initDatabase()
+    .prepare('SELECT 1 FROM suppressed_first_frames WHERE video_id = ?')
+    .get(videoId))
+}
+
+export function saveFirstFrameToDb(
+  video: WallpaperItem,
+  still: WallpaperItem,
+  fingerprint: string,
+  restoreSuppressed = false
+): boolean {
+  const database = initDatabase()
+  return database.transaction(() => {
+    if (!restoreSuppressed && isFirstFrameSuppressed(video.id)) return false
+    const row = database
+      .prepare("SELECT sourceUrl FROM wallpapers WHERE id = ? AND type = 'video'")
+      .get(video.id) as { sourceUrl: string } | undefined
+    if (!row || resolveMediaUrl(row.sourceUrl) !== video.sourceUrl) return false
+
+    addWallpaperToDb(still)
+    database.prepare(`
+      INSERT INTO wallpaper_first_frames (video_id, still_id, video_source_url, fingerprint)
+      VALUES (?, ?, ?, ?)
+      ON CONFLICT(video_id) DO UPDATE SET
+        still_id = excluded.still_id,
+        video_source_url = excluded.video_source_url,
+        fingerprint = excluded.fingerprint
+    `).run(video.id, still.id, row.sourceUrl, fingerprint)
+    if (restoreSuppressed) database.prepare('DELETE FROM suppressed_first_frames WHERE video_id = ?').run(video.id)
+    return true
+  })()
+}
+
+export function deleteFirstFrameStillFromDb(stillId: string): WallpaperItem | null {
+  const prefix = 'static-frame-'
+  if (!stillId.startsWith(prefix) || stillId.length === prefix.length) return null
+
+  const database = initDatabase()
+  return database.transaction(() => {
+    const still = database.prepare("SELECT * FROM wallpapers WHERE id = ? AND source = 'static' AND type = 'image'")
+      .get(stillId) as WallpaperRow | undefined
+    if (!still) return null
+
+    // Keep the user's deletion preference even if catalog cleanup removed
+    // the parent video and its frame mapping.
+    database.prepare('INSERT OR IGNORE INTO suppressed_first_frames (video_id) VALUES (?)').run(stillId.slice(prefix.length))
+    database.prepare('UPDATE display_assignments SET wallpaper_id = ? WHERE wallpaper_id = ?').run(DEFAULT_WALLPAPER_ID, stillId)
+    database.prepare('DELETE FROM wallpapers WHERE id = ?').run(stillId)
+    return wallpaperItemFromRow(still)
+  })()
 }
 
 
@@ -534,6 +636,8 @@ export function pruneUserFolderEntries(keptIds: string[]): void {
 /** Remove static-catalog entries whose source file no longer exists */
 export function pruneStaticWallpapers(keptIds: string[]): void {
   const database = initDatabase()
+  // Saved video frames belong to the app's gallery, independently of watched folders.
+  const fromWatchedFolder = "source = 'static' AND id LIKE 'static-%' AND id NOT LIKE 'static-frame-%'"
   try {
     const prune = database.transaction(() => {
       if (keptIds.length > 0) {
@@ -544,19 +648,19 @@ export function pruneStaticWallpapers(keptIds: string[]): void {
 
         database.prepare(
           `UPDATE display_assignments SET wallpaper_id = ? WHERE wallpaper_id IN (
-            SELECT id FROM wallpapers WHERE source = 'static' AND id LIKE 'static-%' AND id NOT IN (SELECT id FROM _kept_static_ids)
+            SELECT id FROM wallpapers WHERE ${fromWatchedFolder} AND id NOT IN (SELECT id FROM _kept_static_ids)
           )`
         ).run(DEFAULT_WALLPAPER_ID)
         database.prepare(
-          `DELETE FROM wallpapers WHERE source = 'static' AND id LIKE 'static-%' AND id NOT IN (SELECT id FROM _kept_static_ids)`
+          `DELETE FROM wallpapers WHERE ${fromWatchedFolder} AND id NOT IN (SELECT id FROM _kept_static_ids)`
         ).run()
       } else {
         database.prepare(
           `UPDATE display_assignments SET wallpaper_id = ? WHERE wallpaper_id IN (
-            SELECT id FROM wallpapers WHERE source = 'static' AND id LIKE 'static-%'
+            SELECT id FROM wallpapers WHERE ${fromWatchedFolder}
           )`
         ).run(DEFAULT_WALLPAPER_ID)
-        database.prepare(`DELETE FROM wallpapers WHERE source = 'static' AND id LIKE 'static-%'`).run()
+        database.prepare(`DELETE FROM wallpapers WHERE ${fromWatchedFolder}`).run()
       }
     })
     prune()

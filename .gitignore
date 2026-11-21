@@ -44,3 +44,4 @@ resources/icons/icon.png
 
 # Crawl caches
 scripts/.cache/
+.env*

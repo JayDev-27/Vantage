@@ -1,13 +1,20 @@
 import { app } from 'electron'
 import path from 'node:path'
 import fs from 'node:fs'
-import type { WallpaperItem } from '../shared/types'
+import { isHighResolution, type WallpaperItem } from '../shared/types'
 import { addWallpaperToDb, pruneStaticWallpapers, getWallpaperById } from './db'
 import { toMediaUrl } from './mediaUrl'
 import { getMediaDimensions } from './mediaInfo'
 import { INITIAL_WALLPAPERS } from './contentSources'
 
 const IMAGE_EXTS = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.bmp']
+const catalogTitles = new Map(INITIAL_WALLPAPERS.map((item) => [item.id, item.title]))
+const imageDimensions = new Map<string, {
+  mtimeMs: number
+  ctimeMs: number
+  size: number
+  resolution: WallpaperItem['resolution']
+}>()
 
 const SPECIAL_WORDS: Record<string, string> = {
   '2b': '2B',
@@ -24,12 +31,9 @@ const SPECIAL_WORDS: Record<string, string> = {
 
 function formatStaticTitle(base: string): string {
   // 1. Try matching with initial catalog wallpapers
-  const catalogItem = INITIAL_WALLPAPERS.find(
-    (w) => w.id === base || w.id === `motionbgs-${base}` || w.id === `wallpaperx-${base}`
-  )
-  if (catalogItem && catalogItem.title) {
-    return catalogItem.title
-  }
+  const catalogTitle =
+    catalogTitles.get(base) || catalogTitles.get(`motionbgs-${base}`) || catalogTitles.get(`wallpaperx-${base}`)
+  if (catalogTitle) return catalogTitle
 
   // 2. Clean prefix & separators
   let cleaned = base
@@ -50,18 +54,12 @@ function formatStaticTitle(base: string): string {
     .join(' ')
 }
 
-interface ScannedImage {
-  filePath: string
-  name: string
-}
-
 export interface StaticManifest {
   items: WallpaperItem[]
   presentIds: string[]
 }
 
 /** Folders that back the Static Wallpapers catalog:
- *  - the bundled thumbnail preview collection (resources/thumbnails)
  *  - the extracted Wallpaper X `Papers` folder checked out next to the app
  *  - a user drop-in `Static` folder inside the managed Vantage Wallpapers folder
  */
@@ -69,11 +67,6 @@ export function getStaticSourceDirs(): string[] {
   const dirs: string[] = []
 
   const appRoot = app.isPackaged ? process.resourcesPath : app.getAppPath()
-  const bundledThumbs = path.join(appRoot, 'resources', 'thumbnails')
-  if (fs.existsSync(bundledThumbs)) {
-    dirs.push(bundledThumbs)
-  }
-
   const extractedPapers = path.join(appRoot, 'Extracted_Video_Wallpapers', 'Papers')
   if (fs.existsSync(extractedPapers)) {
     dirs.push(extractedPapers)
@@ -100,75 +93,73 @@ export function isStaticSourcePath(filePath: string): boolean {
   )
 }
 
-function scanDir(dir: string): ScannedImage[] {
-  let files: string[]
+async function scanDir(dir: string): Promise<string[]> {
   try {
-    files = fs.readdirSync(dir)
+    const entries = await fs.promises.readdir(dir, { withFileTypes: true })
+    return entries
+      .filter((entry) =>
+        (entry.isFile() || entry.isSymbolicLink()) &&
+        !entry.name.startsWith('.') &&
+        IMAGE_EXTS.includes(path.extname(entry.name).toLowerCase())
+      )
+      .map((entry) => entry.name)
   } catch {
     return []
   }
-
-  return files
-    .filter((f) => !f.startsWith('.'))
-    .filter((f) => IMAGE_EXTS.includes(path.extname(f).toLowerCase()))
-    .map((f) => {
-      const filePath = path.join(dir, f)
-      try {
-        const stat = fs.statSync(filePath, { throwIfNoEntry: false })
-        if (!stat || !stat.isFile()) return null
-        return { filePath, name: f }
-      } catch {
-        return null
-      }
-    })
-    .filter((f): f is ScannedImage => Boolean(f))
 }
 
 /** Scan all static source folders into a manifest of WallpaperItems */
 export async function buildStaticManifest(): Promise<StaticManifest> {
-  const presentIds: string[] = []
-  const seen = new Set<string>()
-
   const tasks: Array<{ filePath: string; id: string; base: string; license: string; attribution: string }> = []
 
-  for (const dir of getStaticSourceDirs()) {
+  const dirs = getStaticSourceDirs()
+  const filesByDir = await Promise.all(dirs.map(scanDir))
+  for (const [index, dir] of dirs.entries()) {
     const { license, attribution } = licenseAndAttribution(dir)
-    for (const entry of scanDir(dir)) {
-      const base = entry.name.replace(/\.[^/.]+$/, '')
-      const safeDir = path.basename(dir).replace(/[^a-zA-Z0-9_-]/g, '_')
+    const safeDir = path.basename(dir).replace(/[^a-zA-Z0-9_-]/g, '_')
+    for (const name of filesByDir[index]) {
+      const base = name.replace(/\.[^/.]+$/, '')
       const safeBase = base.replace(/[^a-zA-Z0-9_-]/g, '_')
       const id = `static-${safeDir}-${safeBase}`
-      if (seen.has(id)) continue
-      seen.add(id)
-      presentIds.push(id)
-      const formattedTitle = formatStaticTitle(base)
-      tasks.push({ filePath: entry.filePath, id, base: formattedTitle, license, attribution })
+      tasks.push({ filePath: path.join(dir, name), id, base, license, attribution })
     }
   }
 
-  const items: WallpaperItem[] = new Array(tasks.length)
+  const scannedPaths = new Set(tasks.map(({ filePath }) => filePath))
+  for (const filePath of imageDimensions.keys()) {
+    if (!scannedPaths.has(filePath)) imageDimensions.delete(filePath)
+  }
+
+  const scannedItems: (WallpaperItem | undefined)[] = new Array(tasks.length)
   const CONCURRENCY = 6
   let cursor = 0
   const workers = Array.from({ length: Math.min(CONCURRENCY, tasks.length) }, async () => {
     while (cursor < tasks.length) {
       const taskIdx = cursor++
       const task = tasks[taskIdx]
-      const existing = getWallpaperById(task.id)
-      // Static tiles represent the image that will actually be shown, not the
-      // source video's advertised resolution. Never label a preview image as
-      // 2K/4K merely because a matching catalog video has that resolution.
-      const dims = existing?.sourceUrl === toMediaUrl(task.filePath)
-        ? existing.resolution
-        : await getMediaDimensions(task.filePath)
+      const stat = await fs.promises.stat(task.filePath).catch(() => null)
+      if (!stat?.isFile()) {
+        imageDimensions.delete(task.filePath)
+        continue
+      }
 
-      items[taskIdx] = {
+      const { mtimeMs, ctimeMs, size } = stat
+      const cached = imageDimensions.get(task.filePath)
+      const resolution = cached && cached.mtimeMs === mtimeMs && cached.ctimeMs === ctimeMs && cached.size === size
+        ? cached.resolution
+        : await getMediaDimensions(task.filePath)
+      imageDimensions.set(task.filePath, { mtimeMs, ctimeMs, size, resolution })
+      if (!isHighResolution(resolution)) continue
+
+      const url = toMediaUrl(task.filePath)
+      scannedItems[taskIdx] = {
         id: task.id,
-        title: task.base,
+        title: formatStaticTitle(task.base),
         category: 'static',
         type: 'image',
-        previewUrl: toMediaUrl(task.filePath),
-        sourceUrl: toMediaUrl(task.filePath),
-        resolution: dims,
+        previewUrl: url,
+        sourceUrl: url,
+        resolution,
         source: 'static',
         license: task.license,
         attribution: task.attribution
@@ -177,16 +168,16 @@ export async function buildStaticManifest(): Promise<StaticManifest> {
   })
   await Promise.all(workers)
 
-  return { items: items.filter((item): item is WallpaperItem => Boolean(item)), presentIds }
+  const items = new Map<string, WallpaperItem>()
+  for (const item of scannedItems) {
+    if (item && !items.has(item.id)) items.set(item.id, item)
+  }
+  return { items: [...items.values()], presentIds: [...items.keys()] }
 }
 
 function licenseAndAttribution(dir: string): { license: string; attribution: string } {
-  const base = path.basename(dir).toLowerCase()
-  if (base === 'thumbnails') {
-    return {
-      license: 'Vantage Bundled Preview Collection',
-      attribution: 'Previews bundled with Vantage (motionBGS catalog)'
-    }
+  if (path.basename(dir).toLowerCase() === 'static') {
+    return { license: 'Local Folder Import', attribution: 'Local File' }
   }
   return {
     license: 'Wallpaper X Extracted Collection',
@@ -210,7 +201,7 @@ function staticWallpaperMatches(existing: WallpaperItem, item: WallpaperItem): b
 }
 
 /** Add new or changed static wallpapers to the DB and prune removed ones */
-export async function syncStaticWallpapers(): Promise<number> {
+export async function syncStaticWallpapers(refreshAssignments: (prune: () => void) => void): Promise<number> {
   const { items, presentIds } = await buildStaticManifest()
   let added = 0
   for (const item of items) {
@@ -225,6 +216,6 @@ export async function syncStaticWallpapers(): Promise<number> {
       addWallpaperToDb(item)
     }
   }
-  pruneStaticWallpapers(presentIds)
+  refreshAssignments(() => pruneStaticWallpapers(presentIds))
   return added
 }

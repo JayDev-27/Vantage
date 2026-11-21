@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { isHighResolution, isVerticalVideo } from '../../../shared/types'
 import type { WallpaperItem, DisplayInfo } from '../../../shared/types'
 export type { WallpaperItem, DisplayInfo }
 
@@ -24,6 +25,7 @@ interface GalleryStore {
   displays: DisplayInfo[]
   selectedDisplayId: number | null
   selectedWallpaper: WallpaperItem | null
+  savingFirstFrames: ReadonlySet<string>
   activeScreen: Screen
   isLoading: boolean
   error: string | null
@@ -43,6 +45,7 @@ interface GalleryStore {
   fetchDisplays: () => Promise<void>
   applyWallpaper: (displayId: number, wallpaperId: string) => Promise<void>
   applyToAllDisplays: (wallpaperId: string) => Promise<void>
+  saveFirstFrame: (wallpaperId: string) => Promise<void>
   shuffle: () => Promise<void>
   toggleFavorite: (wallpaperId: string, currentFav?: boolean) => Promise<void>
   deleteWallpaper: (wallpaperId: string) => Promise<void>
@@ -79,8 +82,8 @@ export function visibleWallpapers(items: WallpaperItem[], format: FormatFilter, 
   let list = items
   if (format === 'video') list = list.filter((i) => i.type === 'video')
   else if (format === 'generative') list = list.filter((i) => i.type === 'generative')
-  else if (format === '4k') list = list.filter((i) => i.resolution.width >= 3840)
-  else if (format === 'vertical') list = list.filter(isPortrait)
+  else if (format === '4k') list = list.filter((i) => is4K(i.resolution))
+  else if (format === 'vertical') list = list.filter(isVerticalVideo)
   if (sort === 'az') list = [...list].sort((a, b) => a.title.localeCompare(b.title))
   else if (sort === 'resolution') list = [...list].sort((a, b) => b.resolution.width * b.resolution.height - a.resolution.width * a.resolution.height)
   return list
@@ -90,8 +93,17 @@ export function visibleWallpapers(items: WallpaperItem[], format: FormatFilter, 
 export const isPortrait = (item: WallpaperItem): boolean => item.resolution.height > item.resolution.width
 export const isPortraitDisplay = (d: DisplayInfo | undefined): boolean => !!d && d.bounds.height > d.bounds.width
 
-export const resolutionLabel = (item: WallpaperItem): string =>
-  item.type === 'generative' ? 'Live' : isPortrait(item) ? `Vertical ${item.resolution.height >= 1920 ? 'FHD' : 'HD'}` : item.resolution.width >= 3840 ? '4K' : item.resolution.width >= 2560 ? '2K' : item.resolution.width >= 1920 ? 'HD' : `${item.resolution.height || 1080}p`
+function is4K({ width, height }: WallpaperItem['resolution']): boolean {
+  return Math.min(width, height) >= 2160 && Math.max(width, height) >= 3840
+}
+
+export function resolutionLabel(item: WallpaperItem): string {
+  if (item.type === 'generative') return 'Live'
+  const { width, height } = item.resolution
+  const shortEdge = Math.min(width, height)
+  const label = is4K(item.resolution) ? '4K' : isHighResolution(item.resolution) ? '2K' : `${shortEdge}p`
+  return isPortrait(item) ? `Vertical ${label}` : label
+}
 
 export const useGalleryStore = create<GalleryStore>((set, get) => ({
   activeCategory: 'all',
@@ -104,6 +116,7 @@ export const useGalleryStore = create<GalleryStore>((set, get) => ({
   displays: [],
   selectedDisplayId: null,
   selectedWallpaper: null,
+  savingFirstFrames: new Set(),
   activeScreen: 'gallery',
   isLoading: false,
   error: null,
@@ -204,6 +217,25 @@ export const useGalleryStore = create<GalleryStore>((set, get) => ({
     }
   },
 
+  saveFirstFrame: async (wallpaperId) => {
+    const api = window.galleryApi
+    if (!api?.saveFirstFrame || get().savingFirstFrames.has(wallpaperId)) return
+
+    set((state) => ({ savingFirstFrames: new Set(state.savingFirstFrames).add(wallpaperId) }))
+    try {
+      await api.saveFirstFrame(wallpaperId)
+      get().toast('First frame saved to Still Images')
+    } catch (error) {
+      get().toast(errorMessage(error, 'Unable to save the first frame.'), 'error')
+    } finally {
+      set((state) => {
+        const savingFirstFrames = new Set(state.savingFirstFrames)
+        savingFirstFrames.delete(wallpaperId)
+        return { savingFirstFrames }
+      })
+    }
+  },
+
   shuffle: async () => {
     const { wallpapers, formatFilter, sortMode, selectedDisplayId, displays } = get()
     const list = visibleWallpapers(wallpapers, formatFilter, sortMode)
@@ -241,7 +273,8 @@ export const useGalleryStore = create<GalleryStore>((set, get) => ({
   deleteWallpaper: async (wallpaperId) => {
     if (!window.galleryApi) return
     try {
-      await window.galleryApi.deleteWallpaper(wallpaperId)
+      const deleted = await window.galleryApi.deleteWallpaper(wallpaperId)
+      if (!deleted) throw new Error('Unable to delete wallpaper.')
       if (get().selectedWallpaper?.id === wallpaperId) set({ selectedWallpaper: null })
       await get().fetchWallpapers(true)
       get().fetchCounts()

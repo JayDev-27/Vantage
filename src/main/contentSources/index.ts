@@ -1,7 +1,7 @@
 import { app } from 'electron'
 import path from 'node:path'
 import fs from 'node:fs'
-import { DEFAULT_WALLPAPER_ID, WallpaperItem } from '../../shared/types'
+import { DEFAULT_WALLPAPER_ID, isHighResolution, WallpaperItem } from '../../shared/types'
 export type { WallpaperItem }
 
 /**
@@ -22,7 +22,7 @@ function fallbackCatalog(): WallpaperItem[] {
       attribution: 'Vantage Team',
       previewUrl: '',
       sourceUrl: 'extracted/v8.mp4',
-      resolution: { width: 1920, height: 1080 },
+      resolution: { width: 2560, height: 1440 },
       duration: 0
     }
   ]
@@ -44,9 +44,7 @@ function isWallpaperItem(value: unknown): value is WallpaperItem {
 }
 
 /**
- * Load the wallpaper catalog from the resources/catalog.json data file instead
- * of inlining 21K lines of data in a TypeScript source file.  The first entry's
- * id is normalised to DEFAULT_WALLPAPER_ID so the constant stays canonical.
+ * Load the wallpaper catalog and verify that the bundled default is usable.
  */
 function loadCatalog(): WallpaperItem[] {
   const catalogPath = app.isPackaged
@@ -65,22 +63,19 @@ function loadCatalog(): WallpaperItem[] {
       console.warn(`[ContentSources] Ignored ${parsed.length - items.length} malformed catalog item(s).`)
     }
 
-    // Ensure the default wallpaper ID stays in sync with the shared constant.
-    // A catalog without a valid default would leave assignments dangling, so use
-    // the minimal known-good catalog instead.
-    const normalized = items.map((item) =>
-      item.id === 'wallpaperx-v8' ? { ...item, id: DEFAULT_WALLPAPER_ID } : item
-    )
-    if (!normalized.some((item) => item.id === DEFAULT_WALLPAPER_ID)) {
+    if (!items.some((item) => item.id === DEFAULT_WALLPAPER_ID && isHighResolution(item.resolution))) {
       console.error('[ContentSources] catalog.json has no valid default wallpaper.')
       return fallbackCatalog()
     }
 
-    return normalized
+    return items
   } catch (err) {
     console.error('[ContentSources] Failed to load catalog.json:', err)
     return fallbackCatalog()
   }
 }
 
-export const INITIAL_WALLPAPERS: WallpaperItem[] = loadCatalog()
+export const CATALOG_WALLPAPERS = loadCatalog()
+export const INITIAL_WALLPAPERS = CATALOG_WALLPAPERS.filter(
+  (item) => item.type === 'generative' || isHighResolution(item.resolution)
+)

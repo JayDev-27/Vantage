@@ -6,6 +6,7 @@ declare global {
       getWallpapers: (category?: string, query?: string) => Promise<WallpaperItem[]>
       getCategoryCounts: () => Promise<Record<string, number>>
       applyToDisplay: (displayId: number, wallpaperId: string) => Promise<boolean>
+      saveFirstFrame?: (wallpaperId: string) => Promise<void>
       toggleFavorite: (wallpaperId: string, isFavorite: boolean) => Promise<boolean>
       deleteWallpaper: (wallpaperId: string) => Promise<boolean>
       getDisplays: () => Promise<DisplayInfo[]>

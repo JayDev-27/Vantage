@@ -185,7 +185,8 @@ export const App: React.FC = () => {
 
             <nav aria-label="Library" className="space-y-0.5">
               <div className="px-2.5 pb-1.5 text-[10px] font-medium uppercase tracking-[0.12em] text-ink-faint">Library</div>
-              {LIBRARY.map(navItem)}
+              {/* Hide the Vertical collection when the library has none (e.g. under the 1440px quality floor). */}
+              {LIBRARY.filter((c) => c.id !== 'portrait' || (counts.portrait ?? 0) > 0).map(navItem)}
             </nav>
 
             <nav aria-label="Categories" className="space-y-0.5">
