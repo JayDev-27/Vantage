@@ -4,7 +4,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import crypto from 'node:crypto'
 import { promisify } from 'node:util'
-import { getDisplayAssignment, getWallpaperById } from './db'
+import { getDisplayAssignment, getSavedFirstFrame, getWallpaperById } from './db'
 import { getCachedFilePath, isAllowedRemoteMediaUrl } from './videoCache'
 import { DEFAULT_WALLPAPER_ID, WallpaperItem } from '../shared/types'
 import { fromMediaUrl } from './mediaUrl'
@@ -108,11 +108,15 @@ function getScreenSaverAssetDir(): string {
 }
 
 async function ensureLocalThumbnail(wallpaper: WallpaperItem): Promise<string | null> {
-  const previewPath = localPathFromMediaUrl(wallpaper.previewUrl)
-  if (previewPath) return previewPath
-
   const sourcePath = localPathFromMediaUrl(wallpaper.sourceUrl)
   if (sourcePath && !isVideoPath(sourcePath)) return sourcePath
+
+  const firstFrame = getSavedFirstFrame(wallpaper.id)
+  const framePath = firstFrame && localPathFromMediaUrl(firstFrame.still.sourceUrl)
+  if (framePath && fs.existsSync(framePath)) return framePath
+
+  const previewPath = localPathFromMediaUrl(wallpaper.previewUrl)
+  if (previewPath) return previewPath
 
   if (typeof wallpaper.previewUrl === 'string' && /^https?:\/\//i.test(wallpaper.previewUrl)) {
     if (!isAllowedRemoteMediaUrl(wallpaper.previewUrl)) {
@@ -305,7 +309,9 @@ async function syncLockScreenAndSystemWallpaper(): Promise<void> {
 
   let highResFramePath: string | null = null
   if (videoPath) {
-    highResFramePath = await getHighResVideoFrame(videoPath)
+    const savedFrame = getSavedFirstFrame(wallpaper.id)
+    const savedPath = savedFrame && localPathFromMediaUrl(savedFrame.still.sourceUrl)
+    highResFramePath = savedPath && fs.existsSync(savedPath) ? savedPath : await getHighResVideoFrame(videoPath)
   }
 
   const systemWallpaperPath = highResFramePath || thumbnailPath

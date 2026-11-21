@@ -7,6 +7,7 @@ contextBridge.exposeInMainWorld('galleryApi', {
   getCategoryCounts: () => ipcRenderer.invoke('wallpaper:counts'),
   applyToDisplay: (displayId: number, wallpaperId: string) =>
     ipcRenderer.invoke('wallpaper:apply-to-display', { displayId, wallpaperId }),
+  saveFirstFrame: (wallpaperId: string) => ipcRenderer.invoke('wallpaper:save-first-frame', wallpaperId),
   toggleFavorite: (wallpaperId: string, isFavorite: boolean) =>
     ipcRenderer.invoke('wallpaper:favorite', { wallpaperId, isFavorite }),
   deleteWallpaper: (wallpaperId: string) =>

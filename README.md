@@ -11,63 +11,84 @@
 <p><i>Your desktop, alive.</i></p>
 
 <p>
-  <b>Free, open-source live wallpapers.</b> 13,000+ motion wallpapers — including 3,300+ vertical ones for rotated monitors — procedural GPU scenes, every display — without slowing your machine down.
+  <b>Free, open-source live wallpapers for macOS and Windows.</b><br />
+  7,300+ 2K &amp; 4K motion wallpapers, live GPU scenes, every display — without slowing your machine down.
 </p>
 
 <p>
   <a href="https://github.com/JayDev-27/Vantage/releases/latest"><img src="https://img.shields.io/github/v/release/JayDev-27/Vantage?style=flat-square&label=release&color=111214" alt="Latest release" /></a>
   <a href="https://github.com/JayDev-27/Vantage/releases"><img src="https://img.shields.io/github/downloads/JayDev-27/Vantage/total?style=flat-square&color=111214" alt="Total downloads" /></a>
-  <img src="https://img.shields.io/badge/platform-macOS%20%7C%20Windows%20(beta)-111214?style=flat-square" alt="Platforms: macOS and Windows (beta)" />
+  <img src="https://img.shields.io/badge/platform-macOS%20%7C%20Windows-111214?style=flat-square" alt="Platforms: macOS and Windows" />
+  <a href="https://github.com/JayDev-27/Vantage/actions/workflows/smoke.yml"><img src="https://img.shields.io/github/actions/workflow/status/JayDev-27/Vantage/smoke.yml?branch=main&style=flat-square&label=smoke%20tests&color=111214" alt="Smoke tests" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/github/license/JayDev-27/Vantage?style=flat-square&color=111214" alt="MIT license" /></a>
-  <a href="https://github.com/JayDev-27/Vantage/stargazers"><img src="https://img.shields.io/github/stars/JayDev-27/Vantage?style=flat-square&color=111214" alt="GitHub stars" /></a>
 </p>
 
 <p>
   <a href="https://vantage-wallpapers.vercel.app"><b>Website</b></a> ·
   <a href="https://github.com/JayDev-27/Vantage/releases/latest"><b>Download</b></a> ·
+  <a href="#-whats-new-in-13">What's new</a> ·
   <a href="#-features">Features</a> ·
-  <a href="#-generative-wallpapers">Generative</a> ·
   <a href="#%EF%B8%8F-build-from-source">Build</a> ·
   <a href="#-contributors">Contributors</a>
 </p>
 
-<img src="assets/screenshots/app-discover.jpg" alt="Vantage gallery: Now Playing banner showing the live wallpaper, sidebar with displays and categories, and a grid of wallpapers" width="100%" />
+<img src="assets/screenshots/app-discover.jpg" alt="Vantage gallery: Now Playing banner, sidebar with displays and categories, and a grid of 2K and 4K wallpapers led by Link Click" width="100%" />
 
 </div>
 
 ---
 
+## 📑 Contents
+
+- [What's new in 1.3](#-whats-new-in-13)
+- [Why Vantage](#-why-vantage)
+- [Features](#-features)
+- [Download & first launch](#-download--first-launch)
+- [The website](#-the-website)
+- [Build from source](#%EF%B8%8F-build-from-source)
+- [How it works](#%EF%B8%8F-how-it-works)
+- [Testing](#-testing)
+- [Roadmap](#%EF%B8%8F-roadmap) · [Contributors](#-contributors) · [License](#-license)
+
+## 🆕 What's new in 1.3
+
+- **2K & 4K only:** the library now ships only wallpapers at least 1440 px on both edges — 7,300+ sharp wallpapers instead of 13,000 mixed ones.
+- **New bundled wallpapers:** *Lu Guang × Cheng Xiaoshi (Link Click)* and *Raphtalia — The Rising of the Shield Hero*, in 4K, available offline.
+- **Save first frame:** turn any 2K/4K video wallpaper into a full-quality still with one click; stills share a lightweight thumbnail and can be deleted and restored.
+- **Faster, lighter library:** dimensions and thumbnails are read from the videos themselves instead of external tools, and catalog syncing is cached.
+- Everything from 1.2: Windows desktop attach fix, macOS full-screen fix, MotionBGS library with categories from its own tags.
+
 ## ✨ Why Vantage
 
-- 🖥️ **Every display, its own world** — assign a different wallpaper to each monitor; hot-plug a screen and Vantage picks up where it left off.
-- ⚡ **4K that sips power** — videos stream straight from disk with HTTP range requests, and Vantage drops to battery-saver cadence the moment you unplug.
-- 🌌 **Generative scenes** — 8 GPU shader wallpapers render live and react to your cursor. Nothing to download, and they never loop.
-- 📂 **Bring your own** — import MP4, MOV, WebM, PNG, JPG or WebP, or drop files into a watched folder and they appear instantly.
-- 🎛️ **Out of your way** — lives in the menu bar and the Dock (hide the Dock icon any time), pause or swap from the tray, ⌘K to search 13,000+ wallpapers.
+- 🖥️ **Every display, its own world** — a different wallpaper per monitor; hot-plug a screen and Vantage picks up where it left off.
+- ⚡ **4K that sips power** — videos stream from disk with HTTP range requests, and Vantage drops to battery-saver cadence when you unplug.
+- 🌌 **Generative scenes** — 8 GPU shader wallpapers render live and react to your cursor. Nothing to download, never loops.
+- 📂 **Bring your own** — import MP4, MOV, WebM, PNG, JPG or WebP, or drop files into a watched folder.
+- 🎛️ **Out of your way** — menu bar + Dock (hide the Dock icon any time), ⌘K search, Shuffle.
 - 🔓 **Free & open source** — MIT licensed, no account, no tracking.
 
 <div align="center">
-  <img src="assets/media/app-tour.gif" alt="Animated tour: hovering wallpaper tiles plays previews, opening a detail view, browsing with arrow keys, then switching to Generative scenes" width="90%" />
+  <img src="assets/media/app-tour.gif" alt="Animated tour: hovering wallpaper tiles plays previews, opening a detail view, browsing with arrow keys, then Generative scenes" width="90%" />
 </div>
 
 ## 📸 Features
 
 <table>
   <tr>
-    <td width="50%"><img src="assets/screenshots/app-generative.jpg" alt="Generative category with live shader previews: Aurora Veil, Ink Nebula, Iris Bloom, Lava Lamp, Liquid Chrome" /></td>
-    <td width="50%"><img src="assets/screenshots/app-detail.jpg" alt="Detail view of Blue Moonlight Lake with 4K resolution, loop length, source, license, and per-display Set buttons" /></td>
+    <td width="50%"><img src="assets/screenshots/app-detail.jpg" alt="Detail view of the Link Click wallpaper in 4K with a Save first frame button and per-display Set controls" /></td>
+    <td width="50%"><img src="assets/screenshots/app-generative.jpg" alt="Generative category with live shader previews" /></td>
   </tr>
   <tr>
+    <td align="center"><b>Detail &amp; apply</b><br /><sub>4K preview, source and license, per-display Set, Save first frame. ← → to browse.</sub></td>
     <td align="center"><b>Generative canvases</b><br /><sub>Procedural scenes rendered on your GPU, previewed live in the grid.</sub></td>
-    <td align="center"><b>Detail &amp; apply</b><br /><sub>Streaming preview, source and license, set per display. ← → to browse.</sub></td>
   </tr>
   <tr>
     <td width="50%"><img src="assets/screenshots/desktop-iris-bloom.jpg" alt="Iris Bloom shader running as the actual desktop wallpaper" /></td>
-    <td width="50%"><img src="assets/screenshots/app-preferences.jpg" alt="Preferences: launch at login, show in Dock, lock screen saver, per-display energy modes, cache storage" /></td>
+    <td width="50%"><img src="assets/screenshots/app-preferences.jpg" alt="Preferences: launch at login, show in Dock, screen saver, per-display energy modes, storage" /></td>
   </tr>
   <tr>
     <td align="center"><b>On your actual desktop</b><br /><sub>Iris Bloom running live behind your icons.</sub></td>
-    <td align="center"><b>Preferences</b><br /><sub>Energy mode per display, Dock &amp; login options, cache control.</sub></td>
+    <td align="center"><b>Preferences</b><br /><sub>Energy mode per display, Dock &amp; login, cache control.</sub></td>
   </tr>
 </table>
 
@@ -76,72 +97,54 @@
 
 | | |
 |:--|:--|
-| **Library** | 13,000+ wallpapers (3,300+ vertical) across Anime, Gaming, Heroes &amp; Comics, Nature, Space, Cars &amp; Streets, Digital Art, Generative and your own Still Images |
-| **Gallery** | Now Playing banner with Shuffle, live display cards, category counts, ⌘K search, sort by featured / A–Z / resolution, two grid densities, hover-to-preview, one-click **Set**, favorites |
+| **Library** | 7,300+ 2K/4K wallpapers across Anime, Gaming, Heroes &amp; Comics, Nature, Space, Cars &amp; Streets, Digital Art and Generative, plus your own imports and stills |
+| **Gallery** | Now Playing with Shuffle, display cards, category counts, ⌘K search, sort, two grid sizes, hover-to-preview, one-click **Set**, favorites |
+| **Stills** | Save the first frame of any 2K/4K video as a full-quality still wallpaper |
 | **Multi-monitor** | Independent wallpaper and energy mode per display, apply to all, hot-plug aware |
-| **Energy** | Quality (60 fps), Balanced (30 fps), Battery (15 fps); shaders also lower their render resolution; automatic battery-saver when unplugged |
-| **Streaming** | Custom `media://` protocol with HTTP 206 range requests; downloaded wallpapers cached on disk with a configurable limit |
-| **Imports** | File picker (⌘O) or the watched `~/Pictures/Vantage Wallpapers/` folder (videos) and its `Static/` subfolder (images) |
-| **macOS** | Desktop-level windows behind your icons, menu bar + Dock (toggle the Dock icon from the menu bar), native Screen Saver companion for the Lock Screen |
-| **Windows (beta)** | Wallpaper attached behind desktop icons via WorkerW, tray menu, NSIS installer |
+| **Energy** | Quality (60 fps), Balanced (30 fps), Battery (15 fps); shaders lower their render resolution too; automatic saver on battery |
+| **Streaming** | `media://local/` protocol with HTTP 206 range requests; downloads cached on disk with a configurable limit |
+| **Imports** | ⌘O, or drop files into `~/Pictures/Vantage Wallpapers/` (videos) and its `Static/` folder (images) |
+| **macOS** | Behind your icons, never over full-screen apps; menu bar + Dock; native Screen Saver companion |
+| **Windows** | Behind your desktop icons via WorkerW; tray menu; NSIS installer |
 
 </details>
 
-## 🌌 Generative wallpapers
-
-Rendered in real time by GLSL shaders (`src/renderer/shared/shaders.ts`). They follow your cursor and scale their resolution with the energy mode.
+### 🌌 Generative wallpapers
 
 | | | | |
 |:--:|:--:|:--:|:--:|
 | **Iris Bloom** | **Liquid Chrome** | **Silk Waves** | **Neon Horizon** |
-| Aperture kaleidoscope | Domain-warped metal | Layered pastel bands | Synthwave sun &amp; grid |
 | **Ink Nebula** | **Warp Drive** | **Aurora Veil** | **Lava Lamp** |
-| Drifting clouds &amp; stars | Light-speed streaks | Northern lights | Metaballs that chase the cursor |
 
-Plus three classic canvas scenes: **Quantum Field**, **Aurora Flow** and **Nebula Drift**.
+Plus **Quantum Field**, **Aurora Flow** and **Nebula Drift**. Rendered by GLSL shaders in [`src/renderer/shared/shaders.ts`](src/renderer/shared/shaders.ts).
 
-<div align="center">
-  <img src="assets/screenshots/desktop-neon-horizon.jpg" alt="Neon Horizon synthwave shader running as the desktop wallpaper" width="80%" />
-</div>
+## 📥 Download & first launch
 
-## 📥 Download
-
-| Platform | Get it | Notes |
+| Platform | File | |
 |:--|:--|:--|
-| 🍏 **macOS** (Apple Silicon &amp; Intel) | [Latest release](https://github.com/JayDev-27/Vantage/releases/latest) | Open the `.dmg` and drag Vantage to Applications |
-| 🪟 **Windows 10/11** (beta) | [Latest release](https://github.com/JayDev-27/Vantage/releases/latest) | Run `Vantage-Setup-…-x64.exe` (or `-arm64.exe`). The installer isn't code-signed yet, so SmartScreen may ask you to confirm |
+| 🍏 macOS · Apple Silicon (M1–M5) | `Vantage-1.3.0-arm64.dmg` | [Latest release](https://github.com/JayDev-27/Vantage/releases/latest) |
+| 🍏 macOS · Intel | `Vantage-1.3.0-x64.dmg` | [Latest release](https://github.com/JayDev-27/Vantage/releases/latest) |
+| 🪟 Windows 10/11 · x64 | `Vantage-Setup-1.3.0-x64.exe` | [Latest release](https://github.com/JayDev-27/Vantage/releases/latest) |
+| 🪟 Windows 11 · ARM | `Vantage-Setup-1.3.0-arm64.exe` | [Latest release](https://github.com/JayDev-27/Vantage/releases/latest) |
+
+Or visit **[vantage-wallpapers.vercel.app](https://vantage-wallpapers.vercel.app)** — the download button picks the right file for your computer.
 
 > [!NOTE]
-> **First launch on a Mac:** Vantage isn't notarized by Apple yet. If macOS says it can't verify the app, open **System Settings → Privacy & Security**, scroll down and click **Open Anyway**. Use the **Apple Silicon** `.dmg` on M-series Macs and the **Intel** one on older Macs.
+> **Mac:** Vantage isn't notarized by Apple yet. If macOS says it can't verify the app, open **System Settings → Privacy & Security** and click **Open Anyway**.
 >
-> **Windows:** the installer isn't code-signed yet; if SmartScreen appears, choose **More info → Run anyway**.
-
-Or visit **[vantage-wallpapers.vercel.app](https://vantage-wallpapers.vercel.app)** — the download button picks the right file for your Mac.
+> **Windows:** the installer isn't code-signed yet; on SmartScreen choose **More info → Run anyway**.
 
 ## 🌐 The website
 
-The landing page lives in [`website/`](website/README.md): a Three.js / WebGL scroll experience. A 3D monitor plays a wallpaper, the camera dives into the screen, the Vantage aperture falls through a tunnel lined with real wallpapers, and you land on the download.
+The landing page in [`website/`](website/README.md) is a Three.js / WebGL scroll experience: a 3D monitor plays a wallpaper, the camera dives into the screen, a glass window of live wallpapers falls through a tunnel, and you land on the download.
 
 <div align="center">
-  <a href="https://vantage-wallpapers.vercel.app"><img src="assets/media/website-dive.gif" alt="Scrolling through the website's dive: monitor, aperture in the void, text spreading apart, the wallpaper tunnel, and the download scene" width="90%" /></a>
-  <br />
-  <sub><a href="assets/media/website-dive.mp4">Watch in higher quality (MP4)</a></sub>
+  <a href="https://vantage-wallpapers.vercel.app"><img src="assets/media/website-dive.gif" alt="Scrolling through the website's dive sequence" width="90%" /></a>
 </div>
-
-<table>
-  <tr>
-    <td width="50%"><img src="assets/screenshots/website-hero.jpg" alt="Website hero: 'Your desktop, wide awake.' over glossy 3D shapes that scatter from the cursor" /></td>
-    <td width="50%"><img src="assets/screenshots/website-dive-tunnel.jpg" alt="Website dive: the aperture falling through a tunnel of wallpaper panes and light streaks" /></td>
-  </tr>
-  <tr>
-    <td width="50%"><img src="assets/screenshots/website-library.jpg" alt="Website library section with two velocity-reactive marquees of wallpaper thumbnails" /></td>
-    <td width="50%"><img src="assets/screenshots/website-download.jpg" alt="Website download scene: 'Make it move.' with wallpaper cards orbiting the aperture and macOS / Windows buttons" /></td>
-  </tr>
-</table>
 
 ## 🛠️ Build from source
 
-**Requirements:** Node.js 20.19+ and npm. Building the macOS Screen Saver companion needs Xcode command-line tools.
+**Requirements:** Node.js 20.19+ and npm. The macOS Screen Saver companion needs Xcode command-line tools.
 
 ```bash
 git clone https://github.com/JayDev-27/Vantage.git
@@ -157,13 +160,14 @@ npm run dev
 |:--|:--|
 | `npm run dev` | Run the app with hot reload |
 | `npm run typecheck` | TypeScript check across main, preload and renderer |
-| `npm run preview:ui` | Preview the gallery UI in a browser with a mocked API — no Electron needed (`http://localhost:5181/gallery.html`) |
-| `npm run audit:catalog` | Report category mistakes, duplicates and missing files in the wallpaper catalog (`--write` fixes, `--links` checks every URL) |
-| `npm run dist:mac` | Build `.dmg` + `.zip` for Apple Silicon and Intel |
-| `npm run dist:win` | Build the NSIS installer for Windows x64 / arm64 (run on Windows or CI) |
+| `npm run preview:ui` | Gallery UI in a browser with a mocked API (`http://localhost:5181/gallery.html`) |
+| `npm run audit:catalog` | Check the catalog for category mistakes, duplicates and missing files |
+| `node scripts/import-motionbgs.mjs` | Refresh the MotionBGS part of the catalog (`--write` to save) |
+| `node scripts/smoke-test.mjs <app>` | Launch a built app as a fresh install and verify it (see [Testing](#-testing)) |
+| `npm run dist:mac` / `npm run dist:win` | Build installers |
 | `npm --prefix website run dev` | Run the website locally |
 
-Pushing a `v*` tag runs [`.github/workflows/release.yml`](.github/workflows/release.yml), which builds macOS and Windows installers and attaches them to a draft release.
+Pushing a `v*` tag runs [`release.yml`](.github/workflows/release.yml), which builds macOS and Windows installers into a draft release.
 
 </details>
 
@@ -173,14 +177,13 @@ Pushing a `v*` tag runs [`.github/workflows/release.yml`](.github/workflows/rele
 flowchart LR
   subgraph Main["Electron main process"]
     DB[(SQLite catalog)]
-    MP["media:// range streaming"]
+    MP["media://local range streaming"]
+    FF[First-frame stills]
     PW[Power &amp; display observer]
-    TR[Tray &amp; Dock]
   end
   subgraph Wall["Wallpaper window — behind desktop icons"]
     V[Video layer]
     S[GPU shader layer]
-    C[Canvas layer]
   end
   subgraph Gal["Gallery window — React + Tailwind"]
     G[Browse · search · apply]
@@ -190,49 +193,35 @@ flowchart LR
   MP --> V
 ```
 
-<details>
-<summary><b>Tech stack &amp; folder structure</b></summary>
+**Stack:** Electron 43 · React 18 · TypeScript · Tailwind CSS · electron-vite · better-sqlite3 · koffi (Windows) · Three.js + Lenis (website)
 
-**Stack:** Electron 43 · React 18 · TypeScript · Tailwind CSS · Vite (`electron-vite`) · better-sqlite3 · Lucide icons · koffi (Windows desktop attach) · Three.js + Lenis (website)
+## 🧪 Testing
 
-```
-Vantage/
-├── src/
-│   ├── main/            # Electron main: DB, IPC, tray, dock, power, wallpaper windows
-│   │   └── platform/    # Windows desktop attach (WorkerW)
-│   ├── preload/         # Context bridges
-│   └── renderer/
-│       ├── gallery/     # Gallery UI (screens, components, store)
-│       ├── wallpaper/   # Video, shader and canvas wallpaper layers
-│       └── shared/      # GLSL shader library
-├── resources/           # Catalog, bundled wallpapers, thumbnails, icons
-├── native/              # macOS Screen Saver companion (Swift)
-├── scripts/             # Icon, screen saver and catalog tooling
-└── website/             # Landing page (Vite + Three.js)
-```
-
-</details>
+Every pull request and release runs [`smoke.yml`](.github/workflows/smoke.yml): the app is built and launched as a **fresh install on clean macOS and Windows machines**, then checked over DevTools — gallery opens, catalog loads, tiles render, first-frame stills save and restore, every display gets a playing wallpaper, it sits behind the desktop icons on Windows, and the log has no fatal errors.
 
 ## 🗺️ Roadmap
 
-- [x] Redesigned gallery with Now Playing, Shuffle and ⌘K search
+- [x] Redesigned gallery, Shuffle, ⌘K search
 - [x] GPU shader wallpapers
-- [x] Catalog audit and recategorization
-- [x] Landing page with download links that resolve the latest release
-- [x] First Windows release (beta)
+- [x] Windows support with desktop attach
+- [x] Sandbox smoke tests on macOS and Windows
+- [x] 2K/4K-only library and first-frame stills
 - [ ] Developer ID signing and notarization for macOS
+- [ ] Code signing for Windows
 - [ ] Playlists and timed rotation
-- [ ] More procedural scenes
 
 ## 🤝 Contributors
 
 <table>
   <tr>
     <td align="center" width="140">
-      <a href="https://github.com/JayDev-27"><img src="https://github.com/JayDev-27.png?size=120" width="72" alt="JayDev-27" style="border-radius:50%" /><br /><sub><b>JayDev-27</b></sub></a><br /><sub>Creator &amp; maintainer</sub>
+      <a href="https://github.com/JayDev-27"><img src="https://avatars.githubusercontent.com/u/279688498?v=4&s=120" width="72" alt="JayDev-27" style="border-radius:50%" /><br /><sub><b>JayDev-27</b></sub></a><br /><sub>Creator &amp; maintainer</sub>
     </td>
     <td align="center" width="140">
-      <a href="https://github.com/Mxhi-04"><img src="https://avatars.githubusercontent.com/u/249584456?v=4&s=120" width="72" alt="Mxhi-04" style="border-radius:50%" /><br /><sub><b>Mahi Patni</b></sub></a><br /><sub><a href="https://github.com/Mxhi-04">@Mxhi-04</a></sub>
+      <a href="https://github.com/Arxana04"><img src="https://avatars.githubusercontent.com/u/359067292?v=4&s=120" width="72" alt="Arxana04" style="border-radius:50%" /><br /><sub><b>Arxana04</b></sub></a><br /><sub>Contributor</sub>
+    </td>
+    <td align="center" width="140">
+      <a href="https://github.com/Mxhi-04"><img src="https://avatars.githubusercontent.com/u/249584456?v=4&s=120" width="72" alt="Mxhi-04" style="border-radius:50%" /><br /><sub><b>Mahi Patni</b></sub></a><br /><sub>Contributor</sub>
     </td>
   </tr>
 </table>
@@ -241,7 +230,7 @@ Contributions are welcome — open an [issue](https://github.com/JayDev-27/Vanta
 
 ## 🙏 Acknowledgements
 
-- Most of the streamed video catalog comes from [MotionBGS](https://motionbgs.com). Wallpaper artwork belongs to its original creators and rights holders.
+- Most of the streamed catalog comes from [MotionBGS](https://motionbgs.com); some bundled wallpapers come from [MoeWalls](https://moewalls.com). Artwork belongs to its original creators and rights holders.
 - Built with [Electron](https://www.electronjs.org/), [React](https://react.dev/), [Tailwind CSS](https://tailwindcss.com/), [Three.js](https://threejs.org/) and [Lenis](https://lenis.darkroom.engineering/).
 
 ## 📄 License
@@ -250,5 +239,5 @@ Contributions are welcome — open an [issue](https://github.com/JayDev-27/Vanta
 
 <div align="center">
   <br />
-  <sub>If Vantage made your desktop a little more alive, consider giving it a ⭐ · <a href="#top">Back to top ↑</a></sub>
+  <sub>If Vantage made your desktop a little more alive, give it a ⭐ · <a href="#top">Back to top ↑</a></sub>
 </div>

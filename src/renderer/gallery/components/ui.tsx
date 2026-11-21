@@ -60,10 +60,10 @@ interface MediaThumbProps {
 
 /** Tile/hero artwork: lazy still image, hover-to-play video, or procedural preview. */
 export const MediaThumb: React.FC<MediaThumbProps> = ({ item, active = false, className = 'relative' }) => {
-  const [imgError, setImgError] = useState(false)
-  const [imgLoaded, setImgLoaded] = useState(false)
-  const [videoError, setVideoError] = useState(false)
-  const canPlayVideo = item.type === 'video' && !videoError && !/^https?:\/\//i.test(item.sourceUrl)
+  const [loadedImage, setLoadedImage] = useState<string | null>(null)
+  const [failedImage, setFailedImage] = useState<string | null>(null)
+  const [failedVideo, setFailedVideo] = useState<string | null>(null)
+  const canPlayVideo = item.type === 'video' && failedVideo !== item.sourceUrl && !/^https?:\/\//i.test(item.sourceUrl)
 
   if (item.type === 'generative') {
     return (
@@ -77,10 +77,14 @@ export const MediaThumb: React.FC<MediaThumbProps> = ({ item, active = false, cl
     )
   }
 
-  const src = item.previewUrl || item.sourceUrl
+  const src = item.type === 'video'
+    ? (item.previewUrl === item.sourceUrl ? '' : item.previewUrl)
+    : item.previewUrl || item.sourceUrl
+  const imgLoaded = loadedImage === src
+  const imgError = failedImage === src
   return (
     <div className={`overflow-hidden bg-panel ${className}`}>
-      {!imgLoaded && !imgError && <div className="absolute inset-0 skeleton" />}
+      {src && !imgLoaded && !imgError && <div className="absolute inset-0 skeleton" />}
       {imgError || !src ? (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 bg-gradient-to-br from-panel to-void">
           <ApertureIrisIcon className="h-7 w-7 text-glow/50" />
@@ -88,24 +92,26 @@ export const MediaThumb: React.FC<MediaThumbProps> = ({ item, active = false, cl
         </div>
       ) : (
         <img
+          key={src}
           src={src}
           alt=""
           loading="lazy"
           decoding="async"
-          onLoad={() => setImgLoaded(true)}
-          onError={() => setImgError(true)}
+          onLoad={() => setLoadedImage(src)}
+          onError={() => setFailedImage(src)}
           className={`absolute inset-0 h-full w-full object-cover transition duration-700 ${imgLoaded ? 'opacity-100' : 'opacity-0'} ${active ? 'scale-[1.06]' : 'scale-100'}`}
         />
       )}
       {active && canPlayVideo && (
         <video
+          key={item.sourceUrl}
           src={item.sourceUrl}
           autoPlay
           loop
           muted
           playsInline
           preload="metadata"
-          onError={() => setVideoError(true)}
+          onError={() => setFailedVideo(item.sourceUrl)}
           className="absolute inset-0 h-full w-full object-cover animate-fade-in"
         />
       )}

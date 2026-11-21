@@ -3,7 +3,8 @@ import { useGalleryStore, WallpaperItem, resolutionLabel } from '../store/useGal
 import { ApertureIrisIcon } from '../components/ApertureIrisIcon'
 import { MediaThumb } from '../components/ui'
 import { GenerativeIcon } from '../components/GenerativeIcon'
-import { X, Heart, Monitor, Check, Trash2, Layers, ChevronLeft, ChevronRight } from 'lucide-react'
+import { X, Heart, Monitor, Check, Trash2, Layers, ChevronLeft, ChevronRight, ImagePlus } from 'lucide-react'
+import { isHighResolution } from '../../../shared/types'
 
 interface ItemDetailProps {
   item: WallpaperItem
@@ -11,9 +12,13 @@ interface ItemDetailProps {
 }
 
 export const ItemDetail: React.FC<ItemDetailProps> = ({ item, onClose }) => {
-  const { displays, applyWallpaper, applyToAllDisplays, toggleFavorite, deleteWallpaper, stepSelected, activeCategory } = useGalleryStore()
+  const { displays, applyWallpaper, applyToAllDisplays, saveFirstFrame, savingFirstFrames, toggleFavorite, deleteWallpaper, stepSelected, activeCategory } = useGalleryStore()
   const isUserItem = item.source === 'user' || item.id.startsWith('user-')
+  const isGeneratedStill = item.type === 'image' && item.id.startsWith('static-frame-')
+  const canDelete = isGeneratedStill || (activeCategory === 'imported' && isUserItem)
   const isAllAssigned = displays.length > 0 && displays.every((d) => d.assignedWallpaperId === item.id)
+  const canSaveStill = item.type === 'video' && isHighResolution(item.resolution) && Boolean(window.galleryApi?.saveFirstFrame)
+  const isSavingStill = savingFirstFrames.has(item.id)
   const [buffering, setBuffering] = useState(item.type === 'video')
   const [videoFailed, setVideoFailed] = useState(false)
   const dialogRef = useRef<HTMLDivElement>(null)
@@ -116,13 +121,11 @@ export const ItemDetail: React.FC<ItemDetailProps> = ({ item, onClose }) => {
                 <h2 id="wallpaper-detail-title" className="text-[24px] font-semibold leading-tight tracking-tight text-ink">{item.title}</h2>
               </div>
               <div className="flex shrink-0 items-center gap-1.5">
-                {activeCategory === 'imported' && isUserItem && (
+                {canDelete && (
                   <button
-                    onClick={() => {
-                      deleteWallpaper(item.id)
-                      onClose()
-                    }}
-                    aria-label="Delete wallpaper"
+                    type="button"
+                    onClick={() => deleteWallpaper(item.id)}
+                    aria-label={isGeneratedStill ? 'Remove still image' : 'Delete wallpaper'}
                     className="grid h-9 w-9 place-items-center rounded-xl text-ink-dim ring-1 ring-line transition hover:bg-ember/10 hover:text-ember hover:ring-ember/30"
                   >
                     <Trash2 className="h-4 w-4" />
@@ -189,6 +192,17 @@ export const ItemDetail: React.FC<ItemDetailProps> = ({ item, onClose }) => {
                 )
               })}
             </div>
+            {canSaveStill && (
+              <button
+                type="button"
+                className="btn-ghost mt-3"
+                disabled={isSavingStill}
+                onClick={() => saveFirstFrame(item.id)}
+              >
+                {isSavingStill ? <ApertureIrisIcon className="h-4 w-4 animate-spin" /> : <ImagePlus className="h-4 w-4" />}
+                {isSavingStill ? 'Saving first frame…' : 'Save first frame'}
+              </button>
+            )}
           </div>
         </div>
       </div>

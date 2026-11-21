@@ -16,6 +16,38 @@
   "attribution": "Extracted from Wallpaper X (user-owned)"
  },
  {
+  "id": "shield-hero-raphtalia-comet",
+  "title": "Raphtalia Under the Comet (The Rising of the Shield Hero)",
+  "category": "anime",
+  "type": "video",
+  "previewUrl": "resources/thumbnails/shield-hero-raphtalia-comet.jpg",
+  "sourceUrl": "extracted/shield-hero-raphtalia-comet.mp4",
+  "resolution": {
+   "width": 3840,
+   "height": 2160
+  },
+  "duration": 9.51,
+  "source": "local",
+  "license": "Free wallpaper download",
+  "attribution": "Artwork by TofuMang · animation via LiveWallpapers4Free"
+ },
+ {
+  "id": "link-click-time-photo-studio",
+  "title": "Lu Guang × Cheng Xiaoshi (Link Click)",
+  "category": "anime",
+  "type": "video",
+  "previewUrl": "resources/thumbnails/link-click-lu-guang-cheng-xiaoshi.jpg",
+  "sourceUrl": "extracted/link-click-lu-guang-cheng-xiaoshi.mp4",
+  "resolution": {
+   "width": 3840,
+   "height": 2160
+  },
+  "duration": 28.33,
+  "source": "local",
+  "license": "Free wallpaper download",
+  "attribution": "MoeWalls"
+ },
+ {
   "id": "wallpaperx-v295",
   "title": "Cozy Gaming Room",
   "category": "anime",
@@ -18658,7 +18690,7 @@
  {
   "id": "motionbgs-child-of-the-night-sky",
   "title": "Child of the Night Sky",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "resources/thumbnails/motionbgs-child-of-the-night-sky.jpg",
   "sourceUrl": "https://motionbgs.com/media/8933/child-of-the-night-sky.3840x2160.mp4",
@@ -22315,7 +22347,7 @@
  {
   "id": "motionbgs-goblin-slayer-maiden",
   "title": "Goblin Slayer & Maiden",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/10446/goblin-slayer-maiden.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/10446/goblin-slayer-maiden.3840x2160.mp4",
@@ -23515,7 +23547,7 @@
  {
   "id": "motionbgs-bound-by-sorrow",
   "title": "Bound by Sorrow",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/10260/bound-by-sorrow.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/10260/bound-by-sorrow.3840x2160.mp4",
@@ -23845,7 +23877,7 @@
  {
   "id": "motionbgs-moonlit-ink-dance",
   "title": "Moonlit Ink Dance",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/10328/moonlit-ink-dance.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/10328/moonlit-ink-dance.3840x2160.mp4",
@@ -26905,7 +26937,7 @@
  {
   "id": "motionbgs-midnight-passenger",
   "title": "Midnight Passenger",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/10103/midnight-passenger.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/10103/midnight-passenger.3840x2160.mp4",
@@ -27055,7 +27087,7 @@
  {
   "id": "motionbgs-where-whales-fly",
   "title": "Where Whales Fly",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/10094/where-whales-fly.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/10094/where-whales-fly.3840x2160.mp4",
@@ -27265,7 +27297,7 @@
  {
   "id": "motionbgs-yuno-grinberryall",
   "title": "Yuno Grinberryall (Black Clover)",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/10070/yuno-grinberryall.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/10070/yuno-grinberryall.3840x2160.mp4",
@@ -27940,7 +27972,7 @@
  {
   "id": "motionbgs-twixxel",
   "title": "Twixxel",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/9909/twixxel.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/9909/twixxel.3840x2160.mp4",
@@ -28180,7 +28212,7 @@
  {
   "id": "motionbgs-oni-mask-warrior",
   "title": "Oni Mask Warrior Girl",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/9987/oni-mask-warrior.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/9987/oni-mask-warrior.3840x2160.mp4",
@@ -28945,7 +28977,7 @@
  {
   "id": "motionbgs-chinese-opera-warrior",
   "title": "Chinese Opera Warrior",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/9884/chinese-opera-warrior.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/9884/chinese-opera-warrior.3840x2160.mp4",
@@ -29620,7 +29652,7 @@
  {
   "id": "motionbgs-shadow-cut-reverie",
   "title": "Shadow Cut Reverie",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/9483/shadow-cut-reverie.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/9483/shadow-cut-reverie.3840x2160.mp4",
@@ -29785,7 +29817,7 @@
  {
   "id": "motionbgs-oni-blade-elegance",
   "title": "Oni Blade Elegance",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/9504/oni-blade-elegance.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/9504/oni-blade-elegance.3840x2160.mp4",
@@ -30115,7 +30147,7 @@
  {
   "id": "motionbgs-monochrome-daydreams",
   "title": "Monochrome Daydreams",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/9693/monochrome-daydreams.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/9693/monochrome-daydreams.3840x2160.mp4",
@@ -30745,7 +30777,7 @@
  {
   "id": "motionbgs-shirou-ogami-bna",
   "title": "Shirou Ogami (Brand New Animal)",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/9626/shirou-ogami-bna.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/9626/shirou-ogami-bna.3840x2160.mp4",
@@ -31075,7 +31107,7 @@
  {
   "id": "motionbgs-han-li",
   "title": "Han Li - Mortal Is Journey to Immortality",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/9547/han-li.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/9547/han-li.3840x2160.mp4",
@@ -32965,7 +32997,7 @@
  {
   "id": "motionbgs-urban-life-street-view",
   "title": "Urban Life Street View",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/9369/urban-life-street-view.1920x1080.jpg",
   "sourceUrl": "https://motionbgs.com/media/9369/urban-life-street-view.1920x1080.mp4",
@@ -34210,7 +34242,7 @@
  {
   "id": "motionbgs-crimson-spirit-of-the-shrine",
   "title": "Crimson Spirit of the Shrine",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/9203/crimson-spirit-of-the-shrine.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/9203/crimson-spirit-of-the-shrine.3840x2160.mp4",
@@ -35185,7 +35217,7 @@
  {
   "id": "motionbgs-ghosts-of-utopia",
   "title": "Ghosts of Utopia",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/9030/ghosts-of-utopia.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/9030/ghosts-of-utopia.3840x2160.mp4",
@@ -35605,7 +35637,7 @@
  {
   "id": "motionbgs-asuka-langley-scarlet-unit",
   "title": "Asuka Langley Scarlet Unit",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/9116/asuka-langley-scarlet-unit.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/9116/asuka-langley-scarlet-unit.3840x2160.mp4",
@@ -35620,7 +35652,7 @@
  {
   "id": "motionbgs-qin-shi-huang-record-of-ragnarok",
   "title": "Qin Shi Huang - Record of Ragnarok",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/9110/qin-shi-huang-record-of-ragnarok.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/9110/qin-shi-huang-record-of-ragnarok.3840x2160.mp4",
@@ -35755,7 +35787,7 @@
  {
   "id": "motionbgs-floating-islands",
   "title": "Floating Islands",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/9096/floating-islands.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/9096/floating-islands.3840x2160.mp4",
@@ -36370,7 +36402,7 @@
  {
   "id": "motionbgs-desolate-yume-wallhack",
   "title": "Desolate Yume - Wallhack",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/9022/desolate-yume-wallhack.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/9022/desolate-yume-wallhack.3840x2160.mp4",
@@ -36520,7 +36552,7 @@
  {
   "id": "motionbgs-moonlit-solitude",
   "title": "Moonlit Solitude",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/7874/moonlit-solitude.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/7874/moonlit-solitude.3840x2160.mp4",
@@ -37315,7 +37347,7 @@
  {
   "id": "motionbgs-dragonbound-silence",
   "title": "Dragonbound Silence",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/7884/dragonbound-silence.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/7884/dragonbound-silence.3840x2160.mp4",
@@ -38470,7 +38502,7 @@
  {
   "id": "motionbgs-moonlit-blade-of-fate",
   "title": "Moonlit Blade of Fate",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/8905/moonlit-blade-of-fate.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/8905/moonlit-blade-of-fate.3840x2160.mp4",
@@ -38875,7 +38907,7 @@
  {
   "id": "motionbgs-good-day-chronicle",
   "title": "Good Day Chronicle",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/7842/good-day-chronicle.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/7842/good-day-chronicle.3840x2160.mp4",
@@ -39250,7 +39282,7 @@
  {
   "id": "motionbgs-sad-maomao-alone",
   "title": "Sad Maomao Alone",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/8180/sad-maomao-alone.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/8180/sad-maomao-alone.3840x2160.mp4",
@@ -39670,7 +39702,7 @@
  {
   "id": "motionbgs-nanakusa-nazuna",
   "title": "Nazuna Laughing in the Dark",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/8796/nanakusa-nazuna.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/8796/nanakusa-nazuna.3840x2160.mp4",
@@ -40210,7 +40242,7 @@
  {
   "id": "motionbgs-reverend-insanity",
   "title": "Reverend Insanity",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/8217/reverend-insanity.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/8217/reverend-insanity.3840x2160.mp4",
@@ -41890,7 +41922,7 @@
  {
   "id": "motionbgs-moe-shop-moe-moe",
   "title": "Moe Shop - Moe Moe",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/8653/moe-shop-moe-moe.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/8653/moe-shop-moe-moe.3840x2160.mp4",
@@ -42985,7 +43017,7 @@
  {
   "id": "motionbgs-wang-ning-a-mortals-journey-to-immortality",
   "title": "Wang Ning (A Mortal's Journey to Immortality)",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/8591/wang-ning-a-mortals-journey-to-immortality.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/8591/wang-ning-a-mortals-journey-to-immortality.3840x2160.mp4",
@@ -43255,7 +43287,7 @@
  {
   "id": "motionbgs-mortals-journey-to-immortality",
   "title": "Mortal's Journey to Immortality",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/8584/mortals-journey-to-immortality.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/8584/mortals-journey-to-immortality.3840x2160.mp4",
@@ -44275,7 +44307,7 @@
  {
   "id": "motionbgs-escanor-sunshine-nanatsu-no-taizai",
   "title": "Escanor Sunshine (Nanatsu No Taizai)",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/8226/escanor-sunshine-nanatsu-no-taizai.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/8226/escanor-sunshine-nanatsu-no-taizai.3840x2160.mp4",
@@ -44470,7 +44502,7 @@
  {
   "id": "motionbgs-echoes-of-the-ancient-sky",
   "title": "Echoes of the Ancient Sky",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/8479/echoes-of-the-ancient-sky.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/8479/echoes-of-the-ancient-sky.3840x2160.mp4",
@@ -45670,7 +45702,7 @@
  {
   "id": "motionbgs-blonde-knight",
   "title": "Celestial Blade Maiden",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/8351/blonde-knight.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/8351/blonde-knight.3840x2160.mp4",
@@ -46825,7 +46857,7 @@
  {
   "id": "motionbgs-osaragi-noodles",
   "title": "Assassin Osaragi With Ramen Noodles (Sakamoto Days)",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/8403/osaragi-noodles.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/8403/osaragi-noodles.3840x2160.mp4",
@@ -49795,7 +49827,7 @@
  {
   "id": "motionbgs-detective-conan",
   "title": "Detective Conan",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/8128/detective-conan.1920x1080.jpg",
   "sourceUrl": "https://motionbgs.com/media/8128/detective-conan.1920x1080.mp4",
@@ -50290,7 +50322,7 @@
  {
   "id": "motionbgs-doraemon",
   "title": "Doraemon Sky Adventure",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/8125/doraemon.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/8125/doraemon.3840x2160.mp4",
@@ -53125,7 +53157,7 @@
  {
   "id": "motionbgs-girls-solitude-in-cityscape",
   "title": "Girl’s Solitude in Cityscape",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/7360/girls-solitude-in-cityscape.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/7360/girls-solitude-in-cityscape.3840x2160.mp4",
@@ -53860,7 +53892,7 @@
  {
   "id": "motionbgs-silence-of-the-ronin",
   "title": "Silence of the Ronin",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/7788/silence-of-the-ronin.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/7788/silence-of-the-ronin.3840x2160.mp4",
@@ -54100,7 +54132,7 @@
  {
   "id": "motionbgs-through-the-heaven",
   "title": "Through the Heaven",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/7777/through-the-heaven.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/7777/through-the-heaven.3840x2160.mp4",
@@ -54925,7 +54957,7 @@
  {
   "id": "motionbgs-glitch-girl",
   "title": "Glitch Girl",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/7732/glitch-girl.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/7732/glitch-girl.3840x2160.mp4",
@@ -56020,7 +56052,7 @@
  {
   "id": "motionbgs-curious-cats",
   "title": "Curious Cats",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/7662/curious-cats.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/7662/curious-cats.3840x2160.mp4",
@@ -56545,7 +56577,7 @@
  {
   "id": "motionbgs-samurai-bw",
   "title": "Grace Under the Blade",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/7133/samurai-bw.jpg",
   "sourceUrl": "https://motionbgs.com/media/7133/samurai-bw.3840x2160.mp4",
@@ -58240,7 +58272,7 @@
  {
   "id": "motionbgs-alone-under-night-sky-4k",
   "title": "Alone Under Night Sky",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/7441/alone-under-night-sky-4k.3840x2160.jpg",
   "sourceUrl": "https://motionbgs.com/media/7441/alone-under-night-sky-4k.3840x2160.mp4",
@@ -58525,7 +58557,7 @@
  {
   "id": "motionbgs-morning-coffee",
   "title": "Morning Coffee",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/7032/morning-coffee.jpg",
   "sourceUrl": "https://motionbgs.com/media/7032/morning-coffee.3840x2160.mp4",
@@ -59860,7 +59892,7 @@
  {
   "id": "motionbgs-swordsman-blue",
   "title": "Blue-Hued Swordsman Girl",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/6928/swordsman-blue.jpg",
   "sourceUrl": "https://motionbgs.com/media/6928/swordsman-blue.3840x2160.mp4",
@@ -60880,7 +60912,7 @@
  {
   "id": "motionbgs-yomu-yakadashi-art",
   "title": "Yomu Yakadashi Art",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/6866/yomu-yakadashi-art.jpg",
   "sourceUrl": "https://motionbgs.com/media/6866/yomu-yakadashi-art.3840x2160.mp4",
@@ -61150,7 +61182,7 @@
  {
   "id": "motionbgs-girl-on-bike",
   "title": "Rider in Motion",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/7216/girl-on-bike.jpg",
   "sourceUrl": "https://motionbgs.com/media/7216/girl-on-bike.3840x2160.mp4",
@@ -61945,7 +61977,7 @@
  {
   "id": "motionbgs-devilgirl-phonk",
   "title": "Devilgirl (Phonk)",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/6793/devilgirl-phonk.jpg",
   "sourceUrl": "https://motionbgs.com/media/6793/devilgirl-phonk.3840x2160.mp4",
@@ -62380,7 +62412,7 @@
  {
   "id": "motionbgs-an-unequal-fight-guweiz-art",
   "title": "An Unequal Fight (Guweiz Art)",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/7029/an-unequal-fight-guweiz-art.jpg",
   "sourceUrl": "https://motionbgs.com/media/7029/an-unequal-fight-guweiz-art.3840x2160.mp4",
@@ -63865,7 +63897,7 @@
  {
   "id": "motionbgs-corgi-sleeping",
   "title": "Corgi Sleeping",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/5685/corgi-sleeping.jpg",
   "sourceUrl": "https://motionbgs.com/media/5685/corgi-sleeping.3840x2160.mp4",
@@ -63955,7 +63987,7 @@
  {
   "id": "motionbgs-halloween-lofi-cat",
   "title": "Halloween Lofi Cat",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/6688/halloween-lofi-cat.jpg",
   "sourceUrl": "https://motionbgs.com/media/6688/halloween-lofi-cat.3840x2160.mp4",
@@ -64240,7 +64272,7 @@
  {
   "id": "motionbgs-girl-katana",
   "title": "Grace and Steel",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/6661/girl-katana.jpg",
   "sourceUrl": "https://motionbgs.com/media/6661/girl-katana.3840x2160.mp4",
@@ -64585,7 +64617,7 @@
  {
   "id": "motionbgs-crimson-moon-samurai",
   "title": "Crimson Moon Samurai",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/6637/crimson-moon-samurai.jpg",
   "sourceUrl": "https://motionbgs.com/media/6637/crimson-moon-samurai.3840x2160.mp4",
@@ -65080,7 +65112,7 @@
  {
   "id": "motionbgs-samurai-chihiro",
   "title": "Samurai Chihiro",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/6601/samurai-chihiro.jpg",
   "sourceUrl": "https://motionbgs.com/media/6601/samurai-chihiro.3840x2160.mp4",
@@ -67915,7 +67947,7 @@
  {
   "id": "motionbgs-control",
   "title": "Control",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/6375/control.jpg",
   "sourceUrl": "https://motionbgs.com/media/6375/control.3840x2160.mp4",
@@ -68125,7 +68157,7 @@
  {
   "id": "motionbgs-the-falling-boy",
   "title": "The Falling Boy",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/6357/the-falling-boy.jpg",
   "sourceUrl": "https://motionbgs.com/media/6357/the-falling-boy.3840x2160.mp4",
@@ -68545,7 +68577,7 @@
  {
   "id": "motionbgs-juice-wrld",
   "title": "Juice WRLD",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/6323/juice-wrld.jpg",
   "sourceUrl": "https://motionbgs.com/media/6323/juice-wrld.3840x2160.mp4",
@@ -70045,7 +70077,7 @@
  {
   "id": "motionbgs-pilot-dream",
   "title": "Pilot Dream",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/6178/pilot-dream.jpg",
   "sourceUrl": "https://motionbgs.com/media/6178/pilot-dream.3840x2160.mp4",
@@ -71860,7 +71892,7 @@
  {
   "id": "motionbgs-evening-chill",
   "title": "Evening Chill",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/5983/evening-chill.jpg",
   "sourceUrl": "https://motionbgs.com/media/5983/evening-chill.3840x2160.mp4",
@@ -72475,7 +72507,7 @@
  {
   "id": "motionbgs-mash-dance-mashle",
   "title": "Mash Dance (Mashle)",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/5934/mash-dance-mashle.jpg",
   "sourceUrl": "https://motionbgs.com/media/5934/mash-dance-mashle.3840x2160.mp4",
@@ -74035,7 +74067,7 @@
  {
   "id": "motionbgs-claymore-clare",
   "title": "Claymore Clare",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/5581/claymore-clare.jpg",
   "sourceUrl": "https://motionbgs.com/media/5581/claymore-clare.3840x2160.mp4",
@@ -75550,7 +75582,7 @@
  {
   "id": "motionbgs-corgi-fun",
   "title": "Corgi Fun",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/5695/corgi-fun.jpg",
   "sourceUrl": "https://motionbgs.com/media/5695/corgi-fun.1920x1080.mp4",
@@ -77650,7 +77682,7 @@
  {
   "id": "motionbgs-corgi-flying-balloon",
   "title": "Corgi Flying Balloon",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/5689/corgi-flying-balloon.jpg",
   "sourceUrl": "https://motionbgs.com/media/5689/corgi-flying-balloon.3840x2160.mp4",
@@ -78280,7 +78312,7 @@
  {
   "id": "motionbgs-cat-under-rain",
   "title": "Cat Under Rain",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/5682/cat-under-rain.jpg",
   "sourceUrl": "https://motionbgs.com/media/5682/cat-under-rain.3840x2160.mp4",
@@ -78370,7 +78402,7 @@
  {
   "id": "motionbgs-little-corgi",
   "title": "Little Corgi",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/5694/little-corgi.jpg",
   "sourceUrl": "https://motionbgs.com/media/5694/little-corgi.1920x1080.mp4",
@@ -78715,7 +78747,7 @@
  {
   "id": "motionbgs-ninja-woman-with-sword",
   "title": "Ninja Woman With Sword",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/5668/ninja-woman-with-sword.jpg",
   "sourceUrl": "https://motionbgs.com/media/5668/ninja-woman-with-sword.3840x2160.mp4",
@@ -84250,7 +84282,7 @@
  {
   "id": "motionbgs-samurai-demon-mask",
   "title": "Samurai Demon Mask",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/4847/samurai-demon-mask.jpg",
   "sourceUrl": "https://motionbgs.com/media/4847/samurai-demon-mask.3840x2160.mp4",
@@ -84400,7 +84432,7 @@
  {
   "id": "motionbgs-demon-girl-with-dragon",
   "title": "Demon Girl With Dragon",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/4839/demon-girl-with-dragon.jpg",
   "sourceUrl": "https://motionbgs.com/media/4839/demon-girl-with-dragon.3840x2160.mp4",
@@ -85705,7 +85737,7 @@
  {
   "id": "motionbgs-azure-moon-samurai",
   "title": "Azure Moon Samurai",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/4794/azure-moon-samurai.jpg",
   "sourceUrl": "https://motionbgs.com/media/4794/azure-moon-samurai.3840x2160.mp4",
@@ -85945,7 +85977,7 @@
  {
   "id": "motionbgs-warrior-boy",
   "title": "Warrior Boy",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/5240/warrior-boy.jpg",
   "sourceUrl": "https://motionbgs.com/media/5240/warrior-boy.3840x2160.mp4",
@@ -88780,7 +88812,7 @@
  {
   "id": "motionbgs-cats-in-love",
   "title": "Cats in Love",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/4651/cats-in-love.jpg",
   "sourceUrl": "https://motionbgs.com/media/4651/cats-in-love.3840x2160.mp4",
@@ -89110,7 +89142,7 @@
  {
   "id": "motionbgs-cute-city",
   "title": "Cute City",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/4626/cute-city.jpg",
   "sourceUrl": "https://motionbgs.com/media/4626/cute-city.3840x2160.mp4",
@@ -89155,7 +89187,7 @@
  {
   "id": "motionbgs-girl-with-tiny-robot",
   "title": "Girl With Tiny Robot",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/4629/girl-with-tiny-robot.jpg",
   "sourceUrl": "https://motionbgs.com/media/4629/girl-with-tiny-robot.3840x2160.mp4",
@@ -90010,7 +90042,7 @@
  {
   "id": "motionbgs-emerald-inferno-samurai-and-dragon",
   "title": "Emerald Inferno: Samurai and Dragon",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/4715/emerald-inferno-samurai-and-dragon.jpg",
   "sourceUrl": "https://motionbgs.com/media/4715/emerald-inferno-samurai-and-dragon.3840x2160.mp4",
@@ -90490,7 +90522,7 @@
  {
   "id": "motionbgs-battle-through-the-heavens",
   "title": "Battle Through the Heavens",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/4532/battle-through-the-heavens.jpg",
   "sourceUrl": "https://motionbgs.com/media/4532/battle-through-the-heavens.3840x2160.mp4",
@@ -91045,7 +91077,7 @@
  {
   "id": "motionbgs-shinra-fire-force",
   "title": "Shinra (Fire Force)",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/4542/shinra-fire-force.jpg",
   "sourceUrl": "https://motionbgs.com/media/4542/shinra-fire-force.3840x2160.mp4",
@@ -91585,7 +91617,7 @@
  {
   "id": "motionbgs-cute-furry",
   "title": "Cute Furry",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/4450/cute-furry.jpg",
   "sourceUrl": "https://motionbgs.com/media/4450/cute-furry.3840x2160.mp4",
@@ -93745,7 +93777,7 @@
  {
   "id": "motionbgs-japan-nature",
   "title": "Japan Nature",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/4302/japan-nature.jpg",
   "sourceUrl": "https://motionbgs.com/media/4302/japan-nature.3840x2160.mp4",
@@ -94495,7 +94527,7 @@
  {
   "id": "motionbgs-sunny-snooze-with-a-corgi",
   "title": "Sunny Snooze With a Corgi",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/4242/sunny-snooze-with-a-corgi.jpg",
   "sourceUrl": "https://motionbgs.com/media/4242/sunny-snooze-with-a-corgi.1920x1080.mp4",
@@ -94540,7 +94572,7 @@
  {
   "id": "motionbgs-corgi-dog-samurai",
   "title": "Corgi Dog Samurai",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/4241/corgi-dog-samurai.jpg",
   "sourceUrl": "https://motionbgs.com/media/4241/corgi-dog-samurai.3840x2160.mp4",
@@ -94555,7 +94587,7 @@
  {
   "id": "motionbgs-doggie-corgi",
   "title": "Doggie Corgi",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/4240/doggie-corgi.jpg",
   "sourceUrl": "https://motionbgs.com/media/4240/doggie-corgi.3840x2160.mp4",
@@ -94660,7 +94692,7 @@
  {
   "id": "motionbgs-kamijou-touma",
   "title": "Kamijou Touma",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/4233/kamijou-touma.jpg",
   "sourceUrl": "https://motionbgs.com/media/4233/kamijou-touma.3840x2160.mp4",
@@ -94900,7 +94932,7 @@
  {
   "id": "motionbgs-straw-hat-shinobi-girl",
   "title": "Straw Hat Shinobi Girl",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/4213/straw-hat-shinobi-girl.jpg",
   "sourceUrl": "https://motionbgs.com/media/4213/straw-hat-shinobi-girl.3840x2160.mp4",
@@ -95005,7 +95037,7 @@
  {
   "id": "motionbgs-straw-hat-samurai",
   "title": "Straw Hat Samurai",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/4211/straw-hat-samurai.jpg",
   "sourceUrl": "https://motionbgs.com/media/4211/straw-hat-samurai.3840x2160.mp4",
@@ -95035,7 +95067,7 @@
  {
   "id": "motionbgs-masked-ronin-beauty",
   "title": "Masked Ronin Beauty",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/4210/masked-ronin-beauty.jpg",
   "sourceUrl": "https://motionbgs.com/media/4210/masked-ronin-beauty.3840x2160.mp4",
@@ -98905,7 +98937,7 @@
  {
   "id": "motionbgs-shuttle-by-wlop",
   "title": "Shuttle (By WLOP)",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/3372/shuttle-by-wlop.jpg",
   "sourceUrl": "https://motionbgs.com/media/3372/shuttle-by-wlop.1920x1080.mp4",
@@ -99715,7 +99747,7 @@
  {
   "id": "motionbgs-konosuba-megumin",
   "title": "Konosuba (Megumin)",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/2775/konosuba-megumin.jpg",
   "sourceUrl": "https://motionbgs.com/media/2775/konosuba-megumin.3840x2160.mp4",
@@ -100915,7 +100947,7 @@
  {
   "id": "motionbgs-nostalgia-mixtape",
   "title": "Nostalgia Mixtape",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/2641/nostalgia-mixtape.jpg",
   "sourceUrl": "https://motionbgs.com/media/2641/nostalgia-mixtape.3840x2160.mp4",
@@ -101395,7 +101427,7 @@
  {
   "id": "motionbgs-girls-silent-night-watch",
   "title": "Girl's Silent Night Watch",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/2605/girls-silent-night-watch.jpg",
   "sourceUrl": "https://motionbgs.com/media/2605/girls-silent-night-watch.1920x1080.mp4",
@@ -102955,7 +102987,7 @@
  {
   "id": "motionbgs-dragon-in-clouds",
   "title": "Dragon in Clouds",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/2423/dragon-in-clouds.jpg",
   "sourceUrl": "https://motionbgs.com/media/2423/dragon-in-clouds.3840x2160.mp4",
@@ -105130,7 +105162,7 @@
  {
   "id": "motionbgs-christmas-cafe",
   "title": "Christmas Cafe",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/3852/christmas-cafe.jpg",
   "sourceUrl": "https://motionbgs.com/media/3852/christmas-cafe.3840x2160.mp4",
@@ -107875,7 +107907,7 @@
  {
   "id": "motionbgs-lofi-cafe-in-evening",
   "title": "Lofi Cafe in Evening",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/3695/lofi-cafe-in-evening.jpg",
   "sourceUrl": "https://motionbgs.com/media/3695/lofi-cafe-in-evening.3840x2160.mp4",
@@ -108070,7 +108102,7 @@
  {
   "id": "motionbgs-goblin-slayer-red-eye",
   "title": "Goblin Slayer Red Eye",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/3687/goblin-slayer-red-eye.jpg",
   "sourceUrl": "https://motionbgs.com/media/3687/goblin-slayer-red-eye.3840x2160.mp4",
@@ -109165,7 +109197,7 @@
  {
   "id": "motionbgs-dragon-flying",
   "title": "Dragon Flying",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/3594/dragon-flying.jpg",
   "sourceUrl": "https://motionbgs.com/media/3594/dragon-flying.3840x2160.mp4",
@@ -111340,7 +111372,7 @@
  {
   "id": "motionbgs-fallen-samurai",
   "title": "Fallen Samurai",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/3404/fallen-samurai.jpg",
   "sourceUrl": "https://motionbgs.com/media/3404/fallen-samurai.3840x2160.mp4",
@@ -111535,7 +111567,7 @@
  {
   "id": "motionbgs-cute-corgi",
   "title": "Cute Corgi",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/3427/cute-corgi.jpg",
   "sourceUrl": "https://motionbgs.com/media/3427/cute-corgi.3840x2160.mp4",
@@ -111700,7 +111732,7 @@
  {
   "id": "motionbgs-ne-zha",
   "title": "Ne Zha",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/3380/ne-zha.jpg",
   "sourceUrl": "https://motionbgs.com/media/3380/ne-zha.1920x1080.mp4",
@@ -115840,7 +115872,7 @@
  {
   "id": "motionbgs-japanese-street",
   "title": "Japanese Street",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/3038/japanese-street.jpg",
   "sourceUrl": "https://motionbgs.com/media/3038/japanese-street.1920x1080.mp4",
@@ -116035,7 +116067,7 @@
  {
   "id": "motionbgs-abandoned-railway-station",
   "title": "Abandoned Railway Station",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/3017/abandoned-railway-station.jpg",
   "sourceUrl": "https://motionbgs.com/media/3017/abandoned-railway-station.1920x1080.mp4",
@@ -118180,7 +118212,7 @@
  {
   "id": "motionbgs-train-crossing-the-majestic-bridge",
   "title": "Train Crossing the Majestic Bridge",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/2783/train-crossing-the-majestic-bridge.jpg",
   "sourceUrl": "https://motionbgs.com/media/2783/train-crossing-the-majestic-bridge.3840x2160.mp4",
@@ -118750,7 +118782,7 @@
  {
   "id": "motionbgs-tram-in-japan-city",
   "title": "Tram in Japan City",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/2608/tram-in-japan-city.jpg",
   "sourceUrl": "https://motionbgs.com/media/2608/tram-in-japan-city.1920x1080.mp4",
@@ -118810,7 +118842,7 @@
  {
   "id": "motionbgs-lofi-coffee-shop",
   "title": "LoFi Coffee Shop",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/2623/lofi-coffee-shop.jpg",
   "sourceUrl": "https://motionbgs.com/media/2623/lofi-coffee-shop.1920x1080.mp4",
@@ -123130,7 +123162,7 @@
  {
   "id": "motionbgs-pigeon-relaxing",
   "title": "Pigeon Relaxing",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/1966/pigeon-relaxing.jpg",
   "sourceUrl": "https://motionbgs.com/media/1966/pigeon-relaxing.1920x1080.mp4",
@@ -129730,7 +129762,7 @@
  {
   "id": "motionbgs-blue-aesthetic-widgets",
   "title": "BLUE Aesthetic Widgets",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/1433/blue-aesthetic-widgets.jpg",
   "sourceUrl": "https://motionbgs.com/media/1433/blue-aesthetic-widgets.3840x2160.mp4",
@@ -129760,7 +129792,7 @@
  {
   "id": "motionbgs-aesthetic-tokyo-with-cat-on-the-roof",
   "title": "Aesthetic Tokyo With Cat on the Roof",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/1427/aesthetic-tokyo-with-cat-on-the-roof.jpg",
   "sourceUrl": "https://motionbgs.com/media/1427/aesthetic-tokyo-with-cat-on-the-roof.3840x2160.mp4",
@@ -129970,7 +130002,7 @@
  {
   "id": "motionbgs-emiya-fatestay-night",
   "title": "Emiya (Fate/Stay Night)",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/1418/emiya-fatestay-night.jpg",
   "sourceUrl": "https://motionbgs.com/media/1418/emiya-fatestay-night.3840x2160.mp4",
@@ -145510,7 +145542,7 @@
  {
   "id": "motionbgs-monolith-fantasy",
   "title": "Monolith Fantasy",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/82/monolith-fantasy.jpg",
   "sourceUrl": "https://motionbgs.com/media/82/monolith-fantasy.1920x1080.mp4",
@@ -145825,7 +145857,7 @@
  {
   "id": "motionbgs-urban-girl",
   "title": "Urban Girl",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/112/urban-girl.1920x1080.jpg",
   "sourceUrl": "https://motionbgs.com/media/112/urban-girl.1920x1080.mp4",
@@ -146230,7 +146262,7 @@
  {
   "id": "motionbgs-lofi-girl",
   "title": "Lofi Girl",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/71/lofi-girl.1920x1080.jpg",
   "sourceUrl": "https://motionbgs.com/media/71/lofi-girl.1920x1080.mp4",
@@ -146590,7 +146622,7 @@
  {
   "id": "motionbgs-witch-admires-the-butterfly",
   "title": "Witch Admires the Butterfly",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/23/witch-admires-the-butterfly.1920x1080.jpg",
   "sourceUrl": "https://motionbgs.com/media/23/witch-admires-the-butterfly.1920x1080.mp4",
@@ -146710,7 +146742,7 @@
  {
   "id": "motionbgs-samurai-girl3",
   "title": "Samurai Girl With Dagger Eyes",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/546x308/media/17/samurai-girl3.1920x1080.jpg",
   "sourceUrl": "https://motionbgs.com/media/17/samurai-girl3.1920x1080.mp4",
@@ -149155,7 +149187,7 @@
  {
   "id": "motionbgs-p-bound-by-sorrow",
   "title": "Bound by Sorrow",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/10260/bound-by-sorrow.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/10260/bound-by-sorrow.720x1280.mp4",
@@ -149695,7 +149727,7 @@
  {
   "id": "motionbgs-p-moonlit-ink-dance",
   "title": "Moonlit Ink Dance",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/10328/moonlit-ink-dance.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/10328/moonlit-ink-dance.720x1280.mp4",
@@ -149770,7 +149802,7 @@
  {
   "id": "motionbgs-p-where-whales-fly",
   "title": "Where Whales Fly",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/10094/where-whales-fly.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/10094/where-whales-fly.720x1280.mp4",
@@ -151405,7 +151437,7 @@
  {
   "id": "motionbgs-p-oni-mask-warrior",
   "title": "Oni Mask Warrior Girl",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/9987/oni-mask-warrior.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/9987/oni-mask-warrior.720x1280.mp4",
@@ -152920,7 +152952,7 @@
  {
   "id": "motionbgs-p-doraemon",
   "title": "Doraemon Sky Adventure",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/8125/doraemon.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/8125/doraemon.720x1280.mp4",
@@ -155335,7 +155367,7 @@
  {
   "id": "motionbgs-p-corgi-sleeping",
   "title": "Corgi Sleeping",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/5685/corgi-sleeping.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/5685/corgi-sleeping.720x1280.mp4",
@@ -155815,7 +155847,7 @@
  {
   "id": "motionbgs-p-twixxel",
   "title": "Twixxel",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/9909/twixxel.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/9909/twixxel.720x1280.mp4",
@@ -161095,7 +161127,7 @@
  {
   "id": "motionbgs-p-midnight-passenger",
   "title": "Midnight Passenger",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/10103/midnight-passenger.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/10103/midnight-passenger.720x1280.mp4",
@@ -161755,7 +161787,7 @@
  {
   "id": "motionbgs-p-monolith-fantasy",
   "title": "Monolith Fantasy",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/82/monolith-fantasy.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/82/monolith-fantasy.720x1280.mp4",
@@ -162760,7 +162792,7 @@
  {
   "id": "motionbgs-p-mortals-journey-to-immortality",
   "title": "Mortal's Journey to Immortality",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/8584/mortals-journey-to-immortality.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/8584/mortals-journey-to-immortality.720x1280.mp4",
@@ -162970,7 +163002,7 @@
  {
   "id": "motionbgs-p-halloween-lofi-cat",
   "title": "Halloween Lofi Cat",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/6688/halloween-lofi-cat.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/6688/halloween-lofi-cat.720x1280.mp4",
@@ -165145,7 +165177,7 @@
  {
   "id": "motionbgs-p-good-day-chronicle",
   "title": "Good Day Chronicle",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/7842/good-day-chronicle.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/7842/good-day-chronicle.720x1280.mp4",
@@ -165190,7 +165222,7 @@
  {
   "id": "motionbgs-p-pigeon-relaxing",
   "title": "Pigeon Relaxing",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/1966/pigeon-relaxing.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/1966/pigeon-relaxing.720x1280.mp4",
@@ -165775,7 +165807,7 @@
  {
   "id": "motionbgs-p-han-li",
   "title": "Han Li - Mortal Is Journey to Immortality",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/9547/han-li.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/9547/han-li.720x1280.mp4",
@@ -166570,7 +166602,7 @@
  {
   "id": "motionbgs-p-tram-in-japan-city",
   "title": "Tram in Japan City",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/2608/tram-in-japan-city.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/2608/tram-in-japan-city.720x1280.mp4",
@@ -167050,7 +167082,7 @@
  {
   "id": "motionbgs-p-shadow-cut-reverie",
   "title": "Shadow Cut Reverie",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/9483/shadow-cut-reverie.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/9483/shadow-cut-reverie.720x1280.mp4",
@@ -167305,7 +167337,7 @@
  {
   "id": "motionbgs-p-corgi-dog-samurai",
   "title": "Corgi Dog Samurai",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/4241/corgi-dog-samurai.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/4241/corgi-dog-samurai.720x1280.mp4",
@@ -167845,7 +167877,7 @@
  {
   "id": "motionbgs-p-devilgirl-phonk",
   "title": "Devilgirl (Phonk)",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/6793/devilgirl-phonk.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/6793/devilgirl-phonk.720x1280.mp4",
@@ -169540,7 +169572,7 @@
  {
   "id": "motionbgs-p-urban-girl",
   "title": "Urban Girl",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/112/urban-girl.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/112/urban-girl.720x1280.mp4",
@@ -170320,7 +170352,7 @@
  {
   "id": "motionbgs-p-sunny-snooze-with-a-corgi",
   "title": "Sunny Snooze With a Corgi",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/4242/sunny-snooze-with-a-corgi.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/4242/sunny-snooze-with-a-corgi.720x1280.mp4",
@@ -170455,7 +170487,7 @@
  {
   "id": "motionbgs-p-echoes-of-the-ancient-sky",
   "title": "Echoes of the Ancient Sky",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/8479/echoes-of-the-ancient-sky.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/8479/echoes-of-the-ancient-sky.720x1280.mp4",
@@ -170575,7 +170607,7 @@
  {
   "id": "motionbgs-p-qin-shi-huang-record-of-ragnarok",
   "title": "Qin Shi Huang - Record of Ragnarok",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/9110/qin-shi-huang-record-of-ragnarok.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/9110/qin-shi-huang-record-of-ragnarok.720x1280.mp4",
@@ -170665,7 +170697,7 @@
  {
   "id": "motionbgs-p-cat-under-rain",
   "title": "Cat Under Rain",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/5682/cat-under-rain.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/5682/cat-under-rain.720x1280.mp4",
@@ -171520,7 +171552,7 @@
  {
   "id": "motionbgs-p-oni-blade-elegance",
   "title": "Oni Blade Elegance",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/9504/oni-blade-elegance.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/9504/oni-blade-elegance.720x1280.mp4",
@@ -172225,7 +172257,7 @@
  {
   "id": "motionbgs-p-cat-in-tokyo-city",
   "title": "Cat in Tokyo City",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/2942/cat-in-tokyo-city.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/2942/cat-in-tokyo-city.720x1280.mp4",
@@ -172300,7 +172332,7 @@
  {
   "id": "motionbgs-p-claymore-clare",
   "title": "Claymore Clare",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/5581/claymore-clare.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/5581/claymore-clare.720x1280.mp4",
@@ -172765,7 +172797,7 @@
  {
   "id": "motionbgs-p-curious-cats",
   "title": "Curious Cats",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/7662/curious-cats.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/7662/curious-cats.720x1280.mp4",
@@ -175330,7 +175362,7 @@
  {
   "id": "motionbgs-p-cute-city",
   "title": "Cute City",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/4626/cute-city.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/4626/cute-city.720x1280.mp4",
@@ -176455,7 +176487,7 @@
  {
   "id": "motionbgs-p-japan-nature",
   "title": "Japan Nature",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/4302/japan-nature.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/4302/japan-nature.720x1280.mp4",
@@ -178105,7 +178137,7 @@
  {
   "id": "motionbgs-p-shinra-fire-force",
   "title": "Shinra (Fire Force)",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/4542/shinra-fire-force.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/4542/shinra-fire-force.720x1280.mp4",
@@ -178270,7 +178302,7 @@
  {
   "id": "motionbgs-p-desolate-yume-wallhack",
   "title": "Desolate Yume - Wallhack",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/9022/desolate-yume-wallhack.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/9022/desolate-yume-wallhack.720x1280.mp4",
@@ -178975,7 +179007,7 @@
  {
   "id": "motionbgs-p-aesthetic-tokyo-with-cat-on-the-roof",
   "title": "Aesthetic Tokyo With Cat on the Roof",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/1427/aesthetic-tokyo-with-cat-on-the-roof.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/1427/aesthetic-tokyo-with-cat-on-the-roof.720x1280.mp4",
@@ -179485,7 +179517,7 @@
  {
   "id": "motionbgs-p-blonde-knight",
   "title": "Celestial Blade Maiden",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/8351/blonde-knight.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/8351/blonde-knight.720x1280.mp4",
@@ -183070,7 +183102,7 @@
  {
   "id": "motionbgs-p-girl-katana",
   "title": "Grace and Steel",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/6661/girl-katana.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/6661/girl-katana.720x1280.mp4",
@@ -185605,7 +185637,7 @@
  {
   "id": "motionbgs-p-moonlit-solitude",
   "title": "Moonlit Solitude",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/7874/moonlit-solitude.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/7874/moonlit-solitude.720x1280.mp4",
@@ -185965,7 +185997,7 @@
  {
   "id": "motionbgs-p-emerald-inferno-samurai-and-dragon",
   "title": "Emerald Inferno: Samurai and Dragon",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/4715/emerald-inferno-samurai-and-dragon.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/4715/emerald-inferno-samurai-and-dragon.720x1280.mp4",
@@ -186775,7 +186807,7 @@
  {
   "id": "motionbgs-p-witch-admires-the-butterfly",
   "title": "Witch Admires the Butterfly",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/23/witch-admires-the-butterfly.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/23/witch-admires-the-butterfly.720x1280.mp4",
@@ -187540,7 +187572,7 @@
  {
   "id": "motionbgs-p-moonlit-blade-of-fate",
   "title": "Moonlit Blade of Fate",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/8905/moonlit-blade-of-fate.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/8905/moonlit-blade-of-fate.720x1280.mp4",
@@ -187705,7 +187737,7 @@
  {
   "id": "motionbgs-p-an-unequal-fight-guweiz-art",
   "title": "An Unequal Fight (Guweiz Art)",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/7029/an-unequal-fight-guweiz-art.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/7029/an-unequal-fight-guweiz-art.720x1280.mp4",
@@ -187810,7 +187842,7 @@
  {
   "id": "motionbgs-p-ninja-woman-with-sword",
   "title": "Ninja Woman With Sword",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/5668/ninja-woman-with-sword.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/5668/ninja-woman-with-sword.720x1280.mp4",
@@ -188020,7 +188052,7 @@
  {
   "id": "motionbgs-p-nanakusa-nazuna",
   "title": "Nazuna Laughing in the Dark",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/8796/nanakusa-nazuna.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/8796/nanakusa-nazuna.720x1280.mp4",
@@ -188200,7 +188232,7 @@
  {
   "id": "motionbgs-p-ghosts-of-utopia",
   "title": "Ghosts of Utopia",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/9030/ghosts-of-utopia.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/9030/ghosts-of-utopia.720x1280.mp4",
@@ -188920,7 +188952,7 @@
  {
   "id": "motionbgs-p-lofi-girl",
   "title": "Lofi Girl",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/71/lofi-girl.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/71/lofi-girl.720x1280.mp4",
@@ -188980,7 +189012,7 @@
  {
   "id": "motionbgs-p-samurai-girl3",
   "title": "Samurai Girl With Dagger Eyes",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/17/samurai-girl3.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/17/samurai-girl3.720x1280.mp4",
@@ -189790,7 +189822,7 @@
  {
   "id": "motionbgs-p-shirou-ogami-bna",
   "title": "Shirou Ogami (Brand New Animal)",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/9626/shirou-ogami-bna.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/9626/shirou-ogami-bna.720x1280.mp4",
@@ -190000,7 +190032,7 @@
  {
   "id": "motionbgs-p-morning-coffee",
   "title": "Morning Coffee",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/7032/morning-coffee.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/7032/morning-coffee.720x1280.mp4",
@@ -190375,7 +190407,7 @@
  {
   "id": "motionbgs-p-floating-islands",
   "title": "Floating Islands",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/9096/floating-islands.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/9096/floating-islands.720x1280.mp4",
@@ -190630,7 +190662,7 @@
  {
   "id": "motionbgs-p-moe-shop-moe-moe",
   "title": "Moe Shop - Moe Moe",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/8653/moe-shop-moe-moe.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/8653/moe-shop-moe-moe.720x1280.mp4",
@@ -190885,7 +190917,7 @@
  {
   "id": "motionbgs-p-dragonbound-silence",
   "title": "Dragonbound Silence",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/7884/dragonbound-silence.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/7884/dragonbound-silence.720x1280.mp4",
@@ -191665,7 +191697,7 @@
  {
   "id": "motionbgs-p-girl-with-tiny-robot",
   "title": "Girl With Tiny Robot",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/4629/girl-with-tiny-robot.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/4629/girl-with-tiny-robot.720x1280.mp4",
@@ -192760,7 +192792,7 @@
  {
   "id": "motionbgs-p-emiya-fatestay-night",
   "title": "Emiya (Fate/Stay Night)",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/1418/emiya-fatestay-night.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/1418/emiya-fatestay-night.720x1280.mp4",
@@ -192820,7 +192852,7 @@
  {
   "id": "motionbgs-p-crimson-spirit-of-the-shrine",
   "title": "Crimson Spirit of the Shrine",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/9203/crimson-spirit-of-the-shrine.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/9203/crimson-spirit-of-the-shrine.720x1280.mp4",
@@ -193570,7 +193602,7 @@
  {
   "id": "motionbgs-p-escanor-sunshine-nanatsu-no-taizai",
   "title": "Escanor Sunshine (Nanatsu No Taizai)",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/8226/escanor-sunshine-nanatsu-no-taizai.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/8226/escanor-sunshine-nanatsu-no-taizai.720x1280.mp4",
@@ -195400,7 +195432,7 @@
  {
   "id": "motionbgs-p-through-the-heaven",
   "title": "Through the Heaven",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/7777/through-the-heaven.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/7777/through-the-heaven.720x1280.mp4",
@@ -196345,7 +196377,7 @@
  {
   "id": "motionbgs-p-reverend-insanity",
   "title": "Reverend Insanity",
-  "category": "ai-art",
+  "category": "anime",
   "type": "video",
   "previewUrl": "https://motionbgs.com/i/c/304x540/media/8217/reverend-insanity.720x1280.jpg",
   "sourceUrl": "https://motionbgs.com/media/8217/reverend-insanity.720x1280.mp4",

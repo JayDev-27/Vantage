@@ -4,16 +4,19 @@
  * main.tsx only imports it when galleryApi is missing in a dev build.
  */
 import type { WallpaperItem, DisplayInfo, AppSettings } from '../../shared/types'
+import { isHighResolution, isVerticalVideo } from '../../shared/types'
 
 declare const __CATALOG_ROOT__: string
 
 export async function installDevMock(): Promise<void> {
   const catalog: WallpaperItem[] = await fetch(`/@fs${__CATALOG_ROOT__}/resources/catalog.json`).then((r) => r.json())
-  const items = catalog.map((i) => ({
-    ...i,
-    previewUrl: i.previewUrl ? `/@fs${__CATALOG_ROOT__}/${i.previewUrl}` : '',
-    is_favorite: false
-  }))
+  const items = catalog
+    .filter((item) => item.type === 'generative' || isHighResolution(item.resolution))
+    .map((item) => ({
+      ...item,
+      previewUrl: item.previewUrl.startsWith('resources/') ? `/@fs${__CATALOG_ROOT__}/${item.previewUrl}` : item.previewUrl,
+      is_favorite: false
+    }))
   const favs = new Set<string>()
   const displays: DisplayInfo[] = [
     { id: 1, label: 'Built-in Retina Display', bounds: { x: 0, y: 0, width: 1512, height: 982 }, scaleFactor: 2, assignedWallpaperId: 'gen-iris-bloom', performanceMode: 'balanced' },
@@ -25,13 +28,17 @@ export async function installDevMock(): Promise<void> {
   const filter = (category?: string, query?: string) =>
     items
       .map((i) => ({ ...i, is_favorite: favs.has(i.id) }))
-      .filter((i) => (category === 'favorites' ? i.is_favorite : !category || category === 'all' ? true : i.category === category))
+      .filter((i) => {
+        if (category === 'favorites') return i.is_favorite
+        if (category === 'portrait') return isVerticalVideo(i)
+        return !category || category === 'all' || i.category === category
+      })
       .filter((i) => !query || `${i.title} ${i.category}`.toLowerCase().includes(query.toLowerCase()))
 
   window.galleryApi = {
     getWallpapers: async (c, q) => filter(c, q),
     getCategoryCounts: async () => {
-      const counts: Record<string, number> = { all: items.length, favorites: favs.size, static: 0 }
+      const counts: Record<string, number> = { all: items.length, favorites: favs.size, static: 0, portrait: items.filter(isVerticalVideo).length }
       items.forEach((i) => (counts[i.category] = (counts[i.category] || 0) + 1))
       return counts
     },

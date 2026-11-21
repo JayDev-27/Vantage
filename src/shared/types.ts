@@ -22,6 +22,18 @@ export interface WallpaperItem {
   is_favorite?: boolean
 }
 
+export const MIN_WALLPAPER_SHORT_EDGE = 1440
+
+export function isHighResolution({ width, height }: WallpaperItem['resolution']): boolean {
+  return width >= MIN_WALLPAPER_SHORT_EDGE && height >= MIN_WALLPAPER_SHORT_EDGE
+}
+
+export function isVerticalVideo(item: WallpaperItem): boolean {
+  return item.type === 'video'
+    && item.resolution.height > item.resolution.width
+    && isHighResolution(item.resolution)
+}
+
 export interface DisplayInfo {
   id: number
   label: string
