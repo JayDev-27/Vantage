@@ -41,3 +41,6 @@ resources/icons/icon.png
 
 # Vercel CLI project link
 .vercel
+
+# Crawl caches
+scripts/.cache/

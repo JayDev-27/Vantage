@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { useGalleryStore, visibleWallpapers, resolutionLabel, WallpaperItem, FormatFilter, SortMode } from '../store/useGalleryStore'
+import { useGalleryStore, visibleWallpapers, resolutionLabel, isPortrait, isPortraitDisplay, WallpaperItem, FormatFilter, SortMode } from '../store/useGalleryStore'
 import { ApertureIrisIcon } from '../components/ApertureIrisIcon'
 import { MediaThumb } from '../components/ui'
 import { GenerativeIcon } from '../components/GenerativeIcon'
-import { Play, Heart, Trash2, Search, Shuffle, LayoutGrid, Grid3x3, Check, X, MonitorPlay, ArrowUpDown } from 'lucide-react'
+import { RectangleVertical, Play, Heart, Trash2, Search, Shuffle, LayoutGrid, Grid3x3, Check, X, MonitorPlay, ArrowUpDown } from 'lucide-react'
 
 const PAGE = 48
 const isMac = navigator.userAgent.includes('Mac')
@@ -20,14 +20,16 @@ const CATEGORY_TITLES: Record<string, { title: string; blurb: string }> = {
   cars: { title: 'Cars & Streets', blurb: 'Night drives, neon and rain.' },
   'ai-art': { title: 'Digital Art', blurb: 'Lo-fi, fantasy and illustrated loops.' },
   generative: { title: 'Generative', blurb: 'Procedural scenes rendered live on your GPU. Zero downloads, never repeats.' },
-  static: { title: 'Still Images', blurb: 'High-resolution stills, plus anything in your Static folder.' }
+  static: { title: 'Still Images', blurb: 'High-resolution stills, plus anything in your Static folder.' },
+  portrait: { title: 'Vertical', blurb: '9:16 live wallpapers made for rotated monitors.' }
 }
 
 const FORMATS: { id: FormatFilter; label: string }[] = [
   { id: 'all', label: 'All' },
   { id: 'video', label: 'Video' },
   { id: 'generative', label: 'Generative' },
-  { id: '4k', label: '4K' }
+  { id: '4k', label: '4K' },
+  { id: 'vertical', label: 'Vertical' }
 ]
 const SORTS: { id: SortMode; label: string }[] = [
   { id: 'featured', label: 'Featured' },
@@ -35,7 +37,7 @@ const SORTS: { id: SortMode; label: string }[] = [
   { id: 'resolution', label: 'Resolution' }
 ]
 
-const WallpaperTile: React.FC<{ item: WallpaperItem; index: number }> = ({ item, index }) => {
+const WallpaperTile: React.FC<{ item: WallpaperItem; index: number; tall?: boolean }> = ({ item, index, tall = false }) => {
   const [hover, setHover] = useState(false)
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const { activeCategory, toggleFavorite, deleteWallpaper, setSelectedWallpaper, applyWallpaper, selectedDisplayId, displays } = useGalleryStore()
@@ -64,7 +66,7 @@ const WallpaperTile: React.FC<{ item: WallpaperItem; index: number }> = ({ item,
       tabIndex={0}
       aria-label={`${item.title}${isLive ? ', currently live' : ''}`}
       style={{ animationDelay: `${Math.min(index % PAGE, 24) * 18}ms` }}
-      className={`group relative aspect-video cursor-pointer overflow-hidden rounded-xl bg-panel shadow-card ring-1 transition duration-300 animate-rise [content-visibility:auto] [contain-intrinsic-size:320px_180px] hover:-translate-y-0.5 hover:shadow-lift ${
+      className={`group relative ${tall ? 'aspect-[9/16]' : 'aspect-video'} cursor-pointer overflow-hidden rounded-xl bg-panel shadow-card ring-1 transition duration-300 animate-rise [content-visibility:auto] [contain-intrinsic-size:320px_180px] hover:-translate-y-0.5 hover:shadow-lift ${
         isLive ? 'ring-glow/60' : 'ring-line hover:ring-line-strong'
       }`}
     >
@@ -171,7 +173,7 @@ const EmptyState: React.FC<{ category: string; query: string }> = ({ category, q
       : category === 'favorites'
         ? { title: 'No favorites yet', body: 'Tap the heart on any wallpaper to keep it here.' }
         : category === 'imported'
-          ? { title: 'Bring your own', body: 'Import an MP4, MOV, WebM or image — or drop files into the watched folder.' }
+          ? { title: 'Bring your own', body: 'Import an MP4, MOV, WebM or image — or drop files into the watched folder. Wallpapers you download from MoeWalls appear here automatically.' }
           : category === 'static'
             ? { title: 'No still images yet', body: 'Drop JPG, PNG or WebP files into Pictures/Vantage Wallpapers/Static.' }
             : { title: 'Nothing here yet', body: 'Try another category or format.' }
@@ -190,6 +192,9 @@ const EmptyState: React.FC<{ category: string; query: string }> = ({ category, q
           <>
             <button className="btn-primary" onClick={() => importFile()}>Import file</button>
             <button className="btn-ghost" onClick={() => openWallpaperFolder()}>Open folder</button>
+            {category === 'imported' && (
+              <button className="btn-ghost" onClick={() => window.galleryApi?.openExternal('https://moewalls.com/')}>Find more on MoeWalls</button>
+            )}
           </>
         )}
       </div>
@@ -198,7 +203,7 @@ const EmptyState: React.FC<{ category: string; query: string }> = ({ category, q
 }
 
 export const Gallery: React.FC = () => {
-  const { wallpapers, isLoading, error, searchQuery, setSearchQuery, formatFilter, setFormatFilter, sortMode, setSortMode, density, setDensity, activeCategory, shuffle, counts } = useGalleryStore()
+  const { wallpapers, isLoading, error, searchQuery, setSearchQuery, formatFilter, setFormatFilter, sortMode, setSortMode, density, setDensity, activeCategory, setActiveCategory, shuffle, counts, displays, selectedDisplayId } = useGalleryStore()
   const [limit, setLimit] = useState(PAGE)
   const sentinel = useRef<HTMLDivElement>(null)
   const scroller = useRef<HTMLDivElement>(null)
@@ -222,7 +227,12 @@ export const Gallery: React.FC = () => {
     return () => io.disconnect()
   }, [list.length, shown.length])
 
-  const gridCols = density === 'compact' ? 'grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-3' : 'grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4'
+  // Vertical wallpapers get tall tiles so they aren't cropped to 16:9 in the grid.
+  const tallView = activeCategory === 'portrait' || formatFilter === 'vertical'
+  const gridCols = tallView
+    ? density === 'compact' ? 'grid-cols-[repeat(auto-fill,minmax(130px,1fr))] gap-3' : 'grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-4'
+    : density === 'compact' ? 'grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-3' : 'grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4'
+  const targetDisplay = displays.find((d) => d.id === selectedDisplayId) ?? displays[0]
 
   return (
     <div className="flex h-full flex-1 flex-col overflow-hidden">
@@ -279,6 +289,20 @@ export const Gallery: React.FC = () => {
       <div ref={scroller} className="flex-1 overflow-y-auto px-6 pb-10 pt-6">
         {activeCategory === 'all' && !searchQuery && <NowPlaying />}
 
+        {isPortraitDisplay(targetDisplay) && activeCategory !== 'portrait' && formatFilter !== 'vertical' && (counts.portrait ?? 0) > 0 && (
+          <div className="mb-5 flex items-center justify-between gap-4 rounded-2xl border border-line bg-white/[0.03] px-4 py-3 animate-rise">
+            <div className="flex items-center gap-3 text-[13px]">
+              <RectangleVertical className="h-5 w-5 shrink-0 text-ink" />
+              <span className="text-ink-dim">
+                <span className="text-ink">{targetDisplay?.label || 'This display'}</span> is vertical. Landscape wallpapers get cropped — try ones made for it.
+              </span>
+            </div>
+            <button onClick={() => setActiveCategory('portrait')} className="btn-primary h-8 shrink-0 px-3 text-[12px]">
+              Browse {(counts.portrait ?? 0).toLocaleString()} vertical
+            </button>
+          </div>
+        )}
+
         <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
           <div>
             <h1 className="text-[22px] font-semibold tracking-tight text-ink">{searchQuery ? `Results for “${searchQuery}”` : meta.title}</h1>
@@ -319,7 +343,7 @@ export const Gallery: React.FC = () => {
           <>
             <div className={`grid ${gridCols} transition-opacity ${isLoading ? 'opacity-50' : ''}`}>
               {shown.map((item, i) => (
-                <WallpaperTile key={item.id} item={item} index={i} />
+                <WallpaperTile key={item.id} item={item} index={i} tall={tallView && isPortrait(item)} />
               ))}
             </div>
             {shown.length < list.length && <div ref={sentinel} className="h-px" aria-hidden />}

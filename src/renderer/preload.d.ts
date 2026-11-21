@@ -23,6 +23,8 @@ declare global {
       openExternal: (url: string) => void
       onDisplayChanged: (callback: (displays: DisplayInfo[]) => void) => () => void
       onCatalogChanged: (callback: () => void) => () => void
+      getAttachFailures?: () => Promise<number[]>
+      onAttachFailed?: (callback: (displayIds: number[]) => void) => () => void
       onNavigate?: (callback: (screen: string) => void) => () => void
       minimizeWindow: () => Promise<void>
       closeWindow: () => Promise<void>

@@ -2,6 +2,7 @@ import Database from 'better-sqlite3'
 import { app, screen } from 'electron'
 import path from 'node:path'
 import fs from 'node:fs'
+import crypto from 'node:crypto'
 import { fileURLToPath } from 'node:url'
 import { INITIAL_WALLPAPERS } from './contentSources'
 import { WallpaperItem, DEFAULT_WALLPAPER_ID } from '../shared/types'
@@ -83,6 +84,11 @@ export function initDatabase(): Database.Database {
       wallpaper_id       TEXT REFERENCES wallpapers(id),
       performance_mode   TEXT DEFAULT 'balanced'
     );
+
+    CREATE TABLE IF NOT EXISTS meta (
+      key   TEXT PRIMARY KEY,
+      value TEXT
+    );
   `)
 
   // Upsert catalog wallpapers to ensure updated working URLs & preview paths are synced
@@ -154,7 +160,13 @@ export function initDatabase(): Database.Database {
     }
   })
 
-  syncCatalog(INITIAL_WALLPAPERS)
+  // The catalog has ~14k entries: only rewrite it when it actually changed (new app version).
+  const catalogFingerprint = crypto.createHash('sha1').update(JSON.stringify(INITIAL_WALLPAPERS)).digest('hex')
+  const storedFingerprint = (db.prepare("SELECT value FROM meta WHERE key = 'catalog_fingerprint'").get() as { value: string } | undefined)?.value
+  if (storedFingerprint !== catalogFingerprint) {
+    syncCatalog(INITIAL_WALLPAPERS)
+    db.prepare("INSERT INTO meta (key, value) VALUES ('catalog_fingerprint', ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value").run(catalogFingerprint)
+  }
 
   return db
 }
@@ -270,6 +282,7 @@ export function getCategoryCounts(): Record<string, number> {
   counts.all = all
   counts.favorites = (database.prepare("SELECT COUNT(*) AS n FROM wallpapers WHERE is_favorite = 1 AND source != 'static'").get() as { n: number }).n
   counts.static = (database.prepare("SELECT COUNT(*) AS n FROM wallpapers WHERE source = 'static'").get() as { n: number }).n
+  counts.portrait = (database.prepare("SELECT COUNT(*) AS n FROM wallpapers WHERE source != 'static' AND resolution_h > resolution_w").get() as { n: number }).n
   return counts
 }
 
@@ -285,7 +298,10 @@ export function getAllWallpapers(category?: string, query?: string): WallpaperIt
     // Static wallpapers are only exposed via the dedicated Static Wallpapers tab
     conditions.push("source != 'static'")
 
-    if (category && category !== 'all' && category !== 'favorites' && category !== 'videos') {
+    if (category === 'portrait') {
+      // Virtual "Vertical" collection: anything taller than it is wide, for rotated monitors.
+      conditions.push('resolution_h > resolution_w')
+    } else if (category && category !== 'all' && category !== 'favorites' && category !== 'videos') {
       conditions.push('category = ?')
       params.push(category)
     } else if (category === 'favorites') {

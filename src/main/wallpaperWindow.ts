@@ -56,23 +56,51 @@ export function createWallpaperWindow(display: Display): BrowserWindow {
 
   win.setIgnoreMouseEvents(true, { forward: true })
   if (!isWindows) {
+    // Follow the user across Spaces, but never draw over full-screen apps.
     win.setVisibleOnAllWorkspaces(true, {
-      visibleOnFullScreen: true,
+      visibleOnFullScreen: false,
       skipTransformProcessType: true
     })
   }
 
   hardenWindowNavigation(win, wallpaperRendererUrlFor(display.id))
   win.loadURL(wallpaperRendererUrlFor(display.id))
+
   if (isWindows && !attachToDesktop(win, display.bounds, display.scaleFactor)) {
-    // Fallback: keep the window non-focusable and pushed behind other windows.
-    win.setAlwaysOnTop(false)
-    win.on('focus', () => win.blur())
+    // Never leave a full-screen window covering the desktop and other apps:
+    // if it can't sit behind the icons, don't show it at all and tell the gallery.
+    console.warn(`[Wallpaper] Could not attach to the Windows desktop for display ${display.id}; wallpaper disabled on it.`)
+    attachFailures.add(display.id)
+    win.destroy()
+    notifyAttachFailure()
+    return win
   }
-  win.showInactive()
+
+  // Show once the page has painted so there's no blank/black flash; fall back after 3s.
+  let shown = false
+  const reveal = () => {
+    if (shown || win.isDestroyed()) return
+    shown = true
+    win.showInactive()
+  }
+  win.once('ready-to-show', reveal)
+  setTimeout(reveal, 3000)
 
   wallpaperWindows.set(display.id, win)
   return win
+}
+
+const attachFailures = new Set<number>()
+
+function notifyAttachFailure(): void {
+  const galleryWin = galleryWindowGetter ? galleryWindowGetter() : null
+  if (galleryWin && !galleryWin.isDestroyed()) {
+    galleryWin.webContents.send('wallpaper:attach-failed', [...attachFailures])
+  }
+}
+
+export function getAttachFailures(): number[] {
+  return [...attachFailures]
 }
 
 let galleryWindowGetter: (() => BrowserWindow | null) | null = null
@@ -94,6 +122,7 @@ export function syncWallpaperWindows(): void {
 
   for (const display of displays) {
     if (!wallpaperWindows.has(display.id)) {
+      if (attachFailures.has(display.id)) continue
       createWallpaperWindow(display)
     } else {
       const win = wallpaperWindows.get(display.id)
@@ -108,7 +137,7 @@ export function syncWallpaperWindows(): void {
             height: display.bounds.height
           })
           win.setVisibleOnAllWorkspaces(true, {
-            visibleOnFullScreen: true,
+            visibleOnFullScreen: false,
             skipTransformProcessType: true
           })
         }

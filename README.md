@@ -112,7 +112,9 @@ Plus three classic canvas scenes: **Quantum Field**, **Aurora Flow** and **Nebul
 | 🪟 **Windows 10/11** (beta) | [Latest release](https://github.com/JayDev-27/Vantage/releases/latest) | Run `Vantage-Setup-…-x64.exe` (or `-arm64.exe`). The installer isn't code-signed yet, so SmartScreen may ask you to confirm |
 
 > [!NOTE]
-> If macOS says it can't verify the app, don't remove the quarantine flag. Use a release that's Developer ID–signed and notarized, and check its published checksum.
+> **First launch on a Mac:** Vantage isn't notarized by Apple yet. If macOS says it can't verify the app, open **System Settings → Privacy & Security**, scroll down and click **Open Anyway**. Use the **Apple Silicon** `.dmg` on M-series Macs and the **Intel** one on older Macs.
+>
+> **Windows:** the installer isn't code-signed yet; if SmartScreen appears, choose **More info → Run anyway**.
 
 Or visit **[vantagewall.vercel.app](https://vantagewall.vercel.app)** — the download button picks the right file for your Mac.
 

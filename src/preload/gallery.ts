@@ -36,6 +36,12 @@ contextBridge.exposeInMainWorld('galleryApi', {
     ipcRenderer.on('catalog:changed', handler)
     return () => ipcRenderer.removeListener('catalog:changed', handler)
   },
+  getAttachFailures: () => ipcRenderer.invoke('wallpaper:attach-failures'),
+  onAttachFailed: (callback: (displayIds: number[]) => void) => {
+    const handler = (_event: Electron.IpcRendererEvent, ids: number[]) => callback(ids)
+    ipcRenderer.on('wallpaper:attach-failed', handler)
+    return () => ipcRenderer.removeListener('wallpaper:attach-failed', handler)
+  },
   onNavigate: (callback: (screen: string) => void) => {
     const handler = (_event: Electron.IpcRendererEvent, screen: string) => callback(screen)
     ipcRenderer.on('navigate', handler)

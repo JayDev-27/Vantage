@@ -96,6 +96,7 @@ export function attachToDesktop(win: BrowserWindow, bounds: { x: number; y: numb
     u.MapWindowPoints(null, worker, pts, 1)
     const SWP_NOZORDER = 0x0004, SWP_NOACTIVATE = 0x0010, SWP_SHOWWINDOW = 0x0040
     u.SetWindowPos(hwnd, null, pts[0], pts[1], Math.round(bounds.width * scaleFactor), Math.round(bounds.height * scaleFactor), SWP_NOZORDER | SWP_NOACTIVATE | SWP_SHOWWINDOW)
+    console.log(`[WindowsDesktop] Attached wallpaper behind desktop icons at ${pts[0]},${pts[1]} (${bounds.width}x${bounds.height} @${scaleFactor}x)`)
     return true
   } catch (err) {
     console.warn('[WindowsDesktop] attach failed:', err)

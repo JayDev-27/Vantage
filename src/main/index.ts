@@ -5,7 +5,7 @@ import crypto from 'node:crypto'
 import { fileURLToPath } from 'node:url'
 import { Readable } from 'node:stream'
 import { initDatabase, getAllWallpapers, getCategoryCounts, getWallpaperById, setDisplayAssignment, getDisplayAssignment, setPerformanceMode, toggleFavoriteInDb, deleteWallpaperFromDb, addWallpaperToDb, pruneUserFolderEntries, closeDatabase, getWallpaperFileReferences } from './db'
-import { syncWallpaperWindows, applyWallpaperToDisplay, setPerformanceModeForDisplay, setupDisplayListeners, getGlobalPlaybackState, setGalleryWindowGetter, broadcastCacheProgress, isWallpaperRenderer, getDisplayIdForWebContents } from './wallpaperWindow'
+import { getAttachFailures, syncWallpaperWindows, applyWallpaperToDisplay, setPerformanceModeForDisplay, setupDisplayListeners, getGlobalPlaybackState, setGalleryWindowGetter, broadcastCacheProgress, isWallpaperRenderer, getDisplayIdForWebContents } from './wallpaperWindow'
 import { createTray, refreshTrayMenu } from './tray'
 import { initPowerManager } from './powerManager'
 import { ensureCached, getCacheStatus, clearCache, evictToLimit, setCacheLimitBytes, getCacheDir, isAllowedRemoteMediaUrl, onCacheProgress, getCacheLimitBytes, CACHE_FLOOR_BYTES, CACHE_CEILING_BYTES } from './videoCache'
@@ -375,9 +375,16 @@ function createGalleryWindow(): BrowserWindow {
     galleryWindow.loadFile(path.join(__dirname, '../renderer/gallery.html'))
   }
 
+  let galleryShown = false
   galleryWindow.once('ready-to-show', () => {
+    galleryShown = true
     if (galleryWindow) revealWindow(galleryWindow)
   })
+  // Some GPU/driver combinations never emit ready-to-show; never leave the app invisible.
+  const createdWin = galleryWindow
+  setTimeout(() => {
+    if (!galleryShown && createdWin && !createdWin.isDestroyed()) revealWindow(createdWin)
+  }, 4000)
 
   galleryWindow.on('close', (e) => {
     if (!isQuitting) {
@@ -401,6 +408,11 @@ function registerIpcHandlers(): void {
     if (query !== undefined && typeof query !== 'string') throw new Error('Invalid wallpaper query')
     if (typeof query === 'string' && query.length > 200) throw new Error('Wallpaper query is too long')
     return getAllWallpapers(category, query)
+  })
+
+  ipcMain.handle('wallpaper:attach-failures', (event) => {
+    requireTrustedIpcSender(event)
+    return getAttachFailures()
   })
 
   ipcMain.handle('wallpaper:counts', (event) => {

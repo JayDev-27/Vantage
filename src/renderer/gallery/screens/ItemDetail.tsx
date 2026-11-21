@@ -66,6 +66,9 @@ export const ItemDetail: React.FC<ItemDetailProps> = ({ item, onClose }) => {
         <div className="relative aspect-video max-h-[58vh] w-full shrink-0 overflow-hidden bg-black">
           {item.type === 'video' && !videoFailed ? (
             <>
+              {item.resolution.height > item.resolution.width && item.previewUrl && (
+                <img src={item.previewUrl} alt="" aria-hidden className="absolute inset-0 h-full w-full scale-110 object-cover opacity-50 blur-2xl" />
+              )}
               <video
                 key={item.id}
                 src={item.sourceUrl}
@@ -81,7 +84,7 @@ export const ItemDetail: React.FC<ItemDetailProps> = ({ item, onClose }) => {
                   setVideoFailed(true)
                   setBuffering(false)
                 }}
-                className="h-full w-full object-cover"
+                className={`relative h-full w-full ${item.resolution.height > item.resolution.width ? 'object-contain' : 'object-cover'}`}
               />
               {buffering && (
                 <div className="pointer-events-none absolute inset-0 grid place-items-center bg-black/25">

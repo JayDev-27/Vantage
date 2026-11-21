@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import type { WallpaperItem, DisplayInfo } from '../../../shared/types'
 export type { WallpaperItem, DisplayInfo }
 
-export type FormatFilter = 'all' | 'video' | 'generative' | '4k'
+export type FormatFilter = 'all' | 'video' | 'generative' | '4k' | 'vertical'
 export type SortMode = 'featured' | 'az' | 'resolution'
 export type Density = 'comfy' | 'compact'
 export type Screen = 'gallery' | 'settings' | 'credits'
@@ -80,13 +80,18 @@ export function visibleWallpapers(items: WallpaperItem[], format: FormatFilter, 
   if (format === 'video') list = list.filter((i) => i.type === 'video')
   else if (format === 'generative') list = list.filter((i) => i.type === 'generative')
   else if (format === '4k') list = list.filter((i) => i.resolution.width >= 3840)
+  else if (format === 'vertical') list = list.filter(isPortrait)
   if (sort === 'az') list = [...list].sort((a, b) => a.title.localeCompare(b.title))
   else if (sort === 'resolution') list = [...list].sort((a, b) => b.resolution.width * b.resolution.height - a.resolution.width * a.resolution.height)
   return list
 }
 
+/** Taller than wide: made for rotated (vertical) monitors. */
+export const isPortrait = (item: WallpaperItem): boolean => item.resolution.height > item.resolution.width
+export const isPortraitDisplay = (d: DisplayInfo | undefined): boolean => !!d && d.bounds.height > d.bounds.width
+
 export const resolutionLabel = (item: WallpaperItem): string =>
-  item.type === 'generative' ? 'Live' : item.resolution.width >= 3840 ? '4K' : item.resolution.width >= 2560 ? '2K' : item.resolution.width >= 1920 ? 'HD' : `${item.resolution.height || 1080}p`
+  item.type === 'generative' ? 'Live' : isPortrait(item) ? `Vertical ${item.resolution.height >= 1920 ? 'FHD' : 'HD'}` : item.resolution.width >= 3840 ? '4K' : item.resolution.width >= 2560 ? '2K' : item.resolution.width >= 1920 ? 'HD' : `${item.resolution.height || 1080}p`
 
 export const useGalleryStore = create<GalleryStore>((set, get) => ({
   activeCategory: 'all',
@@ -204,8 +209,13 @@ export const useGalleryStore = create<GalleryStore>((set, get) => ({
     const list = visibleWallpapers(wallpapers, formatFilter, sortMode)
     const displayId = selectedDisplayId ?? displays[0]?.id
     if (!list.length || displayId == null) return
-    const current = displays.find((d) => d.id === displayId)?.assignedWallpaperId
-    const pool = list.length > 1 ? list.filter((w) => w.id !== current) : list
+    const display = displays.find((d) => d.id === displayId)
+    const current = display?.assignedWallpaperId
+    // Match the display's orientation when this view has wallpapers that fit it.
+    const wantPortrait = isPortraitDisplay(display)
+    const fitting = list.filter((w) => w.type === 'generative' || isPortrait(w) === wantPortrait)
+    const base = fitting.length ? fitting : list
+    const pool = base.length > 1 ? base.filter((w) => w.id !== current) : base
     const pick = pool[Math.floor(Math.random() * pool.length)]
     await get().applyWallpaper(displayId, pick.id)
   },
