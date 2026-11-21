@@ -213,17 +213,40 @@ async function resolveFromDl(item) {
   }
   return false
 }
+// Thumbnails without a resolution suffix hide the video size: MotionBGS serves those as
+// 4K about two-thirds of the time and 1080p otherwise, so try 4K, then 1080p, then /dl/.
 const toCheck = added.filter((i) => i._noSuffix)
 const sample = added.filter((i) => !i._noSuffix).sort(() => Math.random() - 0.5).slice(0, 300)
 let ok = 0
 const dropped = []
-for (const item of [...toCheck, ...sample]) {
-  const status = await head(item.sourceUrl)
-  if (status === 200) ok++
-  else if (await resolveFromDl(item)) ok++
-  else dropped.push(item.id)
-  await sleep(120)
+async function verify(item) {
+  if (item._noSuffix) {
+    const mediaId = mediaIdOf(item.sourceUrl)
+    const base = item.sourceUrl.split('/').pop().replace(/\.\d{3,4}x\d{3,4}\.mp4$/, '')
+    for (const [w, h] of [[3840, 2160], [1920, 1080]]) {
+      const url = `${BASE}/media/${mediaId}/${base}.${w}x${h}.mp4`
+      if ((await head(url)) === 200) {
+        item.sourceUrl = url
+        item.resolution = { width: w, height: h }
+        return true
+      }
+    }
+    return resolveFromDl(item)
+  }
+  return (await head(item.sourceUrl)) === 200 || resolveFromDl(item)
 }
+const queue = [...toCheck, ...sample]
+let cursor = 0
+let done = 0
+await Promise.all(Array.from({ length: 6 }, async () => {
+  while (cursor < queue.length) {
+    const item = queue[cursor++]
+    if (await verify(item)) ok++
+    else dropped.push(item.id)
+    if (++done % 500 === 0) console.log(`  verified ${done}/${queue.length}`)
+  }
+}))
+
 const finalAdded = added.filter((i) => !dropped.includes(i.id)).map(({ _noSuffix, ...rest }) => rest)
 
 const counts = {}

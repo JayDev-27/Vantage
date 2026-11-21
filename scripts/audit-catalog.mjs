@@ -133,7 +133,7 @@ const ids = new Set()
 for (const item of catalog) {
   if (ids.has(item.id)) issues.push(`duplicate id ${item.id}`)
   ids.add(item.id)
-  if (item.previewUrl && !fs.existsSync(path.join(root, item.previewUrl))) issues.push(`missing thumbnail ${item.previewUrl}`)
+  if (item.previewUrl && !/^https?:/.test(item.previewUrl) && !fs.existsSync(path.join(root, item.previewUrl))) issues.push(`missing thumbnail ${item.previewUrl}`)
   if (item.sourceUrl.startsWith('extracted/') && !fs.existsSync(path.join(wallpaperDir, item.sourceUrl.slice(10))) && !fs.readdirSync(wallpaperDir).some((f) => f.toLowerCase() === item.sourceUrl.slice(10).toLowerCase())) issues.push(`missing bundled video ${item.sourceUrl}`)
 }
 

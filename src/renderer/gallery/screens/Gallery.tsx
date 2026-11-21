@@ -218,7 +218,7 @@ export const Gallery: React.FC = () => {
     scroller.current?.scrollTo({ top: 0 })
   }, [activeCategory, searchQuery, formatFilter, sortMode])
 
-  // Render tiles in pages as the user scrolls instead of mounting 1,300+ cards at once.
+  // Render tiles in pages as the user scrolls instead of mounting 13,000+ cards at once.
   useEffect(() => {
     const el = sentinel.current
     if (!el) return
@@ -311,7 +311,7 @@ export const Gallery: React.FC = () => {
               {!searchQuery && meta.blurb ? ` · ${meta.blurb}` : ''}
             </p>
           </div>
-          {activeCategory !== 'generative' && activeCategory !== 'static' && (
+          {activeCategory !== 'generative' && activeCategory !== 'static' && activeCategory !== 'portrait' && (
             <div className="flex flex-wrap gap-1.5" role="group" aria-label="Format">
               {FORMATS.map((f) => (
                 <button key={f.id} onClick={() => setFormatFilter(f.id)} aria-pressed={formatFilter === f.id} className={`chip ${formatFilter === f.id ? 'chip-on' : ''}`}>

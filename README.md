@@ -11,7 +11,7 @@
 <p><i>Your desktop, alive.</i></p>
 
 <p>
-  <b>Free, open-source live wallpapers.</b> 1,300+ motion wallpapers, procedural GPU scenes, every display — without slowing your machine down.
+  <b>Free, open-source live wallpapers.</b> 13,000+ motion wallpapers — including 3,300+ vertical ones for rotated monitors — procedural GPU scenes, every display — without slowing your machine down.
 </p>
 
 <p>
@@ -43,7 +43,7 @@
 - ⚡ **4K that sips power** — videos stream straight from disk with HTTP range requests, and Vantage drops to battery-saver cadence the moment you unplug.
 - 🌌 **Generative scenes** — 8 GPU shader wallpapers render live and react to your cursor. Nothing to download, and they never loop.
 - 📂 **Bring your own** — import MP4, MOV, WebM, PNG, JPG or WebP, or drop files into a watched folder and they appear instantly.
-- 🎛️ **Out of your way** — lives in the menu bar and the Dock (hide the Dock icon any time), pause or swap from the tray, ⌘K to search 1,300+ wallpapers.
+- 🎛️ **Out of your way** — lives in the menu bar and the Dock (hide the Dock icon any time), pause or swap from the tray, ⌘K to search 13,000+ wallpapers.
 - 🔓 **Free & open source** — MIT licensed, no account, no tracking.
 
 <div align="center">
@@ -76,7 +76,7 @@
 
 | | |
 |:--|:--|
-| **Library** | 1,330 wallpapers across Anime, Gaming, Heroes &amp; Comics, Nature, Space, Cars &amp; Streets, Digital Art, Generative and your own Still Images |
+| **Library** | 13,000+ wallpapers (3,300+ vertical) across Anime, Gaming, Heroes &amp; Comics, Nature, Space, Cars &amp; Streets, Digital Art, Generative and your own Still Images |
 | **Gallery** | Now Playing banner with Shuffle, live display cards, category counts, ⌘K search, sort by featured / A–Z / resolution, two grid densities, hover-to-preview, one-click **Set**, favorites |
 | **Multi-monitor** | Independent wallpaper and energy mode per display, apply to all, hot-plug aware |
 | **Energy** | Quality (60 fps), Balanced (30 fps), Battery (15 fps); shaders also lower their render resolution; automatic battery-saver when unplugged |
@@ -229,7 +229,7 @@ Vantage/
 <table>
   <tr>
     <td align="center" width="140">
-      <a href="https://github.com/JayDev-27"><img src="https://github.com/JayDev-27.png?size=120" width="72" alt="satiricalguru" style="border-radius:50%" /><br /><sub><b>satiricalguru</b></sub></a><br /><sub>Creator &amp; maintainer</sub>
+      <a href="https://github.com/JayDev-27"><img src="https://github.com/JayDev-27.png?size=120" width="72" alt="JayDev-27" style="border-radius:50%" /><br /><sub><b>JayDev-27</b></sub></a><br /><sub>Creator &amp; maintainer</sub>
     </td>
     <td align="center" width="140">
       <a href="https://github.com/Mxhi-04"><img src="https://avatars.githubusercontent.com/u/249584456?v=4&s=120" width="72" alt="Mxhi-04" style="border-radius:50%" /><br /><sub><b>Mahi Patni</b></sub></a><br /><sub><a href="https://github.com/Mxhi-04">@Mxhi-04</a></sub>
