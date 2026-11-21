@@ -14,7 +14,7 @@ import store from './store'
 import { setDockVisible, isDockVisible, buildAppMenu, onDockVisibilityChange, revealWindow } from './dock'
 import { INITIAL_WALLPAPERS } from './contentSources'
 import { ALLOWED_SETTINGS_KEYS, DEFAULT_WALLPAPER_ID } from '../shared/types'
-import { toMediaUrl } from './mediaUrl'
+import { toMediaUrl, fromMediaUrl } from './mediaUrl'
 import { installVantageScreenSaver, setupVantageScreenSaver, syncSelectedScreenSaverVideo } from './screenSaver'
 
 import { generateVideoThumbnail, pruneOrphanThumbnails } from './thumbnailGenerator'
@@ -496,7 +496,7 @@ function registerIpcHandlers(): void {
         if (localPath.startsWith('file://')) {
           localPath = fileURLToPath(localPath)
         } else if (localPath.startsWith('media://')) {
-          localPath = decodeURIComponent(localPath.replace('media://', ''))
+          localPath = fromMediaUrl(localPath) ?? ''
         }
         if (!fs.existsSync(localPath)) return
         if (!isPathInDeleteZone(localPath)) {
@@ -875,8 +875,8 @@ app.whenReady().then(async () => {
   // Protocol handler for local file media streaming with full Range headers support
   protocol.handle('media', (request) => {
     try {
-      const rawPath = request.url.replace(/^media:\/+/i, '/')
-      const filePath = path.resolve(decodeURIComponent(rawPath))
+      const filePath = fromMediaUrl(request.url)
+      if (!filePath) return new Response('Bad Request', { status: 400 })
 
       // Report genuinely missing files as 404 before the allow-list check
       // (the allow-list check requires realpath, which fails for missing files)

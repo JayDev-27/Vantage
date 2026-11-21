@@ -6,7 +6,7 @@ import crypto from 'node:crypto'
 import { fileURLToPath } from 'node:url'
 import { INITIAL_WALLPAPERS } from './contentSources'
 import { WallpaperItem, DEFAULT_WALLPAPER_ID } from '../shared/types'
-import { toMediaUrl } from './mediaUrl'
+import { toMediaUrl, fromMediaUrl } from './mediaUrl'
 
 /** Shape of a row returned by SELECT * FROM wallpapers */
 interface WallpaperRow {
@@ -234,7 +234,9 @@ function mediaUrlBasename(url: string | null | undefined): string | null {
   let localPath: string
   try {
     if (url.startsWith('media://')) {
-      localPath = decodeURIComponent(url.replace(/^media:\/+/i, '/'))
+      const resolved = fromMediaUrl(url)
+      if (!resolved) return null
+      localPath = resolved
     } else if (url.startsWith('file://')) {
       localPath = fileURLToPath(url)
     } else {

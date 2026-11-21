@@ -7,6 +7,7 @@ import { promisify } from 'node:util'
 import { getDisplayAssignment, getWallpaperById } from './db'
 import { getCachedFilePath, isAllowedRemoteMediaUrl } from './videoCache'
 import { DEFAULT_WALLPAPER_ID, WallpaperItem } from '../shared/types'
+import { fromMediaUrl } from './mediaUrl'
 
 const SCREEN_SAVER_NAME = 'Vantage.saver'
 const SCREEN_SAVER_DATA_DIR_NAME = 'Vantage'
@@ -42,8 +43,8 @@ function localPathFromMediaUrl(url: string | undefined | null): string | null {
     return null
   }
   try {
-    const resolved = path.resolve(decodeURIComponent(url.replace(/^media:\/+/i, '/')))
-    return fs.existsSync(resolved) ? resolved : null
+    const resolved = fromMediaUrl(url)
+    return resolved && fs.existsSync(resolved) ? resolved : null
   } catch {
     return null
   }
