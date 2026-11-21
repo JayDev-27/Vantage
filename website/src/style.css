@@ -270,8 +270,11 @@ main, .nav, .footer { position: relative; z-index: 2; }
 .download .eyebrow, .download .dl-meta { transition: opacity 1s var(--ease) 0.4s; }
 
 /* Giant footer wordmark */
-.footer-wordmark { display: flex; justify-content: space-between; margin-top: 70px; font-weight: 600; font-size: clamp(64px, 17vw, 300px); line-height: 0.8; letter-spacing: -0.04em; overflow: hidden; color: transparent; -webkit-text-stroke: 1px rgba(238,240,244,0.28); user-select: none; }
-.footer-wordmark span { display: inline-block; transform: translateY(calc((1 - var(--wp, 0)) * (60% + var(--li) * 12%))); transition: color 0.4s, -webkit-text-stroke-color 0.4s; }
+/* Outlined wordmark. Inter Tight's variable glyphs use overlapping contours (the A's crossbar),
+   which a plain transparent-fill stroke traces as a stray box. Fill with the footer colour and
+   paint the stroke first so the fill hides those inner lines; the 2px stroke leaves a clean 1px outline. */
+.footer-wordmark { display: flex; justify-content: space-between; margin-top: 70px; font-weight: 600; font-size: clamp(64px, 17vw, 300px); line-height: 0.8; letter-spacing: -0.04em; overflow: hidden; color: #0b0c10; -webkit-text-stroke: 2px rgba(238,240,244,0.28); paint-order: stroke fill; user-select: none; }
+.footer-wordmark span { display: inline-block; paint-order: stroke fill; transform: translateY(calc((1 - var(--wp, 0)) * (60% + var(--li) * 12%))); transition: color 0.4s, -webkit-text-stroke-color 0.4s; }
 .footer-wordmark span:hover { color: var(--glow-bright); -webkit-text-stroke-color: transparent; }
 .footer-base { margin-top: 28px; }
 
