@@ -130,7 +130,7 @@ export async function captureVideoFirstFrame(filePath: string): Promise<Captured
     }
     video.src = url
     document.body.append(video)
-  })`, 15000)
+  })`, 40000)
 
   const jpegPrefix = 'data:image/jpeg;base64,'
   if (!frame?.full.startsWith(jpegPrefix) || !frame.thumbnail.startsWith(jpegPrefix)) return null

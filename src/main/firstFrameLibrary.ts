@@ -74,7 +74,8 @@ async function captureAndSave(videoId: string, { cachedPath, restoreSuppressed =
 
   const file = localPath ?? cachedPath ?? await ensureCached(video.sourceUrl)
   if (cancelled()) return false
-  const frame = await captureVideoFirstFrame(file)
+  // One retry: the first decode can miss its window on slow or busy machines.
+  const frame = (await captureVideoFirstFrame(file)) ?? (cancelled() ? null : await captureVideoFirstFrame(file))
   if (cancelled()) return false
   if (!frame) throw new Error('Could not capture a first frame at 2K or higher.')
 
