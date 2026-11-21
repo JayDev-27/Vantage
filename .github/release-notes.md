@@ -1,23 +1,31 @@
-## Vantage 1.1 — your desktop, wide awake
+## Vantage 1.2 — stable, vertical-ready, 10× the library
 
-**New website:** https://vantagewall.vercel.app
+**Website:** https://vantagewall.vercel.app
 
 ### Downloads
 | Platform | File |
 |:--|:--|
-| macOS · Apple Silicon | `Vantage-1.1.0-arm64.dmg` |
-| macOS · Intel | `Vantage-1.1.0-x64.dmg` |
-| Windows 10/11 · x64 (beta) | `Vantage-Setup-1.1.0-x64.exe` |
-| Windows 11 · ARM (beta) | `Vantage-Setup-1.1.0-arm64.exe` |
+| macOS · Apple Silicon (M1–M5) | `Vantage-1.2.0-arm64.dmg` |
+| macOS · Intel | `Vantage-1.2.0-x64.dmg` |
+| Windows 10/11 · x64 | `Vantage-Setup-1.2.0-x64.exe` |
+| Windows 11 · ARM | `Vantage-Setup-1.2.0-arm64.exe` |
 
-### What's new
-- **Redesigned gallery:** Now Playing banner with Shuffle, display cards, category counts, ⌘K search, sort, grid density, ←/→ browsing in the detail view
-- **8 GPU shader wallpapers:** Iris Bloom, Liquid Chrome, Silk Waves, Neon Horizon, Ink Nebula, Warp Drive, Aurora Veil, Lava Lamp
-- **Cleaner library:** 199 wallpapers moved to the right category, new Cars & Streets category, duplicates fixed
-- **New look:** white accent, new aperture app icon and menu-bar icon
-- **Dock:** shown by default, with a Show in Dock toggle in the menu-bar menu and the app menu; the gallery now opens in front
-- **Windows (beta):** wallpapers sit behind your desktop icons, tray menu and installer
+### Fixed
+- **Windows:** wallpapers now actually sit behind your desktop icons. In 1.1 the attach step failed and left a black full-screen window on top of everything.
+- **Windows:** bundled and imported videos now load (local file URLs were broken on Windows drive paths).
+- **macOS:** wallpapers no longer draw over full-screen apps, and never flash black or blank while loading. The gallery always appears, even on GPUs that never report "ready".
+- Streaming wallpapers show their preview while downloading instead of a black screen.
+- Battery Saver no longer plays videos in slow motion.
+- **Anime in one place:** 274 wallpapers moved to their correct category using MotionBGS's own tags.
 
-### Notes
-- The macOS build is ad-hoc signed, not notarized. If macOS blocks it, use a notarized build when one is available rather than removing the quarantine flag.
-- The Windows installer isn't code-signed yet, so SmartScreen may ask you to confirm. Windows support is new — please [report issues](https://github.com/JayDev-27/Vantage/issues).
+### New
+- **13,000+ wallpapers** (up from 1,330), with thumbnails streamed so the installer doesn't grow.
+- **Vertical monitors:** 3,300+ 9:16 wallpapers, a Vertical collection with tall tiles, a rotated display icon, a hint when your selected display is vertical, and Shuffle that picks wallpapers matching the display's orientation.
+- **MoeWalls:** linked from My Imports and Credits. Download there, drop the file into the watched folder, and it appears automatically.
+- Faster launches: the catalog is only re-synced when it changes.
+
+### First launch
+- **Mac:** Vantage isn't notarized by Apple yet. If macOS says it can't verify the app, open **System Settings → Privacy & Security** and click **Open Anyway**.
+- **Windows:** the installer isn't code-signed yet; on SmartScreen choose **More info → Run anyway**.
+
+Every build is launched as a fresh install on clean macOS and Windows machines in CI before release (gallery, catalog, every wallpaper window, desktop attach).

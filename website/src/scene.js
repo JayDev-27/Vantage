@@ -54,59 +54,118 @@ function cardMaterial(map, aspect, { radius = 0.06, bright = 1 } = {}) {
   })
 }
 
-// Vantage aperture iris — replaces the astronaut as the hero object of the dive.
-function makeIris() {
+// The dive's hero object: a floating glass "window" with live wallpapers inside it.
+// Every wallpaper is a window — the camera later falls through it.
+function makePortal(textures) {
   const group = new THREE.Group()
-  const chrome = new THREE.MeshPhysicalMaterial({ color: 0xe6e9ee, metalness: 1, roughness: 0.16, envMapIntensity: 1.3 })
-  const graphite = new THREE.MeshPhysicalMaterial({ color: 0x15171c, metalness: 0.85, roughness: 0.32, clearcoat: 1, clearcoatRoughness: 0.15 })
+  const W = 3.2, H = 2.0, R = 0.18
 
-  const ring = new THREE.Mesh(new THREE.TorusGeometry(1.56, 0.13, 32, 160), chrome)
-  group.add(ring)
-  const housing = new THREE.Mesh(new THREE.CylinderGeometry(1.5, 1.5, 0.22, 96, 1, true), graphite)
-  housing.rotation.x = Math.PI / 2
-  group.add(housing)
+  // Screen: two wallpapers crossfade with a slow Ken Burns pan, rounded to the pane.
+  const screenMat = new THREE.ShaderMaterial({
+    transparent: true,
+    side: THREE.DoubleSide,
+    depthWrite: false,
+    uniforms: {
+      mapA: { value: textures[0] }, mapB: { value: textures[1 % textures.length] },
+      uMix: { value: 0 }, uTime: { value: 0 }, uBright: { value: 0.6 },
+      uAspect: { value: W / H }, uRadius: { value: R / H }
+    },
+    vertexShader: /* glsl */ `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`,
+    fragmentShader: /* glsl */ `
+      uniform sampler2D mapA, mapB; uniform float uMix, uTime, uBright, uAspect, uRadius; varying vec2 vUv;
+      float sdRound(vec2 p, vec2 b, float r){ vec2 q = abs(p) - b + r; return length(max(q,0.0)) + min(max(q.x,q.y),0.0) - r; }
+      void main(){
+        vec2 p = (vUv - 0.5) * vec2(uAspect, 1.0);
+        float d = sdRound(p, vec2(uAspect, 1.0) * 0.5, uRadius);
+        float a = 1.0 - smoothstep(-0.004, 0.004, d);
+        vec2 pan = vec2(sin(uTime * 0.07), cos(uTime * 0.05)) * 0.03;
+        vec2 uvA = (vUv - 0.5) * 0.9 + 0.5 + pan;
+        vec2 uvB = (vUv - 0.5) * 0.9 + 0.5 - pan;
+        vec3 col = mix(texture2D(mapA, uvA).rgb, texture2D(mapB, uvB).rgb, smoothstep(0.0, 1.0, uMix)) * uBright;
+        float vign = smoothstep(1.15, 0.35, length((vUv - 0.5) * vec2(1.0, 1.3)));
+        float inner = smoothstep(-0.06, 0.0, d) * a;
+        gl_FragColor = vec4(col * (0.7 + 0.3 * vign) + inner * 0.18, a);
+        #include <colorspace_fragment>
+      }`
+  })
+  const screen = new THREE.Mesh(new THREE.PlaneGeometry(W, H), screenMat)
+  group.add(screen)
 
-  const shape = new THREE.Shape()
-  shape.moveTo(1.38, 0)
-  shape.quadraticCurveTo(1.05, 1.08, -0.18, 0.98)
-  shape.quadraticCurveTo(0.58, 0.38, 1.38, 0)
-  const bladeGeo = new THREE.ExtrudeGeometry(shape, { depth: 0.035, bevelEnabled: true, bevelThickness: 0.012, bevelSize: 0.012, bevelSegments: 2, curveSegments: 24 })
-  bladeGeo.translate(-1.38, 0, 0)
-  const blades = []
-  const COUNT = 7
-  for (let i = 0; i < COUNT; i++) {
-    const a = (i / COUNT) * Math.PI * 2
-    const pivot = new THREE.Group()
-    pivot.position.set(Math.cos(a) * 1.38, Math.sin(a) * 1.38, -0.06 + i * 0.012)
-    pivot.userData.base = a
-    const blade = new THREE.Mesh(bladeGeo, i % 2 ? chrome : graphite)
-    blade.rotation.x = 0.04
-    pivot.add(blade)
-    group.add(pivot)
-    blades.push(pivot)
-  }
-
-  const core = new THREE.Mesh(
-    new THREE.SphereGeometry(0.5, 64, 64),
-    new THREE.MeshPhysicalMaterial({ color: 0xbffcf4, metalness: 0, roughness: 0.04, transmission: 1, thickness: 1.1, ior: 1.5, iridescence: 1, iridescenceIOR: 1.3, envMapIntensity: 1.5 })
+  // Glass sheet over the screen: clearcoat reflections + faint iridescence.
+  const glass = new THREE.Mesh(
+    new RoundedBoxGeometry(W + 0.04, H + 0.04, 0.08, 6, 0.05),
+    new THREE.MeshPhysicalMaterial({ color: 0xffffff, metalness: 0, roughness: 0.04, transparent: true, opacity: 0.07, clearcoat: 1, clearcoatRoughness: 0.02, iridescence: 0.7, iridescenceIOR: 1.35, envMapIntensity: 1.6, depthWrite: false })
   )
-  core.position.z = -0.25
-  group.add(core)
-  const ember = new THREE.Mesh(new THREE.SphereGeometry(0.16, 32, 32), new THREE.MeshBasicMaterial({ color: 0x8ff7ea, toneMapped: false }))
-  ember.position.z = -0.3
-  group.add(ember)
-  const light = new THREE.PointLight(0x6ee7da, 6, 8, 1.6)
-  light.position.z = 0.4
+  glass.position.z = 0.045
+  group.add(glass)
+
+  // Rounded-rectangle rim: polished chrome tube + a thin glowing inner line.
+  const rimPts = []
+  const seg = 24
+  const corners = [[W / 2 - R, H / 2 - R, 0], [-W / 2 + R, H / 2 - R, Math.PI / 2], [-W / 2 + R, -H / 2 + R, Math.PI], [W / 2 - R, -H / 2 + R, Math.PI * 1.5]]
+  for (const [cx, cy, a0] of corners) for (let i = 0; i <= seg; i++) {
+    const a = a0 + (i / seg) * (Math.PI / 2)
+    rimPts.push(new THREE.Vector3(cx + Math.cos(a) * R, cy + Math.sin(a) * R, 0))
+  }
+  const rimCurve = new THREE.CatmullRomCurve3(rimPts, true, 'centripetal')
+  const chrome = new THREE.MeshPhysicalMaterial({ color: 0xeef1f5, metalness: 1, roughness: 0.12, envMapIntensity: 1.4 })
+  const rim = new THREE.Mesh(new THREE.TubeGeometry(rimCurve, 360, 0.032, 20, true), chrome)
+  group.add(rim)
+  const glowMat = new THREE.MeshBasicMaterial({ color: 0x8ff7ea, transparent: true, opacity: 0.6, toneMapped: false })
+  const glow = new THREE.Mesh(new THREE.TubeGeometry(rimCurve, 360, 0.012, 8, true), glowMat)
+  glow.position.z = 0.07
+  glow.scale.setScalar(0.985)
+  group.add(glow)
+
+  // Satellites in the hero's visual language.
+  const mats = [
+    new THREE.MeshPhysicalMaterial({ color: 0xdfe3e8, metalness: 1, roughness: 0.12 }),
+    new THREE.MeshPhysicalMaterial({ color: 0x14c8b3, roughness: 0.25, metalness: 0.1, clearcoat: 1 }),
+    new THREE.MeshPhysicalMaterial({ color: 0xf2f3f6, roughness: 0.3, clearcoat: 0.7 })
+  ]
+  const sats = [
+    new THREE.Mesh(new THREE.CapsuleGeometry(0.11, 0.3, 8, 16), mats[0]),
+    new THREE.Mesh(new THREE.TorusGeometry(0.16, 0.06, 16, 40), mats[1]),
+    new THREE.Mesh(new THREE.SphereGeometry(0.13, 32, 32), mats[2])
+  ]
+  sats.forEach((m, i) => { m.userData.phase = (i / sats.length) * Math.PI * 2; group.add(m) })
+
+  const light = new THREE.PointLight(0x8ff7ea, 4, 9, 1.6)
+  light.position.set(0, 0, 1.2)
   group.add(light)
 
+  let open = 0.2
+  let texIndex = 1
+  let swapAt = 3.2
   const setOpen = (o) => {
-    // o: 0 closed → 1 fully open
-    for (const p of blades) p.rotation.z = p.userData.base - 0.08 - o * 0.62
-    ember.scale.setScalar(0.6 + o * 1.4)
-    light.intensity = 3 + o * 10
+    open = o
+    screenMat.uniforms.uBright.value = 0.55 + o * 0.7
+    glowMat.opacity = 0.35 + o * 0.6
+    light.intensity = 2 + o * 8
+  }
+  const tick = (t) => {
+    screenMat.uniforms.uTime.value = t
+    // Crossfade to the next wallpaper every few seconds.
+    if (t > swapAt) {
+      const k = Math.min(1, (t - swapAt) / 1.2)
+      screenMat.uniforms.uMix.value = k
+      if (k >= 1) {
+        screenMat.uniforms.mapA.value = screenMat.uniforms.mapB.value
+        texIndex = (texIndex + 1) % textures.length
+        screenMat.uniforms.mapB.value = textures[texIndex]
+        screenMat.uniforms.uMix.value = 0
+        swapAt = t + 3.2
+      }
+    }
+    const r = 2.05 + open * 0.55
+    sats.forEach((m, i) => {
+      const a = t * (0.5 + i * 0.12) + m.userData.phase
+      m.position.set(Math.cos(a) * r, Math.sin(a * 1.3) * 0.55 + (i - 1) * 0.35, Math.sin(a) * 0.9)
+      m.rotation.set(t * 0.8 + i, t * 0.6, t * 0.4)
+    })
   }
   setOpen(0.2)
-  return { group, setOpen, ember }
+  return { group, setOpen, tick }
 }
 
 export function createScene(canvas, { thumbs, isTouch, onProgress }) {
@@ -339,7 +398,7 @@ export function createScene(canvas, { thumbs, isTouch, onProgress }) {
   // Void group (iris, dust)
   const voidGroup = new THREE.Group()
   dive.scene.add(voidGroup)
-  const iris = makeIris()
+  const iris = makePortal(textures.slice(4, 24))
   voidGroup.add(iris.group)
 
   const dustGeo = new THREE.BufferGeometry()
@@ -423,6 +482,7 @@ export function createScene(canvas, { thumbs, isTouch, onProgress }) {
     const cam = dive.camera
     const fitS = Math.min(1, cam.aspect * 1.05)
     monitor.scale.setScalar(fitS)
+    iris.tick(t)
 
     // Phase A: monitor approach (0 → 0.2)
     const showMonitor = p < 0.205
@@ -460,7 +520,7 @@ export function createScene(canvas, { thumbs, isTouch, onProgress }) {
       cam.fov = 35
       cam.position.set(mx * 0.6, my * 0.4 + lerp(0, -1.2, fall), lerp(10, 8.5, appear) - fall * 4)
       iris.group.position.set(0, lerp(-0.2, -2.4, fall) + Math.sin(t * 1.1) * 0.08 * (1 - fall), lerp(-3, 0, appear) - fall * 9)
-      iris.group.rotation.set(lerp(-my * 0.4, -1.25, fall) + Math.sin(t * 0.6) * 0.06, mx * 0.55 + Math.sin(t * 0.3) * 0.2 * (1 - fall), t * 0.12 + fall * 2)
+      iris.group.rotation.set(lerp(-my * 0.35, -1.25, fall) + Math.sin(t * 0.6) * 0.05, mx * 0.5 + Math.sin(t * 0.3) * 0.18 * (1 - fall), Math.sin(t * 0.4) * 0.04 + fall * 1.2)
       iris.group.scale.setScalar(lerp(0.4, 1.15, appear) * fitS)
       portal.material.opacity = range(p, 0.42, 0.52) * 0.9
       portal.scale.setScalar(1 + range(p, 0.45, 0.56) * 1.5)
@@ -481,7 +541,7 @@ export function createScene(canvas, { thumbs, isTouch, onProgress }) {
       cam.lookAt(lookTarget)
       cam.rotation.z = Math.sin(tp * Math.PI * 2) * 0.25
       iris.group.position.set(Math.sin(t * 1.4) * 0.25, Math.cos(t) * 0.2 - 0.2, z - 5.5)
-      iris.group.rotation.set(-0.2 + my * 0.3, mx * 0.4, t * (1 + speed * 4))
+      iris.group.rotation.set(-0.2 + my * 0.3, mx * 0.4, Math.sin(t * 0.8) * 0.3 + speed * 0.6)
       iris.group.scale.setScalar(0.6)
       iris.setOpen(1)
       portal.material.opacity = 0
@@ -503,11 +563,12 @@ export function createScene(canvas, { thumbs, isTouch, onProgress }) {
       lookTarget.set(0, 0, 0)
       cam.lookAt(lookTarget)
       cam.rotation.z = 0
-      iris.group.position.set(mx * 0.3, Math.sin(t * 1.1) * 0.12 + 0.2, 0)
-      iris.group.rotation.set(-my * 0.5 + Math.sin(t * 0.5) * 0.08, mx * 0.7, t * 0.25)
+      // Pushed back and dimmed so the download headline and buttons stay the focus.
+      iris.group.position.set(mx * 0.3, Math.sin(t * 1.1) * 0.12 + 0.35, -2.2)
+      iris.group.rotation.set(-my * 0.4 + Math.sin(t * 0.5) * 0.06, mx * 0.6, Math.sin(t * 0.35) * 0.05)
       iris.group.scale.setScalar(lerp(0.6, 1.05, enter) * fitS)
       orbit.scale.setScalar(Math.max(0.55, fitS))
-      iris.setOpen(0.75 + Math.sin(t * 0.9) * 0.15)
+      iris.setOpen(0.05 + Math.sin(t * 0.9) * 0.05)
       voidGroup.visible = true
       portal.material.opacity = 0
       const mouseWorld = tmpV.set(mx * 6.5, my * 3.6, 0)

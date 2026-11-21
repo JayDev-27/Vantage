@@ -5,7 +5,7 @@ import crypto from 'node:crypto'
 import { fileURLToPath } from 'node:url'
 import { Readable } from 'node:stream'
 import { initDatabase, getAllWallpapers, getCategoryCounts, getWallpaperById, setDisplayAssignment, getDisplayAssignment, setPerformanceMode, toggleFavoriteInDb, deleteWallpaperFromDb, addWallpaperToDb, pruneUserFolderEntries, closeDatabase, getWallpaperFileReferences } from './db'
-import { syncWallpaperWindows, applyWallpaperToDisplay, setPerformanceModeForDisplay, setupDisplayListeners, getGlobalPlaybackState, setGalleryWindowGetter, broadcastCacheProgress, isWallpaperRenderer, getDisplayIdForWebContents } from './wallpaperWindow'
+import { getAttachFailures, syncWallpaperWindows, applyWallpaperToDisplay, setPerformanceModeForDisplay, setupDisplayListeners, getGlobalPlaybackState, setGalleryWindowGetter, broadcastCacheProgress, isWallpaperRenderer, getDisplayIdForWebContents } from './wallpaperWindow'
 import { createTray, refreshTrayMenu } from './tray'
 import { initPowerManager } from './powerManager'
 import { ensureCached, getCacheStatus, clearCache, evictToLimit, setCacheLimitBytes, getCacheDir, isAllowedRemoteMediaUrl, onCacheProgress, getCacheLimitBytes, CACHE_FLOOR_BYTES, CACHE_CEILING_BYTES } from './videoCache'
@@ -14,7 +14,7 @@ import store from './store'
 import { setDockVisible, isDockVisible, buildAppMenu, onDockVisibilityChange, revealWindow } from './dock'
 import { INITIAL_WALLPAPERS } from './contentSources'
 import { ALLOWED_SETTINGS_KEYS, DEFAULT_WALLPAPER_ID } from '../shared/types'
-import { toMediaUrl } from './mediaUrl'
+import { toMediaUrl, fromMediaUrl } from './mediaUrl'
 import { installVantageScreenSaver, setupVantageScreenSaver, syncSelectedScreenSaverVideo } from './screenSaver'
 
 import { generateVideoThumbnail, pruneOrphanThumbnails } from './thumbnailGenerator'
@@ -375,9 +375,16 @@ function createGalleryWindow(): BrowserWindow {
     galleryWindow.loadFile(path.join(__dirname, '../renderer/gallery.html'))
   }
 
+  let galleryShown = false
   galleryWindow.once('ready-to-show', () => {
+    galleryShown = true
     if (galleryWindow) revealWindow(galleryWindow)
   })
+  // Some GPU/driver combinations never emit ready-to-show; never leave the app invisible.
+  const createdWin = galleryWindow
+  setTimeout(() => {
+    if (!galleryShown && createdWin && !createdWin.isDestroyed()) revealWindow(createdWin)
+  }, 4000)
 
   galleryWindow.on('close', (e) => {
     if (!isQuitting) {
@@ -401,6 +408,11 @@ function registerIpcHandlers(): void {
     if (query !== undefined && typeof query !== 'string') throw new Error('Invalid wallpaper query')
     if (typeof query === 'string' && query.length > 200) throw new Error('Wallpaper query is too long')
     return getAllWallpapers(category, query)
+  })
+
+  ipcMain.handle('wallpaper:attach-failures', (event) => {
+    requireTrustedIpcSender(event)
+    return getAttachFailures()
   })
 
   ipcMain.handle('wallpaper:counts', (event) => {
@@ -484,7 +496,7 @@ function registerIpcHandlers(): void {
         if (localPath.startsWith('file://')) {
           localPath = fileURLToPath(localPath)
         } else if (localPath.startsWith('media://')) {
-          localPath = decodeURIComponent(localPath.replace('media://', ''))
+          localPath = fromMediaUrl(localPath) ?? ''
         }
         if (!fs.existsSync(localPath)) return
         if (!isPathInDeleteZone(localPath)) {
@@ -863,8 +875,8 @@ app.whenReady().then(async () => {
   // Protocol handler for local file media streaming with full Range headers support
   protocol.handle('media', (request) => {
     try {
-      const rawPath = request.url.replace(/^media:\/+/i, '/')
-      const filePath = path.resolve(decodeURIComponent(rawPath))
+      const filePath = fromMediaUrl(request.url)
+      if (!filePath) return new Response('Bad Request', { status: 400 })
 
       // Report genuinely missing files as 404 before the allow-list check
       // (the allow-list check requires realpath, which fails for missing files)
@@ -988,9 +1000,12 @@ app.whenReady().then(async () => {
   setupDisplayListeners()
   syncWallpaperWindows()
   initPowerManager()
-  void installVantageScreenSaver()
-    .then(() => syncSelectedScreenSaverVideo())
-    .catch((err) => console.warn('[ScreenSaver] Native module unavailable:', err))
+  // The Screen Saver companion and Lock Screen sync are macOS-only.
+  if (process.platform === 'darwin') {
+    void installVantageScreenSaver()
+      .then(() => syncSelectedScreenSaverVideo())
+      .catch((err) => console.warn('[ScreenSaver] Native module unavailable:', err))
+  }
   setCacheLimitBytes((store.get('maxCacheSizeGb', 5) as number) * 1024 * 1024 * 1024)
   evictToLimit(getCacheLimitBytes())
   registerIpcHandlers()

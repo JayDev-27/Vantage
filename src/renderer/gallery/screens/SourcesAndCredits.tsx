@@ -30,6 +30,13 @@ export const SourcesAndCredits: React.FC = () => {
       detail: 'Original shader code, MIT licensed with the rest of Vantage. Nothing is downloaded.'
     },
     {
+      icon: Globe,
+      name: 'MoeWalls',
+      what: 'More anime live wallpapers, downloaded on their site',
+      detail: 'MoeWalls only allows downloads through its own pages, so Vantage links there instead of streaming them. Download a wallpaper, drop it into the watched folder, and it shows up under My Imports.',
+      url: 'https://moewalls.com'
+    },
+    {
       icon: FolderDown,
       name: 'Your imports',
       what: 'Files you add',

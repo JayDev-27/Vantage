@@ -1,0 +1,55 @@
+name: Smoke test
+
+# Builds the app unpacked on clean macOS and Windows machines, launches it as a fresh
+# install, and checks the gallery and every wallpaper window over DevTools.
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+            pack: npx electron-builder --mac --dir --arm64 --publish never
+            exe: dist/mac-arm64/Vantage.app/Contents/MacOS/Vantage
+          - os: windows-latest
+            pack: npx electron-builder --win --dir --x64 --publish never
+            exe: dist/win-unpacked/Vantage.exe
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run typecheck
+      - run: npm run build
+      - run: ${{ matrix.pack }}
+      - name: Launch and check the app
+        run: node scripts/smoke-test.mjs "${{ matrix.exe }}" smoke-artifacts
+      - name: Full-desktop screenshot (Windows)
+        if: always() && runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $exe = Resolve-Path "${{ matrix.exe }}"
+          $p = Start-Process -FilePath $exe -ArgumentList "--user-data-dir=$env:RUNNER_TEMP\vantage-shot" -PassThru
+          Start-Sleep -Seconds 25
+          Add-Type -AssemblyName System.Windows.Forms, System.Drawing
+          $b = [System.Windows.Forms.SystemInformation]::VirtualScreen
+          $bmp = New-Object System.Drawing.Bitmap $b.Width, $b.Height
+          $g = [System.Drawing.Graphics]::FromImage($bmp)
+          $g.CopyFromScreen($b.Left, $b.Top, 0, 0, $bmp.Size)
+          $bmp.Save("smoke-artifacts\desktop.png")
+          Stop-Process -Id $p.Id -Force -ErrorAction SilentlyContinue
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: smoke-${{ matrix.os }}
+          path: smoke-artifacts

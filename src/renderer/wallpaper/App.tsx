@@ -139,13 +139,17 @@ export const App: React.FC = () => {
   if (wallpaper.type === 'video') {
     return (
       <div className="w-full h-full relative bg-black">
+        {/* The preview image fills the desktop instantly; the video fades in over it once it plays. */}
+        {wallpaper.previewUrl && (
+          <img src={wallpaper.previewUrl} alt="" className="absolute inset-0 h-full w-full object-cover" draggable={false} />
+        )}
         <VideoLayer src={playSrc} isPlaying={isPlaying} performanceMode={performanceMode} />
         {downloadPct !== null && (
-          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/70 text-white">
-            <div className="text-sm font-mono">Downloading wallpaper… {downloadPct}%</div>
-            <div className="w-48 h-1 bg-white/20 rounded mt-3 overflow-hidden">
-              <div className="h-full bg-white/80 transition-[width] duration-200" style={{ width: `${downloadPct}%` }} />
-            </div>
+          <div className="absolute bottom-6 right-6 z-10 flex items-center gap-3 rounded-full bg-black/55 px-4 py-2 text-white backdrop-blur-md">
+            <span className="text-[12px] font-medium">Downloading wallpaper · {downloadPct}%</span>
+            <span className="h-1 w-24 overflow-hidden rounded bg-white/20">
+              <span className="block h-full bg-white/85 transition-[width] duration-200" style={{ width: `${downloadPct}%` }} />
+            </span>
           </div>
         )}
       </div>

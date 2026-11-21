@@ -24,13 +24,15 @@ import {
   Plus,
   Car,
   Monitor,
-  FolderOpen
+  FolderOpen,
+  RectangleVertical
 } from 'lucide-react'
 
 const isMac = navigator.userAgent.includes('Mac')
 
 const LIBRARY = [
   { id: 'all', label: 'Discover', icon: Compass },
+  { id: 'portrait', label: 'Vertical', icon: RectangleVertical },
   { id: 'favorites', label: 'Favorites', icon: Heart },
   { id: 'imported', label: 'My Imports', icon: FolderDown }
 ]
@@ -71,6 +73,13 @@ export const App: React.FC = () => {
     fetchCounts()
     if (!window.galleryApi) return
     const unsub = window.galleryApi.onDisplayChanged(() => fetchDisplays())
+    // Windows: a display whose wallpaper couldn't be placed behind the icons is skipped
+    // (rather than covering the screen) — say so instead of failing silently.
+    const reportAttach = (ids: number[]) => {
+      if (ids.length) useGalleryStore.getState().toast(`Couldn't place the wallpaper behind your desktop icons on ${ids.length === 1 ? 'one display' : `${ids.length} displays`}. Restart Vantage, or report it on GitHub.`, 'error')
+    }
+    window.galleryApi.getAttachFailures?.().then(reportAttach).catch(() => {})
+    const unsubAttach = window.galleryApi.onAttachFailed?.(reportAttach)
     const unsubNav = window.galleryApi.onNavigate?.((screen) => {
       if (screen === 'settings' || screen === 'credits' || screen === 'gallery') setActiveScreen(screen)
     })
@@ -81,6 +90,7 @@ export const App: React.FC = () => {
     return () => {
       unsub()
       unsubNav?.()
+      unsubAttach?.()
       unsubCatalog()
     }
   }, [])
@@ -157,12 +167,12 @@ export const App: React.FC = () => {
                         }`}
                       >
                         <span className={`grid h-7 w-7 shrink-0 place-items-center rounded-md ${isSel ? 'bg-glow/15 text-glow' : 'bg-white/[0.05] text-ink-dim'}`}>
-                          <Monitor className="h-3.5 w-3.5" />
+                          <Monitor className={`h-3.5 w-3.5 transition-transform ${d.bounds.height > d.bounds.width ? 'rotate-90' : ''}`} />
                         </span>
                         <span className="min-w-0">
                           <span className="block truncate text-[12px] font-medium text-ink">{d.label || `Display ${i + 1}`}</span>
                           <span className="block truncate text-[10px] text-ink-faint">
-                            {assigned.get(d.id) ? 'Live' : 'No wallpaper'} · {Math.round(d.bounds.width * (d.scaleFactor || 1))}×{Math.round(d.bounds.height * (d.scaleFactor || 1))}
+                            {assigned.get(d.id) ? 'Live' : 'No wallpaper'} · {d.bounds.height > d.bounds.width ? 'Vertical · ' : ''}{Math.round(d.bounds.width * (d.scaleFactor || 1))}×{Math.round(d.bounds.height * (d.scaleFactor || 1))}
                           </span>
                         </span>
                         {isSel && <span className="ml-auto h-1.5 w-1.5 shrink-0 rounded-full bg-glow shadow-[0_0_8px_rgba(255,255,255,0.8)]" />}
