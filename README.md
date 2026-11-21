@@ -2,7 +2,7 @@
 
 <div align="center">
 
-<a href="https://vantagewall.vercel.app">
+<a href="https://vantage-wallpapers.vercel.app">
   <img src="assets/logo.png" alt="Vantage app icon" width="160" height="160" />
 </a>
 
@@ -23,7 +23,7 @@
 </p>
 
 <p>
-  <a href="https://vantagewall.vercel.app"><b>Website</b></a> ·
+  <a href="https://vantage-wallpapers.vercel.app"><b>Website</b></a> ·
   <a href="https://github.com/JayDev-27/Vantage/releases/latest"><b>Download</b></a> ·
   <a href="#-features">Features</a> ·
   <a href="#-generative-wallpapers">Generative</a> ·
@@ -116,14 +116,14 @@ Plus three classic canvas scenes: **Quantum Field**, **Aurora Flow** and **Nebul
 >
 > **Windows:** the installer isn't code-signed yet; if SmartScreen appears, choose **More info → Run anyway**.
 
-Or visit **[vantagewall.vercel.app](https://vantagewall.vercel.app)** — the download button picks the right file for your Mac.
+Or visit **[vantage-wallpapers.vercel.app](https://vantage-wallpapers.vercel.app)** — the download button picks the right file for your Mac.
 
 ## 🌐 The website
 
 The landing page lives in [`website/`](website/README.md): a Three.js / WebGL scroll experience. A 3D monitor plays a wallpaper, the camera dives into the screen, the Vantage aperture falls through a tunnel lined with real wallpapers, and you land on the download.
 
 <div align="center">
-  <a href="https://vantagewall.vercel.app"><img src="assets/media/website-dive.gif" alt="Scrolling through the website's dive: monitor, aperture in the void, text spreading apart, the wallpaper tunnel, and the download scene" width="90%" /></a>
+  <a href="https://vantage-wallpapers.vercel.app"><img src="assets/media/website-dive.gif" alt="Scrolling through the website's dive: monitor, aperture in the void, text spreading apart, the wallpaper tunnel, and the download scene" width="90%" /></a>
   <br />
   <sub><a href="assets/media/website-dive.mp4">Watch in higher quality (MP4)</a></sub>
 </div>

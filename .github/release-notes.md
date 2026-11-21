@@ -1,6 +1,6 @@
 ## Vantage 1.2 — stable, vertical-ready, 10× the library
 
-**Website:** https://vantagewall.vercel.app
+**Website:** https://vantage-wallpapers.vercel.app
 
 ### Downloads
 | Platform | File |
