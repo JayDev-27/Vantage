@@ -1000,9 +1000,12 @@ app.whenReady().then(async () => {
   setupDisplayListeners()
   syncWallpaperWindows()
   initPowerManager()
-  void installVantageScreenSaver()
-    .then(() => syncSelectedScreenSaverVideo())
-    .catch((err) => console.warn('[ScreenSaver] Native module unavailable:', err))
+  // The Screen Saver companion and Lock Screen sync are macOS-only.
+  if (process.platform === 'darwin') {
+    void installVantageScreenSaver()
+      .then(() => syncSelectedScreenSaverVideo())
+      .catch((err) => console.warn('[ScreenSaver] Native module unavailable:', err))
+  }
   setCacheLimitBytes((store.get('maxCacheSizeGb', 5) as number) * 1024 * 1024 * 1024)
   evictToLimit(getCacheLimitBytes())
   registerIpcHandlers()
