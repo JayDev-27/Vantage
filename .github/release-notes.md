@@ -1,3 +1,12 @@
+## Vantage 1.3.1 — smoother starts
+
+### Fixed in 1.3.1
+- **Live wallpapers start in seconds:** a new wallpaper starts playing while it downloads, and a copy is saved for offline use.
+- **No more white strip at the top:** on macOS the wallpaper stays pinned over the full screen, under the menu bar.
+- **Download badge moved** to the top-left corner, out of the way of the Dock and notifications.
+
+---
+
 ## Vantage 1.3 — sharper, lighter
 
 **Website:** https://vantage-wallpapers.vercel.app
@@ -5,10 +14,10 @@
 ### Downloads
 | Platform | File |
 |:--|:--|
-| macOS · Apple Silicon (M1–M5) | `Vantage-1.3.0-arm64.dmg` |
-| macOS · Intel | `Vantage-1.3.0-x64.dmg` |
-| Windows 10/11 · x64 | `Vantage-Setup-1.3.0-x64.exe` |
-| Windows 11 · ARM | `Vantage-Setup-1.3.0-arm64.exe` |
+| macOS · Apple Silicon (M1–M5) | `Vantage-1.3.1-arm64.dmg` |
+| macOS · Intel | `Vantage-1.3.1-x64.dmg` |
+| Windows 10/11 · x64 | `Vantage-Setup-1.3.1-x64.exe` |
+| Windows 11 · ARM | `Vantage-Setup-1.3.1-arm64.exe` |
 
 ### New
 - **2K & 4K only:** the library now contains only wallpapers at least 1440 px on both edges — 7,300+ sharp wallpapers.
