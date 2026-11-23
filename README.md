@@ -52,6 +52,7 @@
 
 ## 🆕 What's new in 1.3
 
+- **1.3.1:** live wallpapers start playing while they download, the wallpaper no longer leaves a white strip under the macOS menu bar, and the download badge moved to the top-left.
 - **2K & 4K only:** the library now ships only wallpapers at least 1440 px on both edges — 7,300+ sharp wallpapers instead of 13,000 mixed ones.
 - **New bundled wallpapers:** *Lu Guang × Cheng Xiaoshi (Link Click)* and *Raphtalia — The Rising of the Shield Hero*, in 4K, available offline.
 - **Save first frame:** turn any 2K/4K video wallpaper into a full-quality still with one click; stills share a lightweight thumbnail and can be deleted and restored.
@@ -122,10 +123,10 @@ Plus **Quantum Field**, **Aurora Flow** and **Nebula Drift**. Rendered by GLSL s
 
 | Platform | File | |
 |:--|:--|:--|
-| 🍏 macOS · Apple Silicon (M1–M5) | `Vantage-1.3.0-arm64.dmg` | [Latest release](https://github.com/JayDev-27/Vantage/releases/latest) |
-| 🍏 macOS · Intel | `Vantage-1.3.0-x64.dmg` | [Latest release](https://github.com/JayDev-27/Vantage/releases/latest) |
-| 🪟 Windows 10/11 · x64 | `Vantage-Setup-1.3.0-x64.exe` | [Latest release](https://github.com/JayDev-27/Vantage/releases/latest) |
-| 🪟 Windows 11 · ARM | `Vantage-Setup-1.3.0-arm64.exe` | [Latest release](https://github.com/JayDev-27/Vantage/releases/latest) |
+| 🍏 macOS · Apple Silicon (M1–M5) | `Vantage-1.3.1-arm64.dmg` | [Latest release](https://github.com/JayDev-27/Vantage/releases/latest) |
+| 🍏 macOS · Intel | `Vantage-1.3.1-x64.dmg` | [Latest release](https://github.com/JayDev-27/Vantage/releases/latest) |
+| 🪟 Windows 10/11 · x64 | `Vantage-Setup-1.3.1-x64.exe` | [Latest release](https://github.com/JayDev-27/Vantage/releases/latest) |
+| 🪟 Windows 11 · ARM | `Vantage-Setup-1.3.1-arm64.exe` | [Latest release](https://github.com/JayDev-27/Vantage/releases/latest) |
 
 Or visit **[vantage-wallpapers.vercel.app](https://vantage-wallpapers.vercel.app)** — the download button picks the right file for your computer.
 
