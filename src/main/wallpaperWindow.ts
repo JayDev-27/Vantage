@@ -82,12 +82,30 @@ export function createWallpaperWindow(display: Display): BrowserWindow {
     if (shown || win.isDestroyed()) return
     shown = true
     win.showInactive()
+    pinToDisplay(win, display)
+  }
+  if (!isWindows) {
+    // macOS may nudge a window below the menu bar (on show, menu-bar auto-hide or
+    // Space switches), leaving the system desktop showing as a white strip at the top.
+    const repin = () => pinToDisplay(win, display)
+    win.on('moved', repin)
+    win.on('resize', repin)
   }
   win.once('ready-to-show', reveal)
   setTimeout(reveal, 3000)
 
   wallpaperWindows.set(display.id, win)
   return win
+}
+
+function pinToDisplay(win: BrowserWindow, display: Display): void {
+  if (isWindows || win.isDestroyed()) return
+  const live = screen.getAllDisplays().find((d) => d.id === display.id) ?? display
+  const b = win.getBounds()
+  const t = live.bounds
+  if (b.x !== t.x || b.y !== t.y || b.width !== t.width || b.height !== t.height) {
+    win.setBounds({ x: t.x, y: t.y, width: t.width, height: t.height })
+  }
 }
 
 const attachFailures = new Set<number>()

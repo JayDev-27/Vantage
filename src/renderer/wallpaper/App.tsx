@@ -44,26 +44,35 @@ export const App: React.FC = () => {
       return
     }
 
-    setPlaySrc('')
     setDownloadPct(0)
     downloadUrlRef.current = item.sourceUrl
-    try {
-      if (window.wallpaperApi) {
-        const cachedUrl = await window.wallpaperApi.ensureCached(item.sourceUrl)
-        if (token !== applyTokenRef.current) return
-        setPlaySrc(cachedUrl)
-      } else {
-        setPlaySrc(item.sourceUrl)
-      }
-      setDownloadPct(null)
-      downloadUrlRef.current = ''
-    } catch (err) {
+    const finish = () => {
       if (token !== applyTokenRef.current) return
-      console.warn('[Playback] Cache failed, falling back to remote streaming:', err)
-      setPlaySrc(item.sourceUrl)
       setDownloadPct(null)
       downloadUrlRef.current = ''
     }
+    if (!window.wallpaperApi) {
+      setPlaySrc(item.sourceUrl)
+      finish()
+      return
+    }
+    // Already cached files resolve almost instantly; otherwise start streaming
+    // right away (the MP4 index sits up front) and keep caching in the background
+    // so the next launch plays offline.
+    const cached = window.wallpaperApi.ensureCached(item.sourceUrl)
+    const quick = await Promise.race([
+      cached.then((url) => url, () => null),
+      new Promise<null>((r) => setTimeout(() => r(null), 250))
+    ])
+    if (token !== applyTokenRef.current) return
+    setPlaySrc(quick ?? item.sourceUrl)
+    if (quick) return finish()
+    try {
+      await cached
+    } catch (err) {
+      console.warn('[Playback] Background cache failed; continuing to stream:', err)
+    }
+    finish()
   }, [])
 
   const setActiveWallpaper = useCallback(
@@ -145,7 +154,7 @@ export const App: React.FC = () => {
         )}
         <VideoLayer src={playSrc} isPlaying={isPlaying} performanceMode={performanceMode} />
         {downloadPct !== null && (
-          <div className="absolute bottom-6 right-6 z-10 flex items-center gap-3 rounded-full bg-black/55 px-4 py-2 text-white backdrop-blur-md">
+          <div className="absolute left-6 top-12 z-10 flex items-center gap-3 rounded-full bg-black/55 px-4 py-2 text-white backdrop-blur-md">
             <span className="text-[12px] font-medium">Downloading wallpaper · {downloadPct}%</span>
             <span className="h-1 w-24 overflow-hidden rounded bg-white/20">
               <span className="block h-full bg-white/85 transition-[width] duration-200" style={{ width: `${downloadPct}%` }} />
